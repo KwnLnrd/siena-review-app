@@ -3,81 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siena Paris - Avis</title>
+    <title>Siena Paris - Votre Avis</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Montserrat:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Montserrat:wght@500&display=swap');
+
+        :root {
+            --brand-color: #BF5B3F;
+            --background-color: #FDFBF5;
+            --surface-color: #FFFFFF;
+            --text-primary: #2C2C2C;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         body { 
             font-family: 'Montserrat', sans-serif;
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            min-height: 100vh; /* Utilise min-height pour plus de flexibilité */
-            background-color: #FDFBF5; 
+            min-height: 100vh; 
+            background-color: var(--background-color); 
             text-align: center;
             margin: 0;
-            padding: 20px; /* Ajout d'un padding pour éviter que le contenu ne touche les bords sur mobile */
-            box-sizing: border-box; /* Assure que le padding est inclus dans la taille totale */
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         .lang-selector { 
-            background: white; 
-            padding: 40px 30px; /* Padding horizontal réduit pour les petits écrans */
+            background: var(--surface-color); 
+            padding: 40px 50px; 
             border-radius: 16px; 
-            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2);
+            box-shadow: 0 15px 60px -15px rgba(133, 93, 67, 0.25);
             width: 100%;
-            max-width: 550px; /* Largeur maximale pour le conteneur */
+            max-width: 600px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .logo-container img {
             width: 180px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         h1 { 
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            color: #2C2C2C;
-            margin-bottom: 30px; 
+            font-size: 2.3rem;
+            color: var(--text-primary);
+            margin-top: 0;
+            margin-bottom: 35px; 
         }
 
-        /* MODIFICATION : Le conteneur des boutons est maintenant flexible */
-        .button-container {
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px;
+        }
+
+        .button-grid a { 
             display: flex;
-            flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace manque */
+            align-items: center;
             justify-content: center;
-            gap: 15px; /* Espace uniforme entre tous les boutons */
-        }
-
-        .button-container a { 
+            gap: 8px;
             text-decoration: none; 
-            padding: 15px;
-            /* MODIFICATION : Largeur flexible avec une base et une croissance */
-            flex-grow: 1; /* Permet aux boutons de grandir pour remplir l'espace */
-            flex-basis: 140px; /* Base de largeur pour chaque bouton */
-            background-color: #BF5B3F; 
-            color: white; 
+            padding: 16px 10px;
+            background-color: #F7F1E9; 
+            color: var(--text-primary); 
             border-radius: 10px; 
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #EAE0D5;
+            transition: all 0.3s ease;
             font-weight: 500;
-            max-width: 200px; /* Empêche les boutons de devenir trop larges */
+            font-size: 1rem;
         }
 
-        .button-container a:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 6px 20px rgba(191, 91, 63, 0.3);
+        .button-grid a:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(191, 91, 63, 0.2);
+            border-color: var(--brand-color);
+            background-color: var(--brand-color);
+            color: white;
         }
-
-        /* MODIFICATION : MEDIA QUERY POUR LES ÉCRANS MOBILES */
-        /* Ces styles s'appliqueront uniquement sur les écrans de moins de 480px de large */
-        @media (max-width: 480px) {
+        
+        @media (max-width: 640px) {
+            .lang-selector {
+                padding: 30px 25px;
+            }
+            
             h1 {
-                font-size: 1.8rem; /* Taille de titre légèrement réduite sur mobile */
+                font-size: 2rem;
             }
 
-            .button-container a {
-                /* Chaque bouton prendra toute la largeur disponible sur mobile */
-                flex-basis: 100%;
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -85,22 +103,17 @@
 <body>
     <div class="lang-selector">
         <div class="logo-container">
-            <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo Siena Paris">
+            <img src="assets/logosiena-1.png" alt="Logo Siena Paris">
         </div>
-        <h1>Choisissez votre langue / Select your language</h1>
-        <div class="button-container">
-            <a href="/fr/">Français</a>
-            <a href="/en/">English</a>
-            <a href="/it/">Italiano</a>
-            <a href="/es/">Español</a>
-            <a href="/de/">Deutsch</a>
-            <a href="/pt/">Português</a>
+        <h1>Choisissez votre langue</h1>
+        <div class="button-grid">
+            <a href="/fr/">🇫🇷 Français</a>
+            <a href="/en/">🇬🇧 English</a>
+            <a href="/it/">🇮🇹 Italiano</a>
+            <a href="/es/">🇪🇸 Español</a>
+            <a href="/pt/">🇵🇹 Português</a>
+            <a href="/zh/">🇨🇳 中文</a>
         </div>
-        
-        
-        <footer>
-            &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
-        </footer>
     </div>
 </body>
 </html>

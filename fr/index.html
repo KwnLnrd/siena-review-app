@@ -10,11 +10,8 @@
         @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
         .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
-        
-        /* MODIFICATION 1 : Espace réduit sous le logo */
-        .logo-container img{width:180px;height:auto;margin-bottom:15px}
-        
-        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px}
+        .logo-container img{width:180px;height:auto;margin-bottom:10px}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px; margin-top: 10px;}
         p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
         .tag-section{margin-bottom:28px;text-align:left}
         .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
@@ -27,12 +24,7 @@
         .button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(191,91,63,.3)}
         .button.secondary{background:var(--surface-color);color:var(--brand-color);border-color:var(--border-color);margin-top:12px}
         .button.secondary:hover{border-color:var(--brand-color)}
-        
-        /* MODIFICATION 2 : Espace ajouté au-dessus du bouton "Publier" */
-        #google-btn {
-            margin-top: 12px;
-        }
-
+        #google-btn{margin-top:12px}
         .hidden{display:none !important}
         .loader-container{display:flex;flex-direction:column;align-items:center;gap:15px;margin:20px auto}
         .loader{width:40px;height:40px;border:4px solid var(--border-color);border-left-color:var(--brand-color);border-radius:50%;animation:spin 1s linear infinite}
@@ -41,6 +33,8 @@
         .dropdown-container.visible{max-height:100px}
         select#birthday_details{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border-color);background-color:#F7F1E9;font-family:var(--font-sans);font-size:.9rem;color:var(--text-primary);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BF5B3F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 15px top 50%;background-size:.65em auto}
         footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
+        .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
+        .dish-subcategory:first-child{margin-top:0}
     </style>
 </head>
 <body>
@@ -53,6 +47,7 @@
         <h1>Une soirée mémorable ?</h1>
         <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
         <form id="review-form">
+            
             <div class="tag-section">
                 <h3>Une occasion spéciale ?</h3>
                 <div class="tag-group" data-category="reason_for_visit">
@@ -74,32 +69,62 @@
                     </select>
                 </div>
             </div>
+
             <div class="tag-section">
                 <h3>Le service de Kewan</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
                 <div class="tag-group" data-category="service_kewan">
-                    <input type="checkbox" id="tag1" value="attentionné"><label for="tag1">Attentionné</label>
-                    <input type="checkbox" id="tag2" value="souriant et chaleureux"><label for="tag2">Souriant</label>
-                    <input type="checkbox" id="tag3" value="professionnel"><label for="tag3">Professionnel</label>
-                    <input type="checkbox" id="tag4" value="efficace et rapide"><label for="tag4">Efficace</label>
+                    <input type="checkbox" id="tag_service_1" value="attentionné"><label for="tag_service_1">Attentionné</label>
+                    <input type="checkbox" id="tag_service_2" value="souriant et chaleureux"><label for="tag_service_2">Souriant</label>
+                    <input type="checkbox" id="tag_service_3" value="professionnel"><label for="tag_service_3">Professionnel</label>
+                    <input type="checkbox" id="tag_service_4" value="efficace et rapide"><label for="tag_service_4">Efficace</label>
                     <input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label>
                     <input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label>
                 </div>
             </div>
-            <div class="tag-section">
+
+            <div class="tag-section" id="dishes-section-limiter">
                 <h3>Les saveurs qui vous ont marqué</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p>
+
+                <h4 class="dish-subcategory">Antipasti & Crudo</h4>
                 <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="tag_dish_1" value="les Pici Cacio e Pepe"><label for="tag_dish_1">Pici Cacio e Pepe</label>
-                    <input type="checkbox" id="tag_dish_2" value="les Ravioli à la truffe"><label for="tag_dish_2">Ravioli al Tartufo</label>
-                    <input type="checkbox" id="tag_dish_3" value="le poulpe grillé"><label for="tag_dish_3">Poulpe Grillé</label>
-                    <input type="checkbox" id="tag_dish_4" value="les linguine au homard"><label for="tag_dish_4">Linguine au homard</label>
-                    <input type="checkbox" id="tag_dish_5" value="le carpaccio de boeuf"><label for="tag_dish_5">Carpaccio de boeuf</label>
-                    <input type="checkbox" id="tag_dish_6" value="la burrata à la truffe"><label for="tag_dish_6">Burrata à la truffe</label>
-                    <input type="checkbox" id="tag_dish_7" value="la pizza Al Tartufo"><label for="tag_dish_7">Pizza Al Tartufo</label>
-                    <input type="checkbox" id="tag_dish_8" value="le tiramisù classique"><label for="tag_dish_8">Le Tiramisù</label>
+                    <input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label>
+                    <input type="checkbox" id="dish_arancini" value="les Arancini au caviar"><label for="dish_arancini">Arancini</label>
+                    <input type="checkbox" id="dish_calamari" value="les Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label>
+                    <input type="checkbox" id="dish_tartare" value="le Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label>
+                </div>
+                <h4 class="dish-subcategory">Pâtes</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_ravioli" value="les Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label>
+                    <input type="checkbox" id="dish_linguine" value="les Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label>
+                    <input type="checkbox" id="dish_tagliolini" value="les Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label>
+                </div>
+                <h4 class="dish-subcategory">Viandes & Poissons</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_milanese" value="la Milanese 'Orecchie di elefante'"><label for="dish_milanese">La Milanese</label>
+                    <input type="checkbox" id="dish_wagyu" value="le Wagyu de Kagoshima"><label for="dish_wagyu">Wagyu de Kagoshima</label>
+                    <input type="checkbox" id="dish_gamberoni" value="les Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label>
+                </div>
+                <h4 class="dish-subcategory">Pizze</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                     <input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label>
+                     <input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label>
+                     <input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label>
+                     <input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label>
+                </div>
+                <h4 class="dish-subcategory">Douceurs</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label>
+                    <input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label>
+                    <input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label>
+                    <input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label>
                 </div>
             </div>
+            
             <div class="tag-section">
                 <h3>L'atmosphère du lieu</h3>
+                 <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
                 <div class="tag-group" data-category="atmosphere">
                     <input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label>
                     <input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label>
@@ -109,8 +134,10 @@
                     <input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label>
                 </div>
             </div>
+
             <button type="submit" class="button" id="generate-btn">Générer mon avis</button>
         </form>
+        
         <div id="loader" class="loader-container hidden">
             <div class="loader"></div>
             <span id="loader-text">Création en cours...</span>
@@ -120,10 +147,12 @@
             <button id="copy-btn" class="button secondary">Copier le texte</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
         </div>
+
         <footer>
             &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
         </footer>
     </div>
+
     <script>
         const reviewForm = document.getElementById('review-form');
         const generateBtn = document.getElementById('generate-btn');
@@ -137,6 +166,39 @@
         const birthdayDetailsSelect = document.getElementById('birthday_details');
         const loadingMessages = ["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];
         let messageInterval;
+
+        // MODIFICATION : Limite pour les plats augmentée à 6
+        const limitConfig = {
+            "service_kewan": 3,
+            "atmosphere": 3,
+            "dishes-section-limiter": 6 
+        };
+
+        reviewForm.addEventListener('change', (e) => {
+            if (e.target.type !== 'checkbox') return;
+            const limiterSection = e.target.closest('#dishes-section-limiter');
+            const simpleSection = e.target.closest('.tag-section');
+            let sectionId, limit;
+            if (limiterSection) {
+                sectionId = 'dishes-section-limiter';
+                limit = limitConfig[sectionId];
+            } else if (simpleSection) {
+                const category = simpleSection.querySelector('.tag-group')?.dataset.category;
+                if(limitConfig[category]) {
+                    sectionId = category;
+                    limit = limitConfig[category];
+                }
+            }
+            if (sectionId && limit) {
+                const container = document.getElementById(sectionId) || simpleSection;
+                const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkedInSection.length > limit) {
+                    e.target.checked = false;
+                    // MODIFICATION : Message d'alerte mis à jour
+                    alert(`Vous ne pouvez sélectionner que ${limit} options maximum dans cette catégorie.`);
+                }
+            }
+        });
 
         eventRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
@@ -157,22 +219,19 @@
                 return;
             }
             checkedInputs.forEach(input => {
-                selectedTags.push({ category: input.parentElement.dataset.category, value: input.value });
+                selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
             });
             if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
                 selectedTags.push({ category: birthdayDetailsSelect.dataset.category, value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
             }
-
             reviewForm.classList.add('hidden');
             loaderContainer.classList.remove('hidden');
-            
             let messageIndex = 0;
             loaderText.textContent = loadingMessages[messageIndex];
             messageInterval = setInterval(() => {
                 messageIndex = (messageIndex + 1) % loadingMessages.length;
                 loaderText.textContent = loadingMessages[messageIndex];
             }, 2500);
-
             try {
                 const generatedReview = await realApiCall(selectedTags);
                 reviewText.value = generatedReview;

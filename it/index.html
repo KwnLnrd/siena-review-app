@@ -4,12 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La tua Recensione su Siena Paris</title>
-    <style>/* Styles CSS (identiques pour toutes les langues) */ @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap'); :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;} @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}} body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;} .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;} .logo-container img{width:180px;height:auto;margin-bottom:20px} h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px} p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px} .tag-section{margin-bottom:28px;text-align:left} .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)} .tag-group{display:flex;flex-wrap:wrap;gap:12px} .tag-group input[type=checkbox],.tag-group input[type=radio]{position:absolute;opacity:0;width:0;height:0} .tag-group label{background-color:#F7F1E9;color:var(--text-secondary);padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .3s ease;border:1px solid var(--border-color);user-select:none} .tag-group input:checked+label{background-color:var(--brand-color);color:#fff;transform:translateY(-2px);box-shadow:0 4px 15px rgba(191,91,63,.25);border-color:var(--brand-color)} textarea{width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--border-color);border-radius:12px;font-family:var(--font-sans);font-size:1rem;min-height:140px;resize:vertical;background-color:#FDFBF5;color:var(--text-primary);margin-bottom:16px} .button{background-color:var(--brand-color);color:#fff;border:1px solid var(--brand-color);padding:16px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all .3s ease;display:block;text-decoration:none;box-sizing:border-box;box-shadow:0 4px 15px rgba(0,0,0,.1)} .button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(191,91,63,.3)} .button.secondary{background:var(--surface-color);color:var(--brand-color);border-color:var(--border-color);margin-top:12px} .button.secondary:hover{border-color:var(--brand-color)} .hidden{display:none} .loader{width:40px;height:40px;border:4px solid var(--border-color);border-left-color:var(--brand-color);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto} @keyframes spin{to{transform:rotate(360deg)}} .dropdown-container{margin-top:15px;max-height:0;overflow:hidden;transition:max-height .5s ease-in-out,margin-top .5s ease-in-out} .dropdown-container.visible{max-height:100px} select#birthday_details{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border-color);background-color:#F7F1E9;font-family:var(--font-sans);font-size:.9rem;color:var(--text-primary);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BF5B3F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 15px top 50%;background-size:.65em auto} footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
+        :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+        .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
+        .logo-container img{width:180px;height:auto;margin-bottom:10px}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px; margin-top: 10px;}
+        p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
+        .tag-section{margin-bottom:28px;text-align:left}
+        .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
+        .tag-group{display:flex;flex-wrap:wrap;gap:12px}
+        .tag-group input[type=checkbox],.tag-group input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+        .tag-group label{background-color:#F7F1E9;color:var(--text-secondary);padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .3s ease;border:1px solid var(--border-color);user-select:none}
+        .tag-group input:checked+label{background-color:var(--brand-color);color:#fff;transform:translateY(-2px);box-shadow:0 4px 15px rgba(191,91,63,.25);border-color:var(--brand-color)}
+        textarea{width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--border-color);border-radius:12px;font-family:var(--font-sans);font-size:1rem;min-height:140px;resize:vertical;background-color:#FDFBF5;color:var(--text-primary);margin-bottom:16px}
+        .button{background-color:var(--brand-color);color:#fff;border:1px solid var(--brand-color);padding:16px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all .3s ease;display:block;text-decoration:none;box-sizing:border-box;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+        .button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(191,91,63,.3)}
+        .button.secondary{background:var(--surface-color);color:var(--brand-color);border-color:var(--border-color);margin-top:12px}
+        .button.secondary:hover{border-color:var(--brand-color)}
+        #google-btn{margin-top:12px}
+        .hidden{display:none !important}
+        .loader-container{display:flex;flex-direction:column;align-items:center;gap:15px;margin:20px auto}
+        .loader{width:40px;height:40px;border:4px solid var(--border-color);border-left-color:var(--brand-color);border-radius:50%;animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .dropdown-container{margin-top:15px;max-height:0;overflow:hidden;transition:max-height .5s ease-in-out,margin-top .5s ease-in-out}
+        .dropdown-container.visible{max-height:100px}
+        select#birthday_details{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border-color);background-color:#F7F1E9;font-family:var(--font-sans);font-size:.9rem;color:var(--text-primary);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BF5B3F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 15px top 50%;background-size:.65em auto}
+        footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
+        .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
+        .dish-subcategory:first-child{margin-top:0}
+    </style>
 </head>
-<body>
+<body lang="it">
     <div class="review-container">
         <div class="logo-container">
-            <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo di Siena Paris">
+            <a href="/"><img src="/assets/logosiena-1.png" alt="Logo di Siena Paris - Torna alla home"></a>
         </div>
         <h1>Una serata memorabile?</h1>
         <p>La tua opinione è il tocco finale della tua esperienza. Condividi ciò che ha deliziato i tuoi sensi per aiutarci a rimanere fedeli allo spirito della Toscana.</p>
@@ -37,30 +68,56 @@
             </div>
             <div class="tag-section">
                 <h3>Il servizio di Kewan</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Seleziona fino a 3 opzioni.</p>
                 <div class="tag-group" data-category="service_kewan">
-                    <input type="checkbox" id="tag1" value="attento"><label for="tag1">Attento</label>
-                    <input type="checkbox" id="tag2" value="cordiale e sorridente"><label for="tag2">Sorridente</label>
-                    <input type="checkbox" id="tag3" value="professionale"><label for="tag3">Professionale</label>
-                    <input type="checkbox" id="tag4" value="efficiente e veloce"><label for="tag4">Efficiente</label>
+                    <input type="checkbox" id="tag_service_1" value="attento"><label for="tag_service_1">Attento</label>
+                    <input type="checkbox" id="tag_service_2" value="cordiale e sorridente"><label for="tag_service_2">Sorridente</label>
+                    <input type="checkbox" id="tag_service_3" value="professionale"><label for="tag_service_3">Professionale</label>
+                    <input type="checkbox" id="tag_service_4" value="efficiente e veloce"><label for="tag_service_4">Efficiente</label>
                     <input type="checkbox" id="tag_service_5" value="di ottimo consiglio"><label for="tag_service_5">Ottimo consiglio</label>
                     <input type="checkbox" id="tag_service_6" value="discreto"><label for="tag_service_6">Discreto</label>
                 </div>
             </div>
-            <div class="tag-section">
+            <div class="tag-section" id="dishes-section-limiter">
                 <h3>I sapori che ti hanno colpito</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Scegli fino a 6 dei tuoi preferiti.</p>
+                <h4 class="dish-subcategory">Antipasti & Crudo</h4>
                 <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="tag_dish_1" value="i Pici Cacio e Pepe"><label for="tag_dish_1">Pici Cacio e Pepe</label>
-                    <input type="checkbox" id="tag_dish_2" value="i Ravioli al Tartufo"><label for="tag_dish_2">Ravioli al Tartufo</label>
-                    <input type="checkbox" id="tag_dish_3" value="il Polpo Grigliato"><label for="tag_dish_3">Polpo Grigliato</label>
-                    <input type="checkbox" id="tag_dish_4" value="le linguine all'astice"><label for="tag_dish_4">Linguine all'astice</label>
-                    <input type="checkbox" id="tag_dish_5" value="il carpaccio di manzo"><label for="tag_dish_5">Carpaccio di manzo</label>
-                    <input type="checkbox" id="tag_dish_6" value="la burrata al tartufo"><label for="tag_dish_6">Burrata al tartufo</label>
-                    <input type="checkbox" id="tag_dish_7" value="la Pizza al Tartufo"><label for="tag_dish_7">Pizza al Tartufo</label>
-                    <input type="checkbox" id="tag_dish_8" value="il classico Tiramisù"><label for="tag_dish_8">Il Tiramisù</label>
+                    <input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label>
+                    <input type="checkbox" id="dish_arancini" value="gli Arancini al caviale"><label for="dish_arancini">Arancini</label>
+                    <input type="checkbox" id="dish_calamari" value="i Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label>
+                    <input type="checkbox" id="dish_tartare" value="la Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label>
+                </div>
+                <h4 class="dish-subcategory">Pasta</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_ravioli" value="i Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label>
+                    <input type="checkbox" id="dish_linguine" value="le Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label>
+                    <input type="checkbox" id="dish_tagliolini" value="i Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label>
+                </div>
+                <h4 class="dish-subcategory">Secondi Piatti</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_milanese" value="la Cotoletta alla Milanese 'Orecchia di elefante'"><label for="dish_milanese">La Milanese</label>
+                    <input type="checkbox" id="dish_wagyu" value="il Wagyu di Kagoshima"><label for="dish_wagyu">Wagyu di Kagoshima</label>
+                    <input type="checkbox" id="dish_gamberoni" value="i Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label>
+                </div>
+                <h4 class="dish-subcategory">Pizze</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                     <input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label>
+                     <input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label>
+                     <input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label>
+                     <input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label>
+                </div>
+                <h4 class="dish-subcategory">Dolci</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_tiramisu" value="il Tiramisù classico"><label for="dish_tiramisu">Tiramisù</label>
+                    <input type="checkbox" id="dish_sainthonore" value="il Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label>
+                    <input type="checkbox" id="dish_pavlova" value="la Pavlova ai frutti rossi"><label for="dish_pavlova">Pavlova</label>
+                    <input type="checkbox" id="dish_ananas" value="l'Ananas arrostito al miele"><label for="dish_ananas">Ananas Arrostito</label>
                 </div>
             </div>
             <div class="tag-section">
                 <h3>L'atmosfera del locale</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Seleziona fino a 3 opzioni.</p>
                 <div class="tag-group" data-category="atmosphere">
                     <input type="checkbox" id="tag_atmo_1" value="l'arredamento chic"><label for="tag_atmo_1">L'arredamento</label>
                     <input type="checkbox" id="tag_atmo_2" value="la musica dal vivo"><label for="tag_atmo_2">La musica dal vivo</label>
@@ -70,20 +127,126 @@
                     <input type="checkbox" id="tag_atmo_6" value="perfetto per le foto"><label for="tag_atmo_6">Ideale per le foto</label>
                 </div>
             </div>
-            <button type="submit" class="button" id="generate-btn">Crea una bozza</button>
+            <button type="submit" class="button" id="generate-btn">Genera la mia recensione</button>
         </form>
-        <div id="loader" class="loader hidden"></div>
+        <div id="loader" class="loader-container hidden">
+            <div class="loader"></div>
+            <span id="loader-text">Creazione in corso...</span>
+        </div>
         <div id="result-area" class="hidden">
             <textarea id="review-text" readonly></textarea>
-            <button id="copy-btn" class="button secondary">Copia il testo</button>
+            <button id="copy-btn" class="button secondary">Copia testo</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Pubblica su Google</a>
         </div>
-        <footer>
-            &copy; <span id="copyright-year"></span> KwnLnrd. Tutti i diritti riservati.
-        </footer>
+        <footer>&copy; <span id="copyright-year"></span> KwnLnrd. Tutti i diritti riservati.</footer>
     </div>
     <script>
-        const reviewForm=document.getElementById("review-form"),generateBtn=document.getElementById("generate-btn"),loader=document.getElementById("loader"),resultArea=document.getElementById("result-area"),reviewText=document.getElementById("review-text"),copyBtn=document.getElementById("copy-btn"),eventRadios=document.querySelectorAll('input[name="event"]'),birthdayDetailsContainer=document.getElementById("birthday_details_container"),birthdayDetailsSelect=document.getElementById("birthday_details");eventRadios.forEach(e=>{e.addEventListener("change",e=>{e.target.id==="event_birthday"?birthdayDetailsContainer.classList.add("visible"):birthdayDetailsContainer.classList.remove("visible")})}),reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];if(document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.parentElement.dataset.category,value:e.value})}),0===t.length)return void alert("Seleziona almeno un'opzione per descrivere la tua esperienza.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`per il compleanno ${birthdayDetailsSelect.value}`}),reviewForm.classList.add("hidden"),loader.classList.remove("hidden");try{const e=await realApiCall(t);reviewText.value=e,loader.classList.add("hidden"),resultArea.classList.remove("hidden")}catch(e){console.error("Errore durante la generazione:",e),alert("Si è verificato un errore. Per favore, riprova."),loader.classList.add("hidden"),reviewForm.classList.remove("hidden")}}),copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copiato!",setTimeout(()=>{copyBtn.textContent="Copia il testo"},2e3)})});async function realApiCall(e){const t="https://siena-api.onrender.com/generate-review",a="it",n=await fetch(t,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({lang:a,tags:e})});if(!n.ok)throw new Error(`Errore HTTP: ${n.status}`);return(await n.json()).review}document.getElementById("copyright-year").textContent=(new Date).getFullYear();
+        const reviewForm = document.getElementById('review-form');
+        const generateBtn = document.getElementById('generate-btn');
+        const loaderContainer = document.getElementById('loader');
+        const loaderText = document.getElementById('loader-text');
+        const resultArea = document.getElementById('result-area');
+        const reviewText = document.getElementById('review-text');
+        const copyBtn = document.getElementById('copy-btn');
+        const eventRadios = document.querySelectorAll('input[name="event"]');
+        const birthdayDetailsContainer = document.getElementById('birthday_details_container');
+        const birthdayDetailsSelect = document.getElementById('birthday_details');
+        const loadingMessages = ["Contattando il nostro assistente creativo...","Analizzando la tua serata memorabile...","L'ispirazione è in arrivo...","Finalizzando la bozza..."];
+        let messageInterval;
+        const limitConfig = { "service_kewan": 3, "atmosphere": 3, "dishes-section-limiter": 6 };
+
+        reviewForm.addEventListener('change', (e) => {
+            if (e.target.type !== 'checkbox') return;
+            const limiterSection = e.target.closest('#dishes-section-limiter');
+            const simpleSection = e.target.closest('.tag-section');
+            let sectionId, limit;
+            if (limiterSection) {
+                sectionId = 'dishes-section-limiter';
+                limit = limitConfig[sectionId];
+            } else if (simpleSection) {
+                const category = simpleSection.querySelector('.tag-group')?.dataset.category;
+                if(limitConfig[category]) {
+                    sectionId = category;
+                    limit = limitConfig[category];
+                }
+            }
+            if (sectionId && limit) {
+                const container = document.getElementById(sectionId) || simpleSection;
+                const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkedInSection.length > limit) {
+                    e.target.checked = false;
+                    alert(`Puoi selezionare solo fino a ${limit} opzioni in questa categoria.`);
+                }
+            }
+        });
+
+        eventRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.id === 'event_birthday') {
+                    birthdayDetailsContainer.classList.add('visible');
+                } else {
+                    birthdayDetailsContainer.classList.remove('visible');
+                }
+            });
+        });
+
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectedTags = [];
+            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            if (checkedInputs.length === 0) {
+                alert("Seleziona almeno un'opzione per descrivere la tua esperienza.");
+                return;
+            }
+            checkedInputs.forEach(input => {
+                selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
+            });
+            if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
+                selectedTags.push({ category: birthdayDetailsSelect.dataset.category, value: `per il compleanno ${birthdayDetailsSelect.value}` });
+            }
+            reviewForm.classList.add('hidden');
+            loaderContainer.classList.remove('hidden');
+            let messageIndex = 0;
+            loaderText.textContent = loadingMessages[messageIndex];
+            messageInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                loaderText.textContent = loadingMessages[messageIndex];
+            }, 2500);
+            try {
+                const generatedReview = await realApiCall(selectedTags);
+                reviewText.value = generatedReview;
+                resultArea.classList.remove('hidden');
+            } catch (error) {
+                console.error('Errore durante la generazione:', error);
+                alert("Si è verificato un errore. Per favore, riprova.");
+                reviewForm.classList.remove('hidden');
+            } finally {
+                clearInterval(messageInterval);
+                loaderContainer.classList.add('hidden');
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(reviewText.value).then(() => {
+                copyBtn.textContent = 'Copiato!';
+                setTimeout(() => { copyBtn.textContent = 'Copia il testo'; }, 2000);
+            });
+        });
+
+        async function realApiCall(tags) {
+            const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
+            const lang = 'it';
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lang: lang, tags: tags }),
+            });
+            if (!response.ok) throw new Error(`Errore HTTP: ${response.status}`);
+            const data = await response.json();
+            return data.review;
+        }
+
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
