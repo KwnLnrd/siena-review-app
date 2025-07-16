@@ -4,19 +4,69 @@
     <meta charset="UTF-8">
     <title>Siena Paris - Avis</title>
     <style>
+        /* --- MODIFICATION : Importation de la police des titres --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Montserrat:wght@400&display=swap');
+
         /* Styles pour la page de sélection de langue */
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #FDFBF5; text-align: center; }
-        .lang-selector { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2); }
-        h1 { margin-bottom: 30px; }
-        a { display: inline-block; text-decoration: none; padding: 15px 30px; margin: 5px; background-color: #BF5B3F; color: white; border-radius: 10px; transition: transform 0.2s; }
-        a:hover { transform: scale(1.05); }
+        body { 
+            font-family: 'Montserrat', sans-serif; /* Police de base pour le corps */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-color: #FDFBF5; 
+            text-align: center;
+            margin: 0;
+        }
+        
+        .lang-selector { 
+            background: white; 
+            padding: 40px 50px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2); 
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 180px;
+        }
+
+        h1 { 
+            /* --- MODIFICATION : Application de la police de titre --- */
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: #2C2C2C;
+            margin-bottom: 30px; 
+        }
+
+        .button-container a { 
+            display: inline-block; 
+            text-decoration: none; 
+            padding: 15px 30px; 
+            margin: 8px; 
+            background-color: #BF5B3F; 
+            color: white; 
+            border-radius: 10px; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 500;
+        }
+
+        .button-container a:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 6px 20px rgba(191, 91, 63, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="lang-selector">
-        <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo Siena" style="width:180px; margin-bottom:20px;">
+        <div class="logo-container">
+            <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo Siena Paris">
+        </div>
         <h1>Choisissez votre langue / Select your language</h1>
-        <div>
+        <div class="button-container">
             <a href="/fr/">Français</a>
             <a href="/en/">English</a>
             <a href="/es/">Español</a>
