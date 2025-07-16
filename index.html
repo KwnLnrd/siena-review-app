@@ -2,61 +2,83 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Siena Paris - Avis</title>
     <style>
-        /* --- MODIFICATION : Importation de la police des titres --- */
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Montserrat:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Montserrat:wght@400;500&display=swap');
 
-        /* Styles pour la page de sélection de langue */
         body { 
-            font-family: 'Montserrat', sans-serif; /* Police de base pour le corps */
+            font-family: 'Montserrat', sans-serif;
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh; 
+            min-height: 100vh; /* Utilise min-height pour plus de flexibilité */
             background-color: #FDFBF5; 
             text-align: center;
             margin: 0;
+            padding: 20px; /* Ajout d'un padding pour éviter que le contenu ne touche les bords sur mobile */
+            box-sizing: border-box; /* Assure que le padding est inclus dans la taille totale */
         }
         
         .lang-selector { 
             background: white; 
-            padding: 40px 50px; 
+            padding: 40px 30px; /* Padding horizontal réduit pour les petits écrans */
             border-radius: 16px; 
-            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2); 
-        }
-
-        .logo-container {
-            margin-bottom: 20px;
+            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2);
+            width: 100%;
+            max-width: 550px; /* Largeur maximale pour le conteneur */
         }
 
         .logo-container img {
             width: 180px;
+            margin-bottom: 20px;
         }
 
         h1 { 
-            /* --- MODIFICATION : Application de la police de titre --- */
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.2rem;
             color: #2C2C2C;
             margin-bottom: 30px; 
         }
 
+        /* MODIFICATION : Le conteneur des boutons est maintenant flexible */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si l'espace manque */
+            justify-content: center;
+            gap: 15px; /* Espace uniforme entre tous les boutons */
+        }
+
         .button-container a { 
-            display: inline-block; 
             text-decoration: none; 
-            padding: 15px 30px; 
-            margin: 8px; 
+            padding: 15px;
+            /* MODIFICATION : Largeur flexible avec une base et une croissance */
+            flex-grow: 1; /* Permet aux boutons de grandir pour remplir l'espace */
+            flex-basis: 140px; /* Base de largeur pour chaque bouton */
             background-color: #BF5B3F; 
             color: white; 
             border-radius: 10px; 
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             font-weight: 500;
+            max-width: 200px; /* Empêche les boutons de devenir trop larges */
         }
 
         .button-container a:hover { 
             transform: scale(1.05); 
             box-shadow: 0 6px 20px rgba(191, 91, 63, 0.3);
+        }
+
+        /* MODIFICATION : MEDIA QUERY POUR LES ÉCRANS MOBILES */
+        /* Ces styles s'appliqueront uniquement sur les écrans de moins de 480px de large */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem; /* Taille de titre légèrement réduite sur mobile */
+            }
+
+            .button-container a {
+                /* Chaque bouton prendra toute la largeur disponible sur mobile */
+                flex-basis: 100%;
+            }
         }
     </style>
 </head>
@@ -69,6 +91,7 @@
         <div class="button-container">
             <a href="/fr/">Français</a>
             <a href="/en/">English</a>
+            <a href="/it/">Italiano</a>
             <a href="/es/">Español</a>
             <a href="/de/">Deutsch</a>
             <a href="/pt/">Português</a>
