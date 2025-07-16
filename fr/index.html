@@ -11,7 +11,7 @@
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
         .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
         .logo-container img{width:180px;height:auto;margin-bottom:10px}
-        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px; margin-top: 10px;}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px;margin-top:10px}
         p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
         .tag-section{margin-bottom:28px;text-align:left}
         .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
@@ -35,106 +35,31 @@
         footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
+
+        /* --- NOUVEAUX STYLES POUR LA ROULETTE --- */
+        .roulette-wrapper{padding:20px 0; text-align:center;}
+        .roulette-container{position:relative;width:280px;height:280px;margin:20px auto;border-radius:50%;border:5px solid var(--brand-color);box-shadow:0 0 20px rgba(0,0,0,0.2);}
+        .wheel{width:100%;height:100%;border-radius:50%;background-image:conic-gradient( from 0deg, #FDFBF5 0% 20%, #F7F1E9 20% 40%, #EAE0D5 40% 60%, var(--brand-color) 60% 80%, #2C2C2C 80% 100% );transition:transform 6s cubic-bezier(0.25, 1, 0.5, 1);}
+        .pointer{position:absolute;top:-25px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:25px solid transparent;border-right:25px solid transparent;border-bottom:40px solid var(--brand-color);}
+        .wheel-segment{position:absolute;width:50%;height:50%;left:50%;top:0;transform-origin:0 100%;display:flex;align-items:center;justify-content:center;color:var(--text-primary);font-weight:600;}
+        .wheel-segment span{display:block;transform:rotate(45deg);padding-right:40px;}
+        .prize-result{margin-top:20px;padding:15px;border-radius:10px;background-color:#F7F1E9;border:1px solid var(--border-color);animation:fadeIn 1s;}
+        .prize-result h3{margin:0;font-family:var(--font-serif);color:var(--brand-color);}
+        .prize-result p{margin:5px 0 0;font-size:1rem;color:var(--text-primary);}
     </style>
 </head>
 <body>
     <div class="review-container">
         <div class="logo-container">
-            <a href="/">
-                <img src="/assets/logosiena-1.png" alt="Logo Siena Paris - Retour à l'accueil">
-            </a>
+            <a href="/"><img src="/assets/logosiena-1.png" alt="Logo Siena Paris - Retour à l'accueil"></a>
         </div>
         <h1>Une soirée mémorable ?</h1>
         <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
         <form id="review-form">
-            
-            <div class="tag-section">
-                <h3>Une occasion spéciale ?</h3>
-                <div class="tag-group" data-category="reason_for_visit">
-                    <input type="radio" id="event_birthday" name="event" value="un anniversaire"><label for="event_birthday">Anniversaire</label>
-                    <input type="radio" id="event_romantic" name="event" value="un dîner romantique"><label for="event_romantic">Dîner romantique</label>
-                    <input type="radio" id="event_friends" name="event" value="un dîner entre amis"><label for="event_friends">Dîner entre amis</label>
-                    <input type="radio" id="event_visit" name="event" value="une simple visite" checked><label for="event_visit">Simple visite</label>
-                </div>
-                <div id="birthday_details_container" class="dropdown-container">
-                    <select id="birthday_details" name="birthday_details" data-category="birthday_details">
-                        <option value="" disabled selected>C'était l'anniversaire de qui ?</option>
-                        <option value="de mon père">Père</option>
-                        <option value="de ma mère">Mère</option>
-                        <option value="de mon mari">Mari</option>
-                        <option value="de ma femme">Femme</option>
-                        <option value="de mon fils">Fils</option>
-                        <option value="de ma fille">Fille</option>
-                        <option value="d'un(e) ami(e)">Ami(e)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="tag-section">
-                <h3>Le service de Kewan</h3>
-                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
-                <div class="tag-group" data-category="service_kewan">
-                    <input type="checkbox" id="tag_service_1" value="attentionné"><label for="tag_service_1">Attentionné</label>
-                    <input type="checkbox" id="tag_service_2" value="souriant et chaleureux"><label for="tag_service_2">Souriant</label>
-                    <input type="checkbox" id="tag_service_3" value="professionnel"><label for="tag_service_3">Professionnel</label>
-                    <input type="checkbox" id="tag_service_4" value="efficace et rapide"><label for="tag_service_4">Efficace</label>
-                    <input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label>
-                    <input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label>
-                </div>
-            </div>
-
-            <div class="tag-section" id="dishes-section-limiter">
-                <h3>Les saveurs qui vous ont marqué</h3>
-                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p>
-
-                <h4 class="dish-subcategory">Antipasti & Crudo</h4>
-                <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label>
-                    <input type="checkbox" id="dish_arancini" value="les Arancini au caviar"><label for="dish_arancini">Arancini</label>
-                    <input type="checkbox" id="dish_calamari" value="les Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label>
-                    <input type="checkbox" id="dish_tartare" value="le Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label>
-                </div>
-                <h4 class="dish-subcategory">Pâtes</h4>
-                <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="dish_ravioli" value="les Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label>
-                    <input type="checkbox" id="dish_linguine" value="les Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label>
-                    <input type="checkbox" id="dish_tagliolini" value="les Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label>
-                </div>
-                <h4 class="dish-subcategory">Viandes & Poissons</h4>
-                <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="dish_milanese" value="la Milanese 'Orecchie di elefante'"><label for="dish_milanese">La Milanese</label>
-                    <input type="checkbox" id="dish_wagyu" value="le Wagyu de Kagoshima"><label for="dish_wagyu">Wagyu de Kagoshima</label>
-                    <input type="checkbox" id="dish_gamberoni" value="les Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label>
-                </div>
-                <h4 class="dish-subcategory">Pizze</h4>
-                <div class="tag-group" data-category="liked_dishes">
-                     <input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label>
-                     <input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label>
-                     <input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label>
-                     <input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label>
-                </div>
-                <h4 class="dish-subcategory">Douceurs</h4>
-                <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label>
-                    <input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label>
-                    <input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label>
-                    <input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label>
-                </div>
-            </div>
-            
-            <div class="tag-section">
-                <h3>L'atmosphère du lieu</h3>
-                 <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
-                <div class="tag-group" data-category="atmosphere">
-                    <input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label>
-                    <input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label>
-                    <input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label>
-                    <input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label>
-                    <input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label>
-                    <input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label>
-                </div>
-            </div>
-
+            <div class="tag-section"><h3>Une occasion spéciale ?</h3><div class="tag-group" data-category="reason_for_visit"><input type="radio" id="event_birthday" name="event" value="un anniversaire"><label for="event_birthday">Anniversaire</label><input type="radio" id="event_romantic" name="event" value="un dîner romantique"><label for="event_romantic">Dîner romantique</label><input type="radio" id="event_friends" name="event" value="un dîner entre amis"><label for="event_friends">Dîner entre amis</label><input type="radio" id="event_visit" name="event" value="une simple visite" checked><label for="event_visit">Simple visite</label></div><div id="birthday_details_container" class="dropdown-container"><select id="birthday_details" name="birthday_details" data-category="birthday_details"><option value="" disabled selected>C'était l'anniversaire de qui ?</option><option value="de mon père">Père</option><option value="de ma mère">Mère</option><option value="de mon mari">Mari</option><option value="de ma femme">Femme</option><option value="de mon fils">Fils</option><option value="de ma fille">Fille</option><option value="d'un(e) ami(e)">Ami(e)</option></select></div></div>
+            <div class="tag-section"><h3>Le service de Kewan</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p><div class="tag-group" data-category="service_kewan"><input type="checkbox" id="tag_service_1" value="attentionné"><label for="tag_service_1">Attentionné</label><input type="checkbox" id="tag_service_2" value="souriant et chaleureux"><label for="tag_service_2">Souriant</label><input type="checkbox" id="tag_service_3" value="professionnel"><label for="tag_service_3">Professionnel</label><input type="checkbox" id="tag_service_4" value="efficace et rapide"><label for="tag_service_4">Efficace</label><input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label><input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label></div></div>
+            <div class="tag-section" id="dishes-section-limiter"><h3>Les saveurs qui vous ont marqué</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p><h4 class="dish-subcategory">Antipasti & Crudo</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label><input type="checkbox" id="dish_arancini" value="les Arancini au caviar"><label for="dish_arancini">Arancini</label><input type="checkbox" id="dish_calamari" value="les Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label><input type="checkbox" id="dish_tartare" value="le Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label></div><h4 class="dish-subcategory">Pâtes</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_ravioli" value="les Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label><input type="checkbox" id="dish_linguine" value="les Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label><input type="checkbox" id="dish_tagliolini" value="les Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label></div><h4 class="dish-subcategory">Viandes & Poissons</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_milanese" value="la Milanese 'Orecchie di elefante'"><label for="dish_milanese">La Milanese</label><input type="checkbox" id="dish_wagyu" value="le Wagyu de Kagoshima"><label for="dish_wagyu">Wagyu de Kagoshima</label><input type="checkbox" id="dish_gamberoni" value="les Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label></div><h4 class="dish-subcategory">Pizze</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label><input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label><input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label><input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label></div><h4 class="dish-subcategory">Douceurs</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label><input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label><input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label><input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label></div></div>
+            <div class="tag-section"><h3>L'atmosphère du lieu</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p><div class="tag-group" data-category="atmosphere"><input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label><input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label><input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label><input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label><input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label><input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label></div></div>
             <button type="submit" class="button" id="generate-btn">Générer mon avis</button>
         </form>
         
@@ -142,10 +67,25 @@
             <div class="loader"></div>
             <span id="loader-text">Création en cours...</span>
         </div>
+
         <div id="result-area" class="hidden">
+            <p><strong>Merci ! Votre avis est prêt.</strong></p>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">Publiez-le sur Google, puis revenez sur cette page pour tourner notre roue de la chance et tenter de gagner une surprise !</p>
             <textarea id="review-text" readonly></textarea>
             <button id="copy-btn" class="button secondary">Copier le texte</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
+        </div>
+
+        <div id="roulette-section" class="roulette-wrapper hidden">
+            <h3>Tournez la roue !</h3>
+            <p>Merci pour votre participation ! Tentez votre chance.</p>
+            <div class="roulette-container">
+                <div class="pointer"></div>
+                <div class="wheel" id="wheel">
+                    </div>
+            </div>
+            <button id="spin-btn" class="button">Lancer la roue</button>
+            <div id="prize-result-container" class="hidden"></div>
         </div>
 
         <footer>
@@ -154,105 +94,70 @@
     </div>
 
     <script>
+        // --- SÉLECTION DES ÉLÉMENTS DU DOM ---
         const reviewForm = document.getElementById('review-form');
-        const generateBtn = document.getElementById('generate-btn');
-        const loaderContainer = document.getElementById('loader');
-        const loaderText = document.getElementById('loader-text');
         const resultArea = document.getElementById('result-area');
-        const reviewText = document.getElementById('review-text');
-        const copyBtn = document.getElementById('copy-btn');
-        const eventRadios = document.querySelectorAll('input[name="event"]');
-        const birthdayDetailsContainer = document.getElementById('birthday_details_container');
-        const birthdayDetailsSelect = document.getElementById('birthday_details');
-        const loadingMessages = ["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];
-        let messageInterval;
-
-        // MODIFICATION : Limite pour les plats augmentée à 6
-        const limitConfig = {
-            "service_kewan": 3,
-            "atmosphere": 3,
-            "dishes-section-limiter": 6 
-        };
-
-        reviewForm.addEventListener('change', (e) => {
-            if (e.target.type !== 'checkbox') return;
-            const limiterSection = e.target.closest('#dishes-section-limiter');
-            const simpleSection = e.target.closest('.tag-section');
-            let sectionId, limit;
-            if (limiterSection) {
-                sectionId = 'dishes-section-limiter';
-                limit = limitConfig[sectionId];
-            } else if (simpleSection) {
-                const category = simpleSection.querySelector('.tag-group')?.dataset.category;
-                if(limitConfig[category]) {
-                    sectionId = category;
-                    limit = limitConfig[category];
-                }
-            }
-            if (sectionId && limit) {
-                const container = document.getElementById(sectionId) || simpleSection;
-                const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
-                if (checkedInSection.length > limit) {
-                    e.target.checked = false;
-                    // MODIFICATION : Message d'alerte mis à jour
-                    alert(`Vous ne pouvez sélectionner que ${limit} options maximum dans cette catégorie.`);
-                }
-            }
+        const googleBtn = document.getElementById('google-btn');
+        // NOUVEAU : Sélection des éléments de la roulette
+        const rouletteSection = document.getElementById('roulette-section');
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spin-btn');
+        const prizeResultContainer = document.getElementById('prize-result-container');
+        // (Le reste des sélections du DOM reste le même)
+        const generateBtn=document.getElementById("generate-btn"),loaderContainer=document.getElementById("loader"),loaderText=document.getElementById("loader-text"),reviewText=document.getElementById("review-text"),copyBtn=document.getElementById("copy-btn"),eventRadios=document.querySelectorAll('input[name="event"]'),birthdayDetailsContainer=document.getElementById("birthday_details_container"),birthdayDetailsSelect=document.getElementById("birthday_details"),loadingMessages=["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];let messageInterval;const limitConfig={service_kewan:3,atmosphere:3,"dishes-section-limiter":6};
+        
+        // --- LOGIQUE EXISTANTE (LIMITES, MENU DÉROULANT, SUBMIT) ---
+        // (Tout le code de gestion des limites de sélection et du menu anniversaire reste ici, inchangé)
+        reviewForm.addEventListener("change",e=>{if("checkbox"!==e.target.type)return;const t=e.target.closest("#dishes-section-limiter"),a=e.target.closest(".tag-section");let n,i;if(t?(n="dishes-section-limiter",i=limitConfig[n]):a){const e=a.querySelector(".tag-group")?.dataset.category;limitConfig[e]&&(n=e,i=limitConfig[n])}if(n&&i){const t=document.getElementById(n)||a;t.querySelectorAll('input[type="checkbox"]:checked').length>i&&(e.target.checked=!1,alert(`Vous ne pouvez sélectionner que ${i} options maximum dans cette catégorie.`))}});
+        eventRadios.forEach(e=>{e.addEventListener("change",e=>{e.target.id==="event_birthday"?birthdayDetailsContainer.classList.add("visible"):birthdayDetailsContainer.classList.remove("visible")})});
+        reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
+        copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
+        
+        // --- NOUVELLE LOGIQUE POUR LA ROULETTE ---
+        googleBtn.addEventListener('click', () => {
+            // Quand l'utilisateur clique sur "Publier", on cache la zone de résultat et on montre la roulette.
+            resultArea.classList.add('hidden');
+            rouletteSection.classList.remove('hidden');
         });
 
-        eventRadios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                if (e.target.id === 'event_birthday') {
-                    birthdayDetailsContainer.classList.add('visible');
-                } else {
-                    birthdayDetailsContainer.classList.remove('visible');
-                }
-            });
+        const prizes = [
+            { text: "UN SHOT OFFERT", color: "#FDFBF5" },
+            { text: "PERDU", color: "#F7F1E9" },
+            { text: "UN VERRE DE VIN", color: "#EAE0D5" },
+            { text: "UN DESSERT", color: "var(--brand-color)", textColor: "white" },
+            { text: "GROS LOT: CHAMPAGNE !", color: "#2C2C2C", textColor: "white" }
+        ];
+        
+        // Note : La roue est visuellement divisée en 5, mais on peut ajuster les probabilités ici si besoin.
+        const prizeSegments = [0, 1, 2, 3, 1, 4, 1, 2, 0, 1]; // Répartition des prix pour le tirage au sort
+
+        spinBtn.addEventListener('click', () => {
+            spinBtn.disabled = true; // Empêche de tourner à nouveau
+            
+            const randomPrizeIndex = prizeSegments[Math.floor(Math.random() * prizeSegments.length)];
+            const selectedPrize = prizes[randomPrizeIndex];
+            const segmentAngle = 360 / prizeSegments.length;
+            const randomStopAngle = (prizeSegments.indexOf(randomPrizeIndex) * segmentAngle) + (segmentAngle / 2);
+
+            // Ajoute des tours supplémentaires pour l'animation
+            const extraSpins = 5 * 360;
+            wheel.style.transform = `rotate(${extraSpins + randomStopAngle}deg)`;
+
+            setTimeout(() => {
+                prizeResultContainer.innerHTML = `
+                    <div class="prize-result">
+                        <h3>Félicitations !</h3>
+                        <p>Vous avez gagné : <strong>${selectedPrize.text}</strong></p>
+                        <p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p>
+                    </div>
+                `;
+                prizeResultContainer.classList.remove('hidden');
+                spinBtn.classList.add('hidden'); // Cache le bouton de la roue après avoir joué
+            }, 6200); // Doit correspondre à la durée de la transition CSS + un petit délai
         });
 
-        reviewForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const selectedTags = [];
-            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
-            if (checkedInputs.length === 0) {
-                alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
-                return;
-            }
-            checkedInputs.forEach(input => {
-                selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
-            });
-            if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
-                selectedTags.push({ category: birthdayDetailsSelect.dataset.category, value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
-            }
-            reviewForm.classList.add('hidden');
-            loaderContainer.classList.remove('hidden');
-            let messageIndex = 0;
-            loaderText.textContent = loadingMessages[messageIndex];
-            messageInterval = setInterval(() => {
-                messageIndex = (messageIndex + 1) % loadingMessages.length;
-                loaderText.textContent = loadingMessages[messageIndex];
-            }, 2500);
-            try {
-                const generatedReview = await realApiCall(selectedTags);
-                reviewText.value = generatedReview;
-                resultArea.classList.remove('hidden');
-            } catch (error) {
-                console.error('Erreur lors de la génération :', error);
-                alert('Une erreur est survenue. Veuillez réessayer.');
-                reviewForm.classList.remove('hidden');
-            } finally {
-                clearInterval(messageInterval);
-                loaderContainer.classList.add('hidden');
-            }
-        });
 
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(reviewText.value).then(() => {
-                copyBtn.textContent = 'Copié !';
-                setTimeout(() => { copyBtn.textContent = 'Copier le texte'; }, 2000);
-            });
-        });
-
+        // --- FONCTION D'APPEL À L'API BACKEND (inchangée) ---
         async function realApiCall(tags) {
             const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
             const lang = 'fr';
@@ -266,6 +171,7 @@
             return data.review;
         }
 
+        // --- MISE À JOUR AUTOMATIQUE DE L'ANNÉE DU COPYRIGHT (inchangée) ---
         document.getElementById('copyright-year').textContent = new Date().getFullYear();
     </script>
 </body>
