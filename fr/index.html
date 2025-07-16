@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votre Avis sur Siena Paris</title>
+    <style>
+        /* --- Importation des Polices --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
+
+        /* --- Variables de Design (Palette de couleurs) --- */
+        :root {
+            --brand-color: #BF5B3F;      /* Terre de Sienne / Terracotta */
+            --background-color: #FDFBF5; /* Fond crème / Blanc cassé */
+            --surface-color: #FFFFFF;
+            --text-primary: #2C2C2C;      /* Marron foncé / Presque noir */
+            --text-secondary: #737373;
+            --border-color: #EAE0D5;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        /* --- Style Général --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- Structure Principale --- */
+        .review-container {
+            background-color: var(--surface-color);
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo-container img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        /* --- Textes --- */
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        /* --- Sections de Sélection (Tags) --- */
+        .tag-section {
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .tag-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: var(--brand-color);
+        }
+        
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tag-group input[type="checkbox"], 
+        .tag-group input[type="radio"] {
+            display: none; /* On cache les boutons natifs */
+        }
+
+        .tag-group label {
+            background-color: #F7F1E9;
+            color: var(--text-secondary);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tag-group input:checked + label {
+            background-color: var(--brand-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(191, 91, 63, 0.25);
+            border-color: var(--brand-color);
+        }
+
+        /* --- Zone de Résultat (Après génération) --- */
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            min-height: 140px;
+            resize: vertical;
+            background-color: #FDFBF5;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        /* --- Styles des Boutons --- */
+        .button {
+            background-color: var(--brand-color);
+            color: white;
+            border: 1px solid var(--brand-color);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: block;
+            text-decoration: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(191, 91, 63, 0.3);
+        }
+        
+        .button.secondary {
+            background: var(--surface-color);
+            color: var(--brand-color);
+            border-color: var(--border-color);
+            margin-top: 12px;
+        }
+        
+        .button.secondary:hover {
+            border-color: var(--brand-color);
+        }
+        
+        /* --- Utilitaires --- */
+        .hidden { 
+            display: none; 
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-left-color: var(--brand-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="review-container">
+        
+        <div class="logo-container">
+            <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo Siena Paris">
+        </div>
+
+        <h1>Une soirée mémorable ?</h1>
+        <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
+
+        <form id="review-form">
+            
+            <div class="tag-section">
+                <h3>Une occasion spéciale ?</h3>
+                <div class="tag-group" data-category="Le motif de ma visite était">
+                    <input type="radio" id="event1" name="event" value="un anniversaire"><label for="event1">Anniversaire</label>
+                    <input type="radio" id="event2" name="event" value="un dîner romantique"><label for="event2">Dîner romantique</label>
+                    <input type="radio" id="event3" name="event" value="un repas d'affaires"><label for="event3">Repas d'affaires</label>
+                    <input type="radio" id="event4" name="event" value="une simple visite" checked><label for="event4">Simple visite</label>
+                </div>
+            </div>
+
+            <div class="tag-section">
+                <h3>Le service de Kewan</h3>
+                <div class="tag-group" data-category="Le service de Kewan était">
+                    <input type="checkbox" id="tag1" value="attentionné et discret"><label for="tag1">Attentionné</label>
+                    <input type="checkbox" id="tag2" value="chaleureux et authentique"><label for="tag2">Chaleureux</label>
+                    <input type="checkbox" id="tag3" value="de très bon conseil"><label for="tag3">De bon conseil</label>
+                    <input type="checkbox" id="tag4" value="efficace et prévenant"><label for="tag4">Efficace</label>
+                </div>
+            </div>
+
+            <div class="tag-section">
+                <h3>Les saveurs qui vous ont marqué</h3>
+                <div class="tag-group" data-category="J'ai particulièrement apprécié">
+                    <input type="checkbox" id="tag5" value="les Pici Cacio e Pepe servis dans la meule"><label for="tag5">Pici Cacio e Pepe</label>
+                    <input type="checkbox" id="tag6" value="les Ravioli à la truffe maison"><label for="tag6">Ravioli al Tartufo</label>
+                    <input type="checkbox" id="tag7" value="le poulpe grillé fondant"><label for="tag7">Poulpe Grillé</label>
+                    <input type="checkbox" id="tag8" value="la généreuse escalope Milanaise"><label for="tag8">L'escalope Milanaise</label>
+                    <input type="checkbox" id="tag9" value="la pizza Al Tartufo"><label for="tag9">Pizza Al Tartufo</label>
+                    <input type="checkbox" id="tag10" value="le classique Tiramisù"><label for="tag10">Le Tiramisù</label>
+                </div>
+            </div>
+
+            <button type="submit" class="button" id="generate-btn">Créer une ébauche de mon avis</button>
+        </form>
+
+        <div id="loader" class="loader hidden"></div>
+        <div id="result-area" class="hidden">
+            <textarea id="review-text" readonly></textarea>
+            <button id="copy-btn" class="button secondary">Copier le texte</button>
+            <a href="[VOTRE LIEN D'AVIS GOOGLE ICI]" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
+        </div>
+    </div>
+
+    <script>
+        const reviewForm = document.getElementById('review-form');
+        const generateBtn = document.getElementById('generate-btn');
+        const loader = document.getElementById('loader');
+        const resultArea = document.getElementById('result-area');
+        const reviewText = document.getElementById('review-text');
+        const copyBtn = document.getElementById('copy-btn');
+
+        // Écouteur d'événement sur la soumission du formulaire
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Empêche le rechargement de la page
+            
+            const selectedTags = [];
+            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            
+            if (checkedInputs.length === 0) {
+                alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
+                return;
+            }
+
+            // Construit un tableau avec les sélections du client
+            checkedInputs.forEach(input => {
+                selectedTags.push({ 
+                    category: input.parentElement.dataset.category, 
+                    value: input.value 
+                });
+            });
+
+            // Gère l'affichage pour montrer le chargement
+            reviewForm.classList.add('hidden');
+            loader.classList.remove('hidden');
+            
+            // Appelle la fonction qui contacte notre serveur Python
+            try {
+                const generatedReview = await realApiCall(selectedTags);
+                reviewText.value = generatedReview; // Affiche l'avis généré
+                loader.classList.add('hidden');
+                resultArea.classList.remove('hidden'); // Affiche la zone de résultat
+            } catch (error) {
+                console.error('Erreur lors de la génération :', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                // En cas d'erreur, on ré-affiche le formulaire
+                loader.classList.add('hidden');
+                reviewForm.classList.remove('hidden');
+            }
+        });
+
+        // Logique du bouton pour copier le texte
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(reviewText.value).then(() => {
+                copyBtn.textContent = 'Copié !';
+                setTimeout(() => { 
+                    copyBtn.textContent = 'Copier le texte'; 
+                }, 2000);
+            });
+        });
+
+        // Fonction qui envoie les données au serveur backend
+        async function realApiCall(tags) {
+            
+            // ===================================================================
+            // MODIFICATION REQUISE 1 : URL de votre API
+            // Remplacez l'URL ci-dessous par l'adresse de votre API déployée sur Render.
+            // ===================================================================
+            const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
+            
+            // ===================================================================
+            // MODIFICATION REQUISE 2 : Code de la langue
+            // Pour chaque version traduite de cette page, changez le code langue.
+            // 'fr' pour le français, 'en' pour l'anglais, 'es' pour l'espagnol, etc.
+            // ===================================================================
+            const lang = 'fr';
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lang: lang, tags: tags }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.review;
+        }
+    </script>
+</body>
+</html>

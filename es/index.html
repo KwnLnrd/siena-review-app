@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Opinión sobre Siena Paris</title>
+    <style>
+        /* --- Importación de Fuentes y Variables de Diseño --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
+
+        :root {
+            --brand-color: #BF5B3F;      /* Siena / Terracota */
+            --background-color: #FDFBF5; /* Fondo crema / Blanco roto */
+            --surface-color: #FFFFFF;
+            --text-primary: #2C2C2C;      /* Marrón oscuro / Casi negro */
+            --text-secondary: #737373;
+            --border-color: #EAE0D5;
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Montserrat', sans-serif;
+        }
+
+        /* --- Estilos Generales --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* --- Contenedor Principal --- */
+        .review-container {
+            background-color: var(--surface-color);
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 10px 50px -10px rgba(133, 93, 67, 0.2);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo-container img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        /* --- Textos --- */
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        /* --- Secciones de Selección (Etiquetas) --- */
+        .tag-section {
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+        .tag-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: var(--brand-color);
+        }
+        
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tag-group input[type="checkbox"], 
+        .tag-group input[type="radio"] {
+            display: none; /* Ocultar botones nativos */
+        }
+
+        .tag-group label {
+            background-color: #F7F1E9;
+            color: var(--text-secondary);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tag-group input:checked + label {
+            background-color: var(--brand-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(191, 91, 63, 0.25);
+            border-color: var(--brand-color);
+        }
+
+        /* --- Área de Resultados (Después de la generación) --- */
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            min-height: 140px;
+            resize: vertical;
+            background-color: #FDFBF5;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        /* --- Estilos de Botones --- */
+        .button {
+            background-color: var(--brand-color);
+            color: white;
+            border: 1px solid var(--brand-color);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: block;
+            text-decoration: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(191, 91, 63, 0.3);
+        }
+        
+        .button.secondary {
+            background: var(--surface-color);
+            color: var(--brand-color);
+            border-color: var(--border-color);
+            margin-top: 12px;
+        }
+        
+        .button.secondary:hover {
+            border-color: var(--brand-color);
+        }
+        
+        /* --- Utilidades --- */
+        .hidden { 
+            display: none; 
+        }
+
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-left-color: var(--brand-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body lang="es">
+
+    <div class="review-container">
+        
+        <div class="logo-container">
+            <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo de Siena Paris">
+        </div>
+
+        <h1>¿Una noche memorable?</h1>
+        <p>Tu opinión es el toque final de tu experiencia. Comparte lo que deleitó tus sentidos para ayudarnos a mantenernos fieles al espíritu de la Toscana.</p>
+
+        <form id="review-form">
+            
+            <div class="tag-section">
+                <h3>¿Una ocasión especial?</h3>
+                <div class="tag-group" data-category="El motivo de mi visita fue">
+                    <input type="radio" id="event1" name="event" value="un cumpleaños"><label for="event1">Cumpleaños</label>
+                    <input type="radio" id="event2" name="event" value="una cena romántica"><label for="event2">Cena romántica</label>
+                    <input type="radio" id="event3" name="event" value="una comida de negocios"><label for="event3">Comida de negocios</label>
+                    <input type="radio" id="event4" name="event" value="solo de visita" checked><label for="event4">Solo de visita</label>
+                </div>
+            </div>
+
+            <div class="tag-section">
+                <h3>El servicio de Kewan</h3>
+                <div class="tag-group" data-category="El servicio de Kewan fue">
+                    <input type="checkbox" id="tag1" value="atento"><label for="tag1">Atento</label>
+                    <input type="checkbox" id="tag2" value="cálido y amable"><label for="tag2">Cálido y amable</label>
+                    <input type="checkbox" id="tag3" value="un excelente consejero"><label for="tag3">Buen consejero</label>
+                    <input type="checkbox" id="tag4" value="eficiente y atento"><label for="tag4">Eficiente</label>
+                </div>
+            </div>
+
+            <div class="tag-section">
+                <h3>Los sabores que te marcaron</h3>
+                <div class="tag-group" data-category="Disfruté especialmente">
+                    <input type="checkbox" id="tag5" value="los Pici Cacio e Pepe"><label for="tag5">Pici Cacio e Pepe</label>
+                    <input type="checkbox" id="tag6" value="los Ravioli de Trufa caseros"><label for="tag6">Ravioli de Trufa</label>
+                    <input type="checkbox" id="tag7" value="el tierno Pulpo a la parrilla"><label for="tag7">Pulpo a la parrilla</label>
+                    <input type="checkbox" id="tag8" value="la generosa Milanesa"><label for="tag8">La Milanesa</label>
+                    <input type="checkbox" id="tag9" value="la Pizza de Trufa"><label for="tag9">Pizza de Trufa</label>
+                    <input type="checkbox" id="tag10" value="el clásico Tiramisú"><label for="tag10">El Tiramisú</label>
+                </div>
+            </div>
+
+            <button type="submit" class="button" id="generate-btn">Crear mi borrador</button>
+        </form>
+
+        <div id="loader" class="loader hidden"></div>
+        <div id="result-area" class="hidden">
+            <textarea id="review-text" readonly></textarea>
+            <button id="copy-btn" class="button secondary">Copiar texto</button>
+            <a href="[TU ENLACE DE OPINIÓN DE GOOGLE AQUÍ]" target="_blank" id="google-btn" class="button">Publicar en Google</a>
+        </div>
+    </div>
+
+    <script>
+        const reviewForm = document.getElementById('review-form');
+        const generateBtn = document.getElementById('generate-btn');
+        const loader = document.getElementById('loader');
+        const resultArea = document.getElementById('result-area');
+        const reviewText = document.getElementById('review-text');
+        const copyBtn = document.getElementById('copy-btn');
+
+        // Event listener para el envío del formulario
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita que la página se recargue
+            
+            const selectedTags = [];
+            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            
+            if (checkedInputs.length === 0) {
+                alert('Por favor, selecciona al menos una opción para describir tu experiencia.');
+                return;
+            }
+
+            // Construye un array con las selecciones del cliente
+            checkedInputs.forEach(input => {
+                selectedTags.push({ 
+                    category: input.parentElement.dataset.category, 
+                    value: input.value 
+                });
+            });
+
+            // Gestiona la visualización para mostrar el cargador
+            reviewForm.classList.add('hidden');
+            loader.classList.remove('hidden');
+            
+            // Llama a la función que contacta con nuestro servidor Python
+            try {
+                const generatedReview = await realApiCall(selectedTags);
+                reviewText.value = generatedReview; // Muestra la opinión generada
+                loader.classList.add('hidden');
+                resultArea.classList.remove('hidden'); // Muestra el área de resultados
+            } catch (error) {
+                console.error('Error durante la generación:', error);
+                alert('Ocurrió un error. Por favor, inténtalo de nuevo.');
+                // En caso de error, volvemos a mostrar el formulario
+                loader.classList.add('hidden');
+                reviewForm.classList.remove('hidden');
+            }
+        });
+
+        // Lógica del botón para copiar el texto
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(reviewText.value).then(() => {
+                copyBtn.textContent = '¡Copiado!';
+                setTimeout(() => { 
+                    copyBtn.textContent = 'Copiar texto'; 
+                }, 2000);
+            });
+        });
+
+        // Función que envía los datos al servidor backend
+        async function realApiCall(tags) {
+            
+            // ===================================================================
+            // CAMBIO REQUERIDO 1: URL de tu API
+            // Reemplaza la URL de abajo con la dirección de tu API desplegada en Render.
+            // ===================================================================
+            const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
+            
+            // ===================================================================
+            // CAMBIO REQUERIDO 2: Código de Idioma
+            // Para cada versión traducida de esta página, cambia el código de idioma.
+            // 'es' para español, 'en' para inglés, 'de' para alemán, etc.
+            // ===================================================================
+            const lang = 'es';
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lang: lang, tags: tags }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.review;
+        }
+    </script>
+</body>
+</html>
