@@ -6,7 +6,38 @@
     <title>Votre Avis sur Siena Paris</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
-        :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}.review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}.logo-container img{width:180px;height:auto;margin-bottom:20px}h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px}p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}.tag-section{margin-bottom:28px;text-align:left}.tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}.tag-group{display:flex;flex-wrap:wrap;gap:12px}.tag-group input[type=checkbox],.tag-group input[type=radio]{display:none}.tag-group label{background-color:#F7F1E9;color:var(--text-secondary);padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .3s ease;border:1px solid var(--border-color)}.tag-group input:checked+label{background-color:var(--brand-color);color:#fff;transform:translateY(-2px);box-shadow:0 4px 15px rgba(191,91,63,.25);border-color:var(--brand-color)}textarea{width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--border-color);border-radius:12px;font-family:var(--font-sans);font-size:1rem;min-height:140px;resize:vertical;background-color:#FDFBF5;color:var(--text-primary);margin-bottom:16px}.button{background-color:var(--brand-color);color:#fff;border:1px solid var(--brand-color);padding:16px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all .3s ease;display:block;text-decoration:none;box-sizing:border-box;box-shadow:0 4px 15px rgba(0,0,0,.1)}.button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(191,91,63,.3)}.button.secondary{background:var(--surface-color);color:var(--brand-color);border-color:var(--border-color);margin-top:12px}.button.secondary:hover{border-color:var(--brand-color)}.hidden{display:none}.loader{width:40px;height:40px;border:4px solid var(--border-color);border-left-color:var(--brand-color);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto}@keyframes spin{to{transform:rotate(360deg)}}
+        :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+        .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
+        .logo-container img{width:180px;height:auto;margin-bottom:20px}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px}
+        p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
+        .tag-section{margin-bottom:28px;text-align:left}
+        .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
+        .tag-group{display:flex;flex-wrap:wrap;gap:12px}
+        .tag-group input[type=checkbox],.tag-group input[type=radio]{position:absolute;opacity:0;width:0;height:0}
+        .tag-group label{background-color:#F7F1E9;color:var(--text-secondary);padding:10px 18px;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:500;transition:all .3s ease;border:1px solid var(--border-color);user-select:none}
+        .tag-group input:checked+label{background-color:var(--brand-color);color:#fff;transform:translateY(-2px);box-shadow:0 4px 15px rgba(191,91,63,.25);border-color:var(--brand-color)}
+        textarea{width:100%;box-sizing:border-box;padding:14px;border:1px solid var(--border-color);border-radius:12px;font-family:var(--font-sans);font-size:1rem;min-height:140px;resize:vertical;background-color:#FDFBF5;color:var(--text-primary);margin-bottom:16px}
+        .button{background-color:var(--brand-color);color:#fff;border:1px solid var(--brand-color);padding:16px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:all .3s ease;display:block;text-decoration:none;box-sizing:border-box;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+        .button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(191,91,63,.3)}
+        .button.secondary{background:var(--surface-color);color:var(--brand-color);border-color:var(--border-color);margin-top:12px}
+        .button.secondary:hover{border-color:var(--brand-color)}
+        .hidden{display:none}
+        .loader{width:40px;height:40px;border:4px solid var(--border-color);border-left-color:var(--brand-color);border-radius:50%;animation:spin 1s linear infinite;margin:20px auto}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .dropdown-container{margin-top:15px;max-height:0;overflow:hidden;transition:max-height .5s ease-in-out,margin-top .5s ease-in-out}
+        .dropdown-container.visible{max-height:100px}
+        select#birthday_details{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border-color);background-color:#F7F1E9;font-family:var(--font-sans);font-size:.9rem;color:var(--text-primary);cursor:pointer;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BF5B3F%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 15px top 50%;background-size:.65em auto}
+        /* --- NOUVEAU STYLE POUR LE FOOTER --- */
+        footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -15,80 +46,160 @@
             <img src="https://restaurantsiena.com/wp-content/uploads/2023/05/vert.png" alt="Logo Siena Paris">
         </div>
         <h1>Une soirée mémorable ?</h1>
-        <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens.</p>
+        <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
         <form id="review-form">
+            
             <div class="tag-section">
                 <h3>Une occasion spéciale ?</h3>
                 <div class="tag-group" data-category="reason_for_visit">
-                    <input type="radio" id="event1" name="event" value="un anniversaire"><label for="event1">Anniversaire</label>
-                    <input type="radio" id="event2" name="event" value="un dîner romantique"><label for="event2">Dîner romantique</label>
-                    <input type="radio" id="event3" name="event" value="un repas d'affaires"><label for="event3">Repas d'affaires</label>
-                    <input type="radio" id="event4" name="event" value="une simple visite" checked><label for="event4">Simple visite</label>
+                    <input type="radio" id="event_birthday" name="event" value="un anniversaire"><label for="event_birthday">Anniversaire</label>
+                    <input type="radio" id="event_romantic" name="event" value="un dîner romantique"><label for="event_romantic">Dîner romantique</label>
+                    <input type="radio" id="event_friends" name="event" value="un dîner entre amis"><label for="event_friends">Dîner entre amis</label>
+                    <input type="radio" id="event_visit" name="event" value="une simple visite" checked><label for="event_visit">Simple visite</label>
+                </div>
+                <div id="birthday_details_container" class="dropdown-container">
+                    <select id="birthday_details" name="birthday_details" data-category="birthday_details">
+                        <option value="" disabled selected>C'était l'anniversaire de qui ?</option>
+                        <option value="de mon père">Père</option>
+                        <option value="de ma mère">Mère</option>
+                        <option value="de mon mari">Mari</option>
+                        <option value="de ma femme">Femme</option>
+                        <option value="de mon fils">Fils</option>
+                        <option value="de ma fille">Fille</option>
+                        <option value="d'un(e) ami(e)">Ami(e)</option>
+                    </select>
                 </div>
             </div>
+
             <div class="tag-section">
                 <h3>Le service de Kewan</h3>
                 <div class="tag-group" data-category="service_kewan">
                     <input type="checkbox" id="tag1" value="attentionné"><label for="tag1">Attentionné</label>
-                    <input type="checkbox" id="tag2" value="chaleureux"><label for="tag2">Chaleureux</label>
-                    <input type="checkbox" id="tag3" value="de très bon conseil"><label for="tag3">De bon conseil</label>
+                    <input type="checkbox" id="tag2" value="souriant et chaleureux"><label for="tag2">Souriant</label>
+                    <input type="checkbox" id="tag3" value="professionnel"><label for="tag3">Professionnel</label>
+                    <input type="checkbox" id="tag4" value="efficace et rapide"><label for="tag4">Efficace</label>
+                    <input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label>
+                    <input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label>
                 </div>
             </div>
+
             <div class="tag-section">
                 <h3>Les saveurs qui vous ont marqué</h3>
                 <div class="tag-group" data-category="liked_dishes">
-                    <input type="checkbox" id="tag5" value="les Pici Cacio e Pepe"><label for="tag5">Pici Cacio e Pepe</label>
-                    <input type="checkbox" id="tag6" value="les Ravioli à la truffe"><label for="tag6">Ravioli al Tartufo</label>
-                    <input type="checkbox" id="tag7" value="le poulpe grillé"><label for="tag7">Poulpe Grillé</label>
+                     <input type="checkbox" id="tag_dish_1" value="les Pici Cacio e Pepe"><label for="tag_dish_1">Pici Cacio e Pepe</label>
+                    <input type="checkbox" id="tag_dish_2" value="les Ravioli à la truffe"><label for="tag_dish_2">Ravioli al Tartufo</label>
+                    <input type="checkbox" id="tag_dish_3" value="le poulpe grillé"><label for="tag_dish_3">Poulpe Grillé</label>
+                    <input type="checkbox" id="tag_dish_4" value="les linguine au homard"><label for="tag_dish_4">Linguine au homard</label>
+                    <input type="checkbox" id="tag_dish_5" value="le carpaccio de boeuf"><label for="tag_dish_5">Carpaccio de boeuf</label>
+                    <input type="checkbox" id="tag_dish_6" value="la burrata à la truffe"><label for="tag_dish_6">Burrata à la truffe</label>
+                    <input type="checkbox" id="tag_dish_7" value="la pizza Al Tartufo"><label for="tag_dish_7">Pizza Al Tartufo</label>
+                    <input type="checkbox" id="tag_dish_8" value="le tiramisù classique"><label for="tag_dish_8">Le Tiramisù</label>
                 </div>
             </div>
-            <button type="submit" class="button" id="generate-btn">Créer une ébauche d'avis</button>
+            
+            <div class="tag-section">
+                <h3>L'atmosphère du lieu</h3>
+                <div class="tag-group" data-category="atmosphere">
+                     <input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label>
+                    <input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label>
+                    <input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label>
+                    <input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label>
+                    <input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label>
+                    <input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label>
+                </div>
+            </div>
+
+            <button type="submit" class="button" id="generate-btn">Créer une ébauche de mon avis</button>
         </form>
+        
         <div id="loader" class="loader hidden"></div>
         <div id="result-area" class="hidden">
             <textarea id="review-text" readonly></textarea>
             <button id="copy-btn" class="button secondary">Copier le texte</button>
-            <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier sur Google</a>
+            <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
         </div>
+
+        <footer>
+            &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
+        </footer>
     </div>
+
     <script>
-        // Le code Javascript n'a pas besoin d'être modifié, il est déjà compatible.
         const reviewForm = document.getElementById('review-form');
         const generateBtn = document.getElementById('generate-btn');
         const loader = document.getElementById('loader');
         const resultArea = document.getElementById('result-area');
         const reviewText = document.getElementById('review-text');
         const copyBtn = document.getElementById('copy-btn');
+        const eventRadios = document.querySelectorAll('input[name="event"]');
+        const birthdayDetailsContainer = document.getElementById('birthday_details_container');
+        const birthdayDetailsSelect = document.getElementById('birthday_details');
+
+        // --- GESTION DU MENU DÉROULANT ANNIVERSAIRE ---
+        eventRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.id === 'event_birthday') {
+                    birthdayDetailsContainer.classList.add('visible');
+                } else {
+                    birthdayDetailsContainer.classList.remove('visible');
+                }
+            });
+        });
+
+        // --- GESTION DE LA SOUMISSION DU FORMULAIRE ---
         reviewForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const selectedTags = [];
-            const checkedInputs = document.querySelectorAll('input:checked');
-            if (checkedInputs.length === 0) { alert('Veuillez sélectionner au moins une option.'); return; }
+            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            
+            if (checkedInputs.length === 0) {
+                alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
+                return;
+            }
+
             checkedInputs.forEach(input => {
-                selectedTags.push({ category: input.parentElement.dataset.category, value: input.value });
+                selectedTags.push({ 
+                    category: input.parentElement.dataset.category, 
+                    value: input.value 
+                });
             });
+
+            // Ajoute la valeur du menu déroulant si "Anniversaire" est sélectionné et une option choisie
+            if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
+                selectedTags.push({
+                    category: birthdayDetailsSelect.dataset.category,
+                    value: `pour l'anniversaire ${birthdayDetailsSelect.value}`
+                });
+            }
+
             reviewForm.classList.add('hidden');
             loader.classList.remove('hidden');
+            
             try {
                 const generatedReview = await realApiCall(selectedTags);
                 reviewText.value = generatedReview;
                 loader.classList.add('hidden');
                 resultArea.classList.remove('hidden');
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue.');
+                console.error('Erreur lors de la génération :', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
                 loader.classList.add('hidden');
                 reviewForm.classList.remove('hidden');
             }
         });
+
+        // --- GESTION DU BOUTON COPIER ---
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(reviewText.value).then(() => {
                 copyBtn.textContent = 'Copié !';
                 setTimeout(() => { copyBtn.textContent = 'Copier le texte'; }, 2000);
             });
         });
+
+        // --- FONCTION D'APPEL À L'API BACKEND ---
         async function realApiCall(tags) {
-            const apiUrl = 'https://siena-api.onrender.com/generate-review';
+            const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
             const lang = 'fr';
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -99,6 +210,9 @@
             const data = await response.json();
             return data.review;
         }
+
+        // --- MISE À JOUR AUTOMATIQUE DE L'ANNÉE DU COPYRIGHT ---
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
