@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
+# Configure CORS pour n'autoriser que les requêtes de votre site Netlify
+CORS(app, origins="https://sienarestaurant.netlify.app")
 
 try:
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
