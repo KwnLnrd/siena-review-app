@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Siena Paris</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Gestion des Options - Siena</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
         :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}
         @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-        .hidden{display:none !important}
         .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.6);display:flex;justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(5px)}
         .modal-content{background:var(--surface-color);padding:40px;border-radius:16px;box-shadow:0 10px 50px rgba(0,0,0,.2);text-align:center;width:100%;max-width:400px}
         .modal-content h2{font-family:var(--font-serif);font-size:1.8rem;margin-top:0;margin-bottom:15px}
@@ -19,26 +17,13 @@
         #password-form button{background-color:var(--brand-color);color:#fff;border:none;padding:14px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:background-color .2s}
         #password-form button:disabled{background-color:var(--text-secondary);cursor:wait}
         .error-message{color:#D32F2F;font-size:.9rem;margin-top:10px;min-height:1.2em}
-        .dashboard-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:900px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out}
+        .main-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:800px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out}
         .logo-container{text-align:center;margin-bottom:15px}
         .logo-container img{width:150px;height:auto}
+        .header{margin-bottom:20px;border-bottom:1px solid var(--border-color);padding-bottom:20px}
         .header h1{font-family:var(--font-serif);font-size:2.5rem;margin:0;color:var(--text-primary);text-align:center}
-        .tabs{display:flex;border-bottom:1px solid var(--border-color);margin-top:25px;margin-bottom:25px;}
-        .tab-button{padding:10px 20px;cursor:pointer;background:none;border:none;font-family:var(--font-sans);font-size:1rem;font-weight:600;color:var(--text-secondary);position:relative;border-bottom:3px solid transparent;}
-        .tab-button.active{color:var(--brand-color);border-bottom-color:var(--brand-color);}
-        .tab-content{display:none;}
-        .tab-content.active{display:block;animation:fadeIn .5s;}
-        .content-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));gap:40px;text-align:left;}
-        .section-title {font-family:var(--font-serif);color:var(--brand-color);padding-bottom:10px;margin-bottom:20px;font-size:1.8rem;}
-        table{width:100%;border-collapse:collapse}
-        th,td{padding:12px 15px;border-bottom:1px solid var(--border-color);text-align:left}
-        th{font-weight:600;font-size:.9rem;text-transform:uppercase;color:var(--text-secondary)}
-        td{font-weight:500}
-        tr:last-child td{border-bottom:none}
-        td.rank{font-weight:700;font-size:1.2rem;color:var(--brand-color);width:50px;text-align:center}
-        td.server{font-weight:600}
-        td.count{text-align:right;font-weight:700;font-size:1.1rem}
-        #message-area{padding:40px;text-align:center;font-size:1.2rem;color:var(--text-secondary)}
+        .content{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;text-align:left}
+        .section-title{font-family:var(--font-serif);color:var(--brand-color);padding-bottom:10px;margin-top:20px;margin-bottom:20px;font-size:1.8rem}
         .option-list{list-style:none;padding:0;margin:0}
         .option-list li{display:flex;justify-content:space-between;align-items:center;padding:10px 5px;border-bottom:1px solid var(--border-color);font-weight:500}
         .option-list li:last-child{border-bottom:none}
@@ -47,7 +32,10 @@
         .add-form{display:flex;flex-direction:column;gap:10px;margin-top:20px}
         .add-form input, .add-form select{width:100%;padding:10px;border:1px solid var(--border-color);border-radius:8px;box-sizing:border-box}
         .add-form button{background-color:var(--brand-color);color:#fff;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:600}
-        @media (max-width:768px){.content-grid{grid-template-columns:1fr}.dashboard-container{padding:20px}.tabs{justify-content:center;}}
+        .back-link{display:inline-block;margin-top:30px;color:var(--text-secondary);text-decoration:none;font-size:.9rem}
+        .back-link:hover{color:var(--brand-color)}
+        .hidden{display:none !important}
+        @media (max-width:768px){.content{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -62,72 +50,40 @@
             <p id="password-error" class="error-message"></p>
         </div>
     </div>
-    <div class="dashboard-container hidden" id="dashboard-content">
+    <div class="main-container hidden" id="main-content">
         <div class="logo-container">
             <img src="/assets/logosiena-1.png" alt="Logo Siena Paris">
         </div>
         <header class="header">
-            <h1>Tableau de Bord</h1>
+            <h1>Gestion des Options</h1>
         </header>
-        <div class="tabs">
-            <button class="tab-button active" data-tab="stats">Statistiques</button>
-            <button class="tab-button" data-tab="servers">Gestion des Serveurs</button>
-            <button class="tab-button" data-tab="options">Gestion des Options</button>
+        <div class="content">
+            <section id="flavors-section">
+                <h2 class="section-title">Saveurs</h2>
+                <ul id="flavors-list" class="option-list"></ul>
+                <form id="add-flavor-form" class="add-form">
+                    <input type="text" id="new-flavor-text" placeholder="Texte de l'option" required>
+                    <select id="new-flavor-category" required>
+                        <option value="" disabled selected>Choisir une catégorie</option>
+                        <option value="Antipasti & Crudo">Antipasti & Crudo</option>
+                        <option value="Pâtes">Pâtes</option>
+                        <option value="Viandes & Poissons">Viandes & Poissons</option>
+                        <option value="Pizze">Pizze</option>
+                        <option value="Douceurs">Douceurs</option>
+                    </select>
+                    <button type="submit">Ajouter Saveur</button>
+                </form>
+            </section>
+            <section id="atmospheres-section">
+                <h2 class="section-title">Ambiance</h2>
+                <ul id="atmospheres-list" class="option-list"></ul>
+                <form id="add-atmosphere-form" class="add-form">
+                    <input type="text" id="new-atmosphere-text" placeholder="Texte de l'option" required>
+                    <button type="submit">Ajouter Ambiance</button>
+                </form>
+            </section>
         </div>
-        <main id="main-content">
-            <div id="stats" class="tab-content active">
-                <div class="content-grid">
-                    <section class="ranking-section">
-                        <h2 class="section-title">Classement des Avis</h2>
-                        <table id="ranking-table">
-                            <thead><tr><th>#</th><th>Serveur</th><th style="text-align:right;">Avis</th></tr></thead>
-                            <tbody></tbody>
-                        </table>
-                    </section>
-                    <section class="chart-section">
-                        <h2 class="section-title">Top 3</h2>
-                        <canvas id="top3-chart"></canvas>
-                    </section>
-                </div>
-            </div>
-            <div id="servers" class="tab-content">
-                <div class="content-grid">
-                    <section>
-                        <h2 class="section-title">Liste Actuelle</h2>
-                        <ul id="server-list" class="option-list"></ul>
-                    </section>
-                    <section>
-                        <h2 class="section-title">Ajouter un Serveur</h2>
-                        <form id="add-server-form" class="add-form">
-                            <input type="text" id="new-server-name" placeholder="Prénom du nouveau serveur" required>
-                            <button type="submit">Ajouter</button>
-                        </form>
-                    </section>
-                </div>
-            </div>
-            <div id="options" class="tab-content">
-                <div class="content-grid">
-                    <section id="flavors-section">
-                        <h2 class="section-title">Saveurs</h2>
-                        <ul id="flavors-list" class="option-list"></ul>
-                        <form id="add-flavor-form" class="add-form">
-                            <input type="text" id="new-flavor-text" placeholder="Texte de l'option (en français)" required>
-                            <select id="new-flavor-category" required><option value="" disabled selected>Choisir une catégorie</option><option value="Antipasti & Crudo">Antipasti & Crudo</option><option value="Pâtes">Pâtes</option><option value="Viandes & Poissons">Viandes & Poissons</option><option value="Pizze">Pizze</option><option value="Douceurs">Douceurs</option></select>
-                            <button type="submit">Ajouter Saveur</button>
-                        </form>
-                    </section>
-                    <section id="atmospheres-section">
-                        <h2 class="section-title">Ambiance</h2>
-                        <ul id="atmospheres-list" class="option-list"></ul>
-                        <form id="add-atmosphere-form" class="add-form">
-                            <input type="text" id="new-atmosphere-text" placeholder="Texte de l'option (en français)" required>
-                            <button type="submit">Ajouter Ambiance</button>
-                        </form>
-                    </section>
-                </div>
-            </div>
-        </main>
-        <div id="message-area" class="hidden">Chargement...</div>
+        <a href="/dashboard.html" class="back-link">← Retour au tableau de bord</a>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -136,30 +92,21 @@
             const passwordInput = document.getElementById('password-input');
             const passwordError = document.getElementById('password-error');
             const submitBtn = document.getElementById('submit-password-btn');
-            const dashboardContent = document.getElementById('dashboard-content');
             const mainContent = document.getElementById('main-content');
-            const messageArea = document.getElementById('message-area');
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const rankingTableBody = document.querySelector('#ranking-table tbody');
-            const chartCanvas = document.getElementById('top3-chart');
-            const serverList = document.getElementById('server-list');
-            const addServerForm = document.getElementById('add-server-form');
-            const newServerNameInput = document.getElementById('new-server-name');
             const flavorsList = document.getElementById('flavors-list');
-            const addFlavorForm = document.getElementById('add-flavor-form');
-            const newFlavorTextInput = document.getElementById('new-flavor-text');
-            const newFlavorCategoryInput = document.getElementById('new-flavor-category');
             const atmospheresList = document.getElementById('atmospheres-list');
+            const addFlavorForm = document.getElementById('add-flavor-form');
+            const newFlavorText = document.getElementById('new-flavor-text');
+            const newFlavorCategory = document.getElementById('new-flavor-category');
             const addAtmosphereForm = document.getElementById('add-atmosphere-form');
-            const newAtmosphereTextInput = document.getElementById('new-atmosphere-text');
+            const newAtmosphereText = document.getElementById('new-atmosphere-text');
             let currentPassword = '';
 
             const storedPassword = sessionStorage.getItem('dashboardPassword');
             if (storedPassword) {
                 passwordModal.classList.add('hidden');
                 currentPassword = storedPassword;
-                fetchAllData();
+                loadAllOptions();
             }
 
             passwordForm.addEventListener('submit', (e) => {
@@ -169,71 +116,95 @@
                     passwordError.textContent = '';
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Vérification...';
-                    fetchAllData();
+                    loadAllOptions();
                 }
             });
-            
+
             async function fetchWithAuth(url, options = {}) {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 30000);
                 const headers = { ...options.headers, 'Authorization': 'Basic ' + btoa('admin:' + currentPassword) };
-                const response = await fetch(url, { ...options, headers, signal: controller.signal });
-                clearTimeout(timeoutId);
-                if (response.status === 401) {
-                    sessionStorage.removeItem('dashboardPassword');
-                    throw new Error("Mot de passe incorrect.");
-                }
+                const response = await fetch(url, { ...options, headers });
+                if (response.status === 401) { sessionStorage.removeItem('dashboardPassword'); throw new Error("Mot de passe incorrect."); }
                 if (!response.ok) throw new Error(`Erreur du serveur (status ${response.status})`);
                 return response.json();
             }
 
-            async function fetchAllData() {
+            async function loadAllOptions() {
                 try {
-                    messageArea.classList.remove('hidden');
-                    mainContent.classList.add('hidden');
-                    const [dashboardData, serversData, flavorsData, atmospheresData] = await Promise.all([
-                        fetchWithAuth('https://siena-api.onrender.com/dashboard'),
-                        fetchWithAuth('https://siena-api.onrender.com/api/servers'),
+                    const [flavors, atmospheres] = await Promise.all([
                         fetchWithAuth('https://siena-api.onrender.com/api/options/flavors'),
                         fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres')
                     ]);
                     sessionStorage.setItem('dashboardPassword', currentPassword);
-                    populateDashboard(dashboardData);
-                    populateServerManagement(serversData);
-                    populateList(flavorsList, flavorsData, 'flavors');
-                    populateList(atmospheresList, atmospheresData, 'atmospheres');
+                    populateList(flavorsList, flavors, 'flavors');
+                    populateList(atmospheresList, atmospheres, 'atmospheres');
                     passwordModal.classList.add('hidden');
-                    dashboardContent.classList.remove('hidden');
                     mainContent.classList.remove('hidden');
-                    messageArea.classList.add('hidden');
                 } catch (error) {
                     passwordModal.classList.remove('hidden');
-                    dashboardContent.classList.add('hidden');
-                    passwordError.textContent = error.name === 'AbortError' ? "Le serveur a mis trop de temps à répondre." : error.message;
+                    mainContent.classList.add('hidden');
+                    passwordError.textContent = error.message;
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Valider';
                 }
             }
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    button.classList.add('active');
-                    document.getElementById(button.dataset.tab).classList.add('active');
+
+            function populateList(listElement, items, type) {
+                listElement.innerHTML = '';
+                if (items.length === 0) {
+                    listElement.innerHTML = '<li>Aucune option enregistrée.</li>';
+                    return;
+                }
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item.text} ${item.category ? `<em>(${item.category})</em>` : ''}</span><button class="delete-btn" data-id="${item.id}" data-type="${type}" title="Supprimer">×</button>`;
+                    listElement.appendChild(li);
                 });
+            }
+
+            addFlavorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = newFlavorText.value.trim();
+                const category = newFlavorCategory.value;
+                if (!text || !category) return;
+                try {
+                    await fetchWithAuth('https://siena-api.onrender.com/api/options/flavors', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text, category })
+                    });
+                    newFlavorText.value = '';
+                    newFlavorCategory.value = '';
+                    loadAllOptions();
+                } catch (error) { alert(`Erreur: ${error.message}`); }
             });
 
-            function populateDashboard(data){populateTable(data);if(window.myChart)window.myChart.destroy();createChart(data.slice(0, 3))}
-            function populateServerManagement(servers){serverList.innerHTML='';if(servers.length===0){serverList.innerHTML='<li>Aucun serveur enregistré.</li>';return}servers.forEach(server=>{const li=document.createElement('li');li.innerHTML=`<span>${server.name}</span><button class="delete-btn" data-id="${server.id}" data-type="servers" title="Supprimer">×</button>`;serverList.appendChild(li)})}
-            function populateList(listElement,items,type){listElement.innerHTML='';if(items.length===0){listElement.innerHTML='<li>Aucune option enregistrée.</li>';return}items.forEach(item=>{const li=document.createElement('li');li.innerHTML=`<span>${item.text} ${item.category?`(${item.category})`:''}</span><button class="delete-btn" data-id="${item.id}" data-type="${type}" title="Supprimer">×</button>`;listElement.appendChild(li)})}
-            addServerForm.addEventListener('submit',async e=>{e.preventDefault();const name=newServerNameInput.value.trim();if(!name)return;try{await fetchWithAuth('https://siena-api.onrender.com/api/servers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name})});newServerNameInput.value='';fetchAllData()}catch(error){alert(`Erreur : ${error.message}`)}});
-            addFlavorForm.addEventListener('submit',async e=>{e.preventDefault();const text=newFlavorTextInput.value.trim();const category=newFlavorCategoryInput.value;if(!text||!category)return;try{await fetchWithAuth('https://siena-api.onrender.com/api/options/flavors',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text_fr:text,category:category})});newFlavorTextInput.value='';fetchAllData()}catch(error){alert(`Erreur : ${error.message}`)}});
-            addAtmosphereForm.addEventListener('submit',async e=>{e.preventDefault();const text=newAtmosphereTextInput.value.trim();if(!text)return;try{await fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text_fr:text})});newAtmosphereTextInput.value='';fetchAllData()}catch(error){alert(`Erreur : ${error.message}`)}});
-            document.addEventListener('click',async e=>{if(e.target.classList.contains('delete-btn')){const id=e.target.dataset.id;const type=e.target.dataset.type;const name=e.target.previousElementSibling.textContent;if(confirm(`Êtes-vous sûr de vouloir supprimer "${name}" ?`)){try{const url=type==='servers'?`/api/servers/${id}`:`/api/options/${type}/${id}`;await fetchWithAuth('https://siena-api.onrender.com'+url,{method:'DELETE'});fetchAllData()}catch(error){alert(`Erreur : ${error.message}`)}}}});
-            function populateTable(data){rankingTableBody.innerHTML='';if(data.length===0){rankingTableBody.innerHTML='<tr><td colspan="3" style="text-align:center;">Aucun avis enregistré.</td></tr>';return}data.forEach((item,index)=>{const row=`<tr><td class="rank">${index+1}</td><td class="server">${item.server}</td><td class="count">${item.count}</td></tr>`;rankingTableBody.innerHTML+=row})}
-            function createChart(top3Data){const labels=top3Data.map(item=>item.server);const counts=top3Data.map(item=>item.count);window.myChart=new Chart(chartCanvas,{type:'bar',data:{labels,datasets:[{label:'Avis générés',data:counts,backgroundColor:['rgba(191, 91, 63, 0.8)','rgba(191, 91, 63, 0.6)','rgba(191, 91, 63, 0.4)'],borderColor:['rgba(191, 91, 63, 1)'],borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},title:{display:true,text:'Top 3 des serveurs',font:{family:"'Cormorant Garamond', serif",size:18}}},scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}})}
+            addAtmosphereForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = newAtmosphereText.value.trim();
+                if (!text) return;
+                try {
+                    await fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text })
+                    });
+                    newAtmosphereText.value = '';
+                    loadAllOptions();
+                } catch (error) { alert(`Erreur: ${error.message}`); }
+            });
+
+            document.body.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const { id, type } = e.target.dataset;
+                    if (confirm('Êtes-vous sûr de vouloir supprimer cette option ?')) {
+                        try {
+                            await fetchWithAuth(`https://siena-api.onrender.com/api/options/${type}/${id}`, { method: 'DELETE' });
+                            loadAllOptions();
+                        } catch (error) { alert(`Erreur: ${error.message}`); }
+                    }
+                }
+            });
         });
     </script>
 </body>

@@ -1,33 +1,29 @@
 import os
-import json
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, exc
+from sqlalchemy import func
 from datetime import datetime
 from functools import wraps
 
-# --- CONFIGURATION ---
+# --- CONFIGURATION INITIALE ---
 load_dotenv()
 app = Flask(__name__)
+CORS(app) 
 
-# --- SÉCURITÉ ---
-is_production = os.getenv('RENDER', False)
-allowed_origins = "https://sienarestaurant.netlify.app" if is_production else "*"
-CORS(app, origins=allowed_origins, supports_credentials=True)
-
-# --- CONFIGURATION DB ---
+# --- CONFIGURATION DE LA BASE DE DONNÉES (ROBUSTE) ---
+basedir = os.path.abspath(os.path.dirname(__file__))
 database_url = os.getenv('DATABASE_URL')
+
 if database_url and database_url.startswith("postgres://"):
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url.replace("postgres://", "postgresql://", 1)
 else:
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'siena_local.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'reviews.db')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'siena_secret_password')
+DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'siena_secret_password') # Mot de passe par défaut si non défini
 db = SQLAlchemy(app)
 
 # --- MODÈLES DE LA BASE DE DONNÉES ---
@@ -40,25 +36,14 @@ class Server(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
 
-class TranslationMixin:
-    text_fr = db.Column(db.String(100), nullable=False)
-    text_en = db.Column(db.String(100))
-    text_es = db.Column(db.String(100))
-    text_it = db.Column(db.String(100))
-    text_pt = db.Column(db.String(100))
-    text_zh = db.Column(db.String(100))
-    text_ar = db.Column(db.String(100))
-
-class FlavorOption(db.Model, TranslationMixin):
+class FlavorOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(50), nullable=False)
 
-class AtmosphereOption(db.Model, TranslationMixin):
+class AtmosphereOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
-# --- INITIALISATION AUTOMATIQUE DE LA DB ---
-with app.app_context():
-    db.create_all()
+    text = db.Column(db.String(100), unique=True, nullable=False)
 
 # --- SÉCURISATION ---
 def password_protected(f):
@@ -66,43 +51,21 @@ def password_protected(f):
     def decorated_function(*args, **kwargs):
         auth = request.authorization
         if not auth or not (auth.username == 'admin' and auth.password == DASHBOARD_PASSWORD):
-            return 'Accès non autorisé.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'}
+            return 'Accès non autorisé.', 401, {'WWW-Authenticate': 'Basic realm="Login Requis"'}
         return f(*args, **kwargs)
     return decorated_function
 
-def no_cache(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        response = make_response(f(*args, **kwargs))
-        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-        response.headers['Pragma'] = 'no-cache'
-        response.headers['Expires'] = '-1'
-        return response
-    return decorated_function
+# --- COMMANDE D'INITIALISATION DB ---
+@app.cli.command("init-db")
+def init_db_command():
+    """Crée les tables de la base de données."""
+    with app.app_context():
+        db.create_all()
+    print("Base de données initialisée.")
 
-# --- FONCTION DE TRADUCTION ---
-def get_translations(text_to_translate):
-    try:
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        prompt = f"""
-        Translate the following French restaurant term '{text_to_translate}' into English, Spanish, Italian, Portuguese, Chinese (Simplified), and Arabic.
-        Return the result as a single, minified JSON object with keys "en", "es", "it", "pt", "zh", "ar".
-        Example: if the term is "Poulpe Grillé", the output should be {{"en":"Grilled Octopus","es":"Pulpo a la parrilla","it":"Polpo Grigliato","pt":"Polvo Grelhado","zh":"烤章鱼", "ar":"أخطبوط مشوي"}}.
-        """
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "system", "content": prompt}],
-            temperature=0.2
-        )
-        return json.loads(completion.choices[0].message.content)
-    except Exception as e:
-        print(f"Erreur de traduction OpenAI : {e}")
-        return None
-
-# --- ROUTES API (PROTÉGÉES) POUR LA GESTION ---
+# --- ROUTES API POUR LA GESTION (PROTÉGÉES) ---
 @app.route('/api/servers', methods=['GET', 'POST'])
 @password_protected
-@no_cache
 def manage_servers():
     if request.method == 'POST':
         data = request.get_json()
@@ -124,36 +87,23 @@ def delete_server(server_id):
 
 @app.route('/api/options/<option_type>', methods=['GET', 'POST'])
 @password_protected
-@no_cache
 def manage_options(option_type):
     Model = FlavorOption if option_type == 'flavors' else AtmosphereOption
     if request.method == 'POST':
         data = request.get_json()
-        if not data or not data.get('text_fr'): return jsonify({"error": "Texte français manquant."}), 400
-        
-        text_fr = data['text_fr'].strip()
-        translations = get_translations(text_fr)
-        if not translations:
-            return jsonify({"error": "La traduction automatique a échoué."}), 500
-
-        new_option_data = {
-            'text_fr': text_fr, 'text_en': translations.get('en'), 'text_es': translations.get('es'),
-            'text_it': translations.get('it'), 'text_pt': translations.get('pt'),
-            'text_zh': translations.get('zh'), 'text_ar': translations.get('ar')
-        }
+        if not data or not data.get('text'): return jsonify({"error": "Texte manquant."}), 400
+        new_option_data = {'text': data['text'].strip()}
         if option_type == 'flavors':
             if not data.get('category'): return jsonify({"error": "Catégorie manquante."}), 400
             new_option_data['category'] = data['category'].strip()
-        
         new_option = Model(**new_option_data)
         db.session.add(new_option)
         db.session.commit()
-        return jsonify({"id": new_option.id, "text": new_option.text_fr}), 201
-    
+        return jsonify({"id": new_option.id, "text": new_option.text}), 201
     options = Model.query.all()
     if option_type == 'flavors':
-        return jsonify([{"id": opt.id, "text": opt.text_fr, "category": opt.category} for opt in options])
-    return jsonify([{"id": opt.id, "text": opt.text_fr} for opt in options])
+        return jsonify([{"id": opt.id, "text": opt.text, "category": opt.category} for opt in options])
+    return jsonify([{"id": opt.id, "text": opt.text} for opt in options])
 
 @app.route('/api/options/<option_type>/<int:option_id>', methods=['DELETE'])
 @password_protected
@@ -164,34 +114,27 @@ def delete_option(option_type, option_id):
     db.session.commit()
     return jsonify({"success": True})
 
-# --- ROUTES API PUBLIQUES ---
-@app.route('/api/public/options')
-@no_cache
-def get_public_options():
-    lang = request.args.get('lang', 'fr')
-    try:
-        flavor_col = getattr(FlavorOption, f'text_{lang}', FlavorOption.text_fr)
-        atmosphere_col = getattr(AtmosphereOption, f'text_{lang}', AtmosphereOption.text_fr)
+# --- ROUTES API PUBLIQUES POUR LES PAGES D'AVIS ---
+@app.route('/api/public/servers')
+def get_public_servers():
+    servers = Server.query.order_by(Server.name).all()
+    return jsonify([{"name": s.name} for s in servers])
 
-        servers = Server.query.order_by(Server.name).all()
-        flavors = db.session.query(FlavorOption.id, flavor_col, FlavorOption.category).all()
-        atmospheres = db.session.query(AtmosphereOption.id, atmosphere_col).order_by(AtmosphereOption.id).all()
+@app.route('/api/public/flavors')
+def get_public_flavors():
+    flavors = FlavorOption.query.all()
+    categorized_flavors = {}
+    for f in flavors:
+        if f.category not in categorized_flavors: categorized_flavors[f.category] = []
+        categorized_flavors[f.category].append({"id": f.id, "text": f.text})
+    return jsonify(categorized_flavors)
 
-        categorized_flavors = {}
-        for f_id, f_text, f_category in flavors:
-            if f_category not in categorized_flavors: categorized_flavors[f_category] = []
-            categorized_flavors[f_category].append({"id": f_id, "text": f_text})
-        
-        return jsonify({
-            "servers": [{"name": s.name} for s in servers],
-            "flavors": categorized_flavors,
-            "atmospheres": [{"id": a_id, "text": a_text} for a_id, a_text in atmospheres]
-        })
-    except Exception as e:
-        print(f"Erreur DB sur route publique : {e}")
-        return jsonify({"error": "Service momentanément indisponible."}), 503
+@app.route('/api/public/atmospheres')
+def get_public_atmospheres():
+    atmospheres = AtmosphereOption.query.order_by(AtmosphereOption.id).all()
+    return jsonify([{"id": a.id, "text": a.text} for a in atmospheres])
 
-# --- ROUTE DE GÉNÉRATION D'AVIS ---
+# --- ROUTE DE GÉNÉRATION D'AVIS ET DASHBOARD ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
     try:
@@ -199,11 +142,9 @@ def generate_review():
     except Exception as e: return jsonify({"error": "Clé API OpenAI non valide."}), 500
     data = request.get_json()
     if not data: return jsonify({"error": "Données invalides."}), 400
-    lang, selected_tags = data.get('lang', 'fr'), data.get('tags', [])
-    prenom_serveur, service_qualities, liked_dishes, atmosphere_notes = "notre serveur(se)", [], [], []
-    event = "une simple visite"
+    lang = data.get('lang', 'fr'); selected_tags = data.get('tags', []); prenom_serveur = "notre serveur(se)"; service_qualities = []; event = "une simple visite"; liked_dishes = []; atmosphere_notes = []
     for tag in selected_tags:
-        category, value = tag.get('category'), tag.get('value')
+        category = tag.get('category'); value = tag.get('value')
         if category == 'server_name': prenom_serveur = value
         elif category == 'service_qualities': service_qualities.append(value)
         elif category == 'reason_for_visit': event = value
@@ -212,21 +153,19 @@ def generate_review():
         elif category == 'atmosphere': atmosphere_notes.append(value)
     if prenom_serveur != "notre serveur(se)":
         try:
-            db.session.add(GeneratedReview(server_name=prenom_serveur))
-            db.session.commit()
+            new_review_record = GeneratedReview(server_name=prenom_serveur); db.session.add(new_review_record); db.session.commit()
         except Exception as e: print(f"Erreur DB: {e}"); db.session.rollback()
-    prompt_details = ""
-    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}.\n"
-    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}.\n"
-    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}.\n"
+    prompt_details = "Points que le client a aimés : "
+    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}. "
+    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}. "
+    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}. "
     system_prompt = f"""Tu es un client du restaurant italien chic Siena Paris, très satisfait, qui rédige un avis sur Google. Rédige un avis court (2-4 phrases), chaleureux et authentique. IMPORTANT : Tu dois impérativement répondre dans la langue suivante : {lang}. Mentionne impérativement le super service de "{prenom_serveur}". Intègre de manière fluide les points que le client a aimés. Si une occasion spéciale est mentionnée, intègre-la naturellement dans l'avis. Varie la formulation de chaque avis pour qu'il soit unique."""
-    user_prompt = f"Contexte de la visite : {event}. Points appréciés :\n{prompt_details}"
+    user_prompt = f"Contexte de la visite : {event}. Points appréciés : {prompt_details}"
     try:
         completion = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}], temperature=0.8, max_tokens=150)
         return jsonify({"review": completion.choices[0].message.content})
     except Exception as e: print(f"Erreur OpenAI: {e}"); return jsonify({"error": "Erreur lors de la génération de l'avis."}), 500
 
-# --- ROUTE DU TABLEAU DE BORD ---
 @app.route('/dashboard')
 @password_protected
 def dashboard():
@@ -234,9 +173,8 @@ def dashboard():
         server_counts = db.session.query(GeneratedReview.server_name, func.count(GeneratedReview.server_name).label('review_count')).group_by(GeneratedReview.server_name).order_by(func.count(GeneratedReview.server_name).desc()).all()
         results = [{"server": name, "count": count} for name, count in server_counts]
         return jsonify(results)
-    except Exception as e:
-        print(f"Erreur Dashboard: {e}")
-        return jsonify({"error": f"Erreur de récupération des données."}), 500
+    except Exception as e: return jsonify({"error": f"Erreur de récupération des données : {e}"}), 500
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+# --- INITIALISATION ET LANCEMENT ---
+with app.app_context(): db.create_all()
+if __name__ == '__main__': app.run(port=5000, debug=True)
