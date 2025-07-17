@@ -36,15 +36,16 @@
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
         
-        /* --- NOUVEAUX STYLES PROFESSIONNELS POUR LA ROULETTE --- */
+        /* --- NOUVEAUX STYLES CORRIGÉS POUR LA ROULETTE --- */
         .roulette-wrapper { padding: 10px 0; text-align: center; }
         .roulette-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
         .wheel-pointer { position: absolute; top: 50%; left: -10px; transform: translateY(-50%); width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 30px solid var(--brand-color); z-index: 10; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2)); }
         .wheel-container { position: relative; width: 100%; height: 100%; border-radius: 50%; border: 8px solid #EAE0D5; box-shadow: 0 0 20px rgba(0,0,0,0.15), inset 0 0 15px rgba(0,0,0,0.1); transition: transform 7s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .wheel-background { width: 100%; height: 100%; border-radius: 50%; background-image: conic-gradient(from -11.25deg, #FDFBF5 0% 6.25%, #FFFFFF 6.25% 12.5%, #FDFBF5 12.5% 18.75%, #FFFFFF 18.75% 25%, #FDFBF5 25% 31.25%, #FFFFFF 31.25% 37.5%, #FDFBF5 37.5% 43.75%, #FFFFFF 43.75% 50%, #FDFBF5 50% 56.25%, #FFFFFF 56.25% 62.5%, #FDFBF5 62.5% 68.75%, #FFFFFF 68.75% 75%, #FDFBF5 75% 81.25%, #FFFFFF 81.25% 87.5%, #FDFBF5 87.5% 93.75%, #FFFFFF 93.75% 100%); }
-        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; }
-        .wheel-labels .label { position: absolute; top: 50%; left: 50%; width: 50%; height: 50px; transform-origin: 0 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
-        .wheel-labels .label span { display: block; padding-left: 20px; }
+        .wheel-background { width: 100%; height: 100%; border-radius: 50%; /* Le dégradé est généré par le script pour plus de précision */ }
+        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; list-style: none; margin: 0; padding: 0; }
+        .wheel-labels li { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .wheel-labels li span { display: block; position: absolute; top: 50%; left: 50%; transform-origin: center; transform: translate(75px, -50%) rotate(90deg); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-primary); }
+        .wheel-labels .gros-lot span, .wheel-labels .perdu span { color: white; }
         #spin-btn { margin-top: 20px; }
         #spin-btn:disabled { background-color: var(--text-secondary); border-color: var(--text-secondary); cursor: not-allowed; }
         .prize-result { margin-top: 20px; padding: 15px; border-radius: 10px; background-color: #F7F1E9; border: 1px solid var(--border-color); animation: fadeIn 1s; }
@@ -71,7 +72,6 @@
             <div class="loader"></div>
             <span id="loader-text">Création en cours...</span>
         </div>
-
         <div id="result-area" class="hidden">
             <p><strong>Merci ! Votre avis est prêt.</strong></p>
             <p style="font-size: 0.9rem; margin-bottom: 20px;">Publiez-le sur Google, puis revenez ici pour tourner notre roue de la chance et tenter de gagner une surprise !</p>
@@ -79,32 +79,30 @@
             <button id="copy-btn" class="button secondary">Copier le texte</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
         </div>
-
         <div id="roulette-section" class="roulette-wrapper hidden">
             <h3>Tentez votre chance !</h3>
             <div class="roulette-container">
                 <div class="wheel-pointer"></div>
-                <div class="wheel-container" id="wheel">
-                    <div class="wheel-background"></div>
+                <div class="wheel-container" id="wheel-container">
+                    <div class="wheel-background" id="wheel-background"></div>
                     <ul class="wheel-labels" id="wheel-labels"></ul>
                 </div>
             </div>
             <button id="spin-btn" class="button">Lancer la roue</button>
             <div id="prize-result-container" class="hidden"></div>
         </div>
-
         <footer>
             &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
         </footer>
     </div>
-
     <script>
         // --- SCRIPT COMPLET AVEC LA NOUVELLE LOGIQUE DE ROULETTE ---
         const reviewForm = document.getElementById('review-form');
         const resultArea = document.getElementById('result-area');
         const googleBtn = document.getElementById('google-btn');
         const rouletteSection = document.getElementById('roulette-section');
-        const wheel = document.getElementById('wheel');
+        const wheelContainer = document.getElementById('wheel-container');
+        const wheelBackground = document.getElementById('wheel-background');
         const wheelLabels = document.getElementById('wheel-labels');
         const spinBtn = document.getElementById('spin-btn');
         const prizeResultContainer = document.getElementById('prize-result-container');
@@ -115,7 +113,7 @@
         reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
         copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
         
-        // --- NOUVELLE LOGIQUE POUR LA ROULETTE ---
+        // --- NOUVELLE LOGIQUE CORRIGÉE POUR LA ROULETTE ---
         const prizes = [
             { id: 'champagne', text: 'UNE BOUTEILLE DE CHAMPAGNE', weight: 1 },
             { id: 'perdu', text: 'Perdu', weight: 81 },
@@ -128,47 +126,47 @@
         ];
 
         const visualSegments = [
-            { id: 'champagne', text: 'CHAMPAGNE' }, // 0
-            { id: 'perdu', text: 'Perdu' },         // 1
-            { id: 'cocktail', text: 'Cocktail' },   // 2
-            { id: 'perdu', text: 'Perdu' },         // 3
-            { id: 'vin', text: 'Verre de Vin' },    // 4
-            { id: 'entree', text: 'Entrée' },       // 5
-            { id: 'dessert', text: 'Dessert' },     // 6
-            { id: 'perdu', text: 'Perdu' },         // 7
-            { id: 'cocktail', text: 'Cocktail' },   // 8 (en face de 0, mais on met un autre lot)
-            { id: 'soft', text: 'Soft' },           // 9 
-            { id: 'vin', text: 'Verre de Vin' },    // 10
-            { id: 'cafe', text: 'Café' },           // 11
-            { id: 'dessert', text: 'Dessert' },     // 12
-            { id: 'entree', text: 'Entrée' },       // 13
-            { id: 'soft', text: 'Soft' },           // 14
-            { id: 'cafe', text: 'Café' }            // 15
+            { text: 'CHAMPAGNE', id: 'champagne' }, { text: 'Perdu', id: 'perdu' },
+            { text: 'Cocktail', id: 'cocktail' }, { text: 'Entrée', id: 'entree' },
+            { text: 'Verre de Vin', id: 'vin' }, { text: 'Perdu', id: 'perdu' },
+            { text: 'Dessert', id: 'dessert' }, { text: 'Soft', id: 'soft' },
+            { text: 'Café', id: 'cafe' }, { text: 'Perdu', id: 'perdu' },
+            { text: 'Cocktail', id: 'cocktail' }, { text: 'Entrée', id: 'entree' },
+            { text: 'Verre de Vin', id: 'vin' }, { text: 'Café', id: 'cafe' },
+            { text: 'Dessert', id: 'dessert' }, { text: 'Soft', id: 'soft' }
         ];
 
         function createWheel() {
-            wheelLabels.innerHTML = ''; // Vide la roue avant de la recréer
+            wheelLabels.innerHTML = '';
+            let gradientColors = '';
             const segmentAngle = 360 / visualSegments.length;
+
             visualSegments.forEach((segment, index) => {
+                const rotation = segmentAngle * index;
+                // Création du label
                 const li = document.createElement('li');
                 li.className = 'label';
-                li.style.transform = `rotate(${segmentAngle * index}deg) translate(75px)`;
+                li.style.transform = `rotate(${rotation}deg)`;
                 
                 const span = document.createElement('span');
                 span.textContent = segment.text;
-                span.style.transform = `rotate(90deg)`;
+                if (segment.id === 'champagne') span.style.color = 'white';
+                if (segment.id === 'perdu') span.style.color = '#9E9E9E';
+
                 li.appendChild(span);
                 wheelLabels.appendChild(li);
+
+                // Création du dégradé
+                const color1 = segment.id === 'champagne' ? 'var(--brand-color)' : (segment.id === 'perdu' ? '#E0E0E0' : (index % 2 === 0 ? '#FFFFFF' : '#F7F1E9'));
+                gradientColors += `${color1} ${rotation}deg, ${color1} ${rotation + segmentAngle}deg, `;
             });
+            
+            wheelBackground.style.backgroundImage = `conic-gradient(${gradientColors.slice(0,-2)})`;
         }
 
         function getWeightedRandomPrize() {
             const weightedList = [];
-            prizes.forEach(prize => {
-                for (let i = 0; i < prize.weight; i++) {
-                    weightedList.push(prize);
-                }
-            });
+            prizes.forEach(prize => { for (let i = 0; i < prize.weight; i++) { weightedList.push(prize); }});
             return weightedList[Math.floor(Math.random() * weightedList.length)];
         }
 
@@ -179,39 +177,23 @@
             const wonPrize = getWeightedRandomPrize();
             
             const possibleSegments = [];
-            visualSegments.forEach((seg, i) => {
-                if (seg.id === wonPrize.id) {
-                    possibleSegments.push(i);
-                }
-            });
-
+            visualSegments.forEach((seg, i) => { if (seg.id === wonPrize.id) possibleSegments.push(i); });
             const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 0;
             
             const segmentAngle = 360 / visualSegments.length;
-            const targetAngle = (targetSegmentIndex * segmentAngle) + (segmentAngle / 2) - 90; // -90 pour aligner avec le pointeur à gauche
+            const targetAngle = (targetSegmentIndex * segmentAngle) + (segmentAngle / 2);
             
-            const extraSpins = 5 * 360;
+            const extraSpins = 6 * 360;
             const finalAngle = extraSpins + targetAngle;
 
-            wheel.style.transform = `rotate(-${finalAngle}deg)`;
+            wheelContainer.style.transform = `rotate(${finalAngle}deg)`;
 
             setTimeout(() => {
                 let resultHTML;
                 if (wonPrize.id === 'perdu') {
-                    resultHTML = `
-                        <div class="prize-result">
-                            <h3>Dommage...</h3>
-                            <p>Ce n'est pas pour cette fois, mais merci beaucoup pour votre avis !</p>
-                        </div>
-                    `;
+                    resultHTML = `<div class="prize-result"><h3>Dommage...</h3><p>Ce n'est pas pour cette fois, mais merci beaucoup pour votre avis !</p></div>`;
                 } else {
-                    resultHTML = `
-                        <div class="prize-result">
-                            <h3>Félicitations !</h3>
-                            <p>Vous avez gagné : <strong>${wonPrize.text}</strong></p>
-                            <p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p>
-                        </div>
-                    `;
+                    resultHTML = `<div class="prize-result"><h3>Félicitations !</h3><p>Vous avez gagné : <strong>${wonPrize.text}</strong></p><p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p></div>`;
                 }
                 prizeResultContainer.innerHTML = resultHTML;
                 prizeResultContainer.classList.remove('hidden');
@@ -222,17 +204,13 @@
         googleBtn.addEventListener('click', () => {
             resultArea.classList.add('hidden');
             rouletteSection.classList.remove('hidden');
-            createWheel(); // Crée la roue uniquement quand on l'affiche
+            createWheel();
         });
 
         async function realApiCall(tags) {
             const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
             const lang = 'fr';
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ lang: lang, tags: tags }),
-            });
+            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lang: lang, tags: tags }), });
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
             const data = await response.json();
             return data.review;
