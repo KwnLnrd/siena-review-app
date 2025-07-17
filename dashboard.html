@@ -89,6 +89,15 @@
             const rankingTableBody = document.querySelector('#ranking-table tbody');
             const chartCanvas = document.getElementById('top3-chart');
             
+            // --- NOUVELLE LOGIQUE DE SESSION ---
+            // Vérifie si un mot de passe est déjà sauvegardé dans la session
+            const storedPassword = sessionStorage.getItem('dashboardPassword');
+            if (storedPassword) {
+                // Si oui, on essaie de se connecter directement avec
+                passwordModal.classList.add('hidden'); // Cache le formulaire en attendant
+                fetchData(storedPassword);
+            }
+
             passwordForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const password = passwordInput.value;
@@ -121,6 +130,9 @@
                     const data = await response.json();
                     if (data.error) throw new Error(data.error);
                     
+                    // --- NOUVEAU : Sauvegarde du mot de passe en cas de succès ---
+                    sessionStorage.setItem('dashboardPassword', pass);
+
                     populateTable(data);
                     if (window.myChart) window.myChart.destroy();
                     createChart(data.slice(0, 3));
@@ -131,6 +143,10 @@
                     messageArea.classList.add('hidden');
 
                 } catch (error) {
+                    // --- NOUVEAU : Efface le mot de passe invalide et ré-affiche le formulaire ---
+                    sessionStorage.removeItem('dashboardPassword');
+                    passwordModal.classList.remove('hidden');
+                    dashboardContent.classList.add('hidden');
                     passwordError.textContent = error.name === 'AbortError' ? "Le serveur a mis trop de temps à répondre." : error.message;
                 } finally {
                     submitBtn.disabled = false;
