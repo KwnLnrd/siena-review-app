@@ -24,7 +24,7 @@ if database_url and database_url.startswith("postgres://"):
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url.replace("postgres://", "postgresql://", 1)
 else:
     basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'local_reviews.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'siena_local.db')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'siena_secret_password')
@@ -170,11 +170,10 @@ def delete_option(option_type, option_id):
 def get_public_options():
     lang = request.args.get('lang', 'fr')
     try:
-        server_col = Server.name
         flavor_col = getattr(FlavorOption, f'text_{lang}', FlavorOption.text_fr)
         atmosphere_col = getattr(AtmosphereOption, f'text_{lang}', AtmosphereOption.text_fr)
 
-        servers = db.session.query(server_col).order_by(server_col).all()
+        servers = Server.query.order_by(Server.name).all()
         flavors = db.session.query(FlavorOption.id, flavor_col, FlavorOption.category).all()
         atmospheres = db.session.query(AtmosphereOption.id, atmosphere_col).order_by(AtmosphereOption.id).all()
 
@@ -184,7 +183,7 @@ def get_public_options():
             categorized_flavors[f_category].append({"id": f_id, "text": f_text})
         
         return jsonify({
-            "servers": [{"name": s[0]} for s in servers],
+            "servers": [{"name": s.name} for s in servers],
             "flavors": categorized_flavors,
             "atmospheres": [{"id": a_id, "text": a_text} for a_id, a_text in atmospheres]
         })
@@ -195,8 +194,37 @@ def get_public_options():
 # --- ROUTE DE GÉNÉRATION D'AVIS ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
-    # ... (le code de cette fonction est inchangé)
-    pass
+    try:
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    except Exception as e: return jsonify({"error": "Clé API OpenAI non valide."}), 500
+    data = request.get_json()
+    if not data: return jsonify({"error": "Données invalides."}), 400
+    lang, selected_tags = data.get('lang', 'fr'), data.get('tags', [])
+    prenom_serveur, service_qualities, liked_dishes, atmosphere_notes = "notre serveur(se)", [], [], []
+    event = "une simple visite"
+    for tag in selected_tags:
+        category, value = tag.get('category'), tag.get('value')
+        if category == 'server_name': prenom_serveur = value
+        elif category == 'service_qualities': service_qualities.append(value)
+        elif category == 'reason_for_visit': event = value
+        elif category == 'birthday_details': event += f" ({value})"
+        elif category == 'liked_dishes': liked_dishes.append(value)
+        elif category == 'atmosphere': atmosphere_notes.append(value)
+    if prenom_serveur != "notre serveur(se)":
+        try:
+            db.session.add(GeneratedReview(server_name=prenom_serveur))
+            db.session.commit()
+        except Exception as e: print(f"Erreur DB: {e}"); db.session.rollback()
+    prompt_details = ""
+    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}.\n"
+    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}.\n"
+    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}.\n"
+    system_prompt = f"""Tu es un client du restaurant italien chic Siena Paris, très satisfait, qui rédige un avis sur Google. Rédige un avis court (2-4 phrases), chaleureux et authentique. IMPORTANT : Tu dois impérativement répondre dans la langue suivante : {lang}. Mentionne impérativement le super service de "{prenom_serveur}". Intègre de manière fluide les points que le client a aimés. Si une occasion spéciale est mentionnée, intègre-la naturellement dans l'avis. Varie la formulation de chaque avis pour qu'il soit unique."""
+    user_prompt = f"Contexte de la visite : {event}. Points appréciés :\n{prompt_details}"
+    try:
+        completion = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}], temperature=0.8, max_tokens=150)
+        return jsonify({"review": completion.choices[0].message.content})
+    except Exception as e: print(f"Erreur OpenAI: {e}"); return jsonify({"error": "Erreur lors de la génération de l'avis."}), 500
 
 # --- ROUTE DU TABLEAU DE BORD ---
 @app.route('/dashboard')

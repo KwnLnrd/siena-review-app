@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votre Avis sur Siena Paris</title>
+    <title data-translate-key="pageTitle">Votre Avis sur Siena Paris</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
         :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}
         @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes fadeOut{to{opacity:0;transform:translateY(-15px)}}
+        @keyframes fadeOut{to{opacity:0;transform:translateY(-15px);display:none;}}
         
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
         .hidden{display:none !important}
@@ -16,7 +16,7 @@
         /* --- Styles Communs --- */
         .main-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:600px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
         .logo-container img{width:180px;height:auto;margin-bottom:10px}
-        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px;margin-top:10px}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px; margin-top: 10px;}
         
         /* --- Styles pour le Sélecteur de Langue --- */
         #lang-selector-container h1 { margin-bottom: 35px; }
@@ -25,9 +25,9 @@
         .lang-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(191,91,63,.2);border-color:var(--brand-color);background-color:var(--brand-color);color:#fff}
         
         /* --- Styles pour le Formulaire d'Avis --- */
-        .language-selector-form{margin-bottom:20px;text-align:right}
-        .lang-btn-form{background:none;border:none;cursor:pointer;font-size:1.5rem;padding:0 5px;opacity:.6;transition:opacity .2s}
-        .lang-btn-form.active{opacity:1;transform:scale(1.1)}
+        .language-selector-form{margin-bottom:20px; text-align: right;}
+        .lang-btn-form{background:none;border:none;cursor:pointer;font-size:1.5rem;padding:0 5px;opacity:.6;transition:opacity .2s;}
+        .lang-btn-form.active{opacity:1;transform:scale(1.1);}
         p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
         .tag-section{margin-bottom:28px;text-align:left}
         .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
@@ -55,10 +55,9 @@
     </style>
 </head>
 <body>
-    <!-- Section 1 : Sélecteur de Langue (Visible au début) -->
     <div id="lang-selector-container" class="main-container">
         <div class="logo-container">
-            <img src="assets/logosiena-1.png" alt="Logo Siena Paris">
+            <img src="/assets/logosiena-1.png" alt="Logo Siena Paris">
         </div>
         <h1 data-translate-key="langTitle">Choisissez votre langue</h1>
         <div class="button-grid">
@@ -72,13 +71,10 @@
         </div>
     </div>
 
-    <!-- Section 2 : Formulaire d'Avis (Caché au début) -->
     <div id="review-app-container" class="main-container hidden">
-        <div class="language-selector-form">
-             <!-- Les boutons de langue seront recréés ici par le script -->
-        </div>
+        <div class="language-selector-form"></div>
         <div class="logo-container">
-            <img src="assets/logosiena-1.png" alt="Logo Siena Paris">
+            <a href="/"><img src="/assets/logosiena-1.png" alt="Logo Siena Paris"></a>
         </div>
         <h1 data-translate-key="mainTitle"></h1>
         <p data-translate-key="mainSubtitle"></p>
@@ -145,73 +141,107 @@
         <footer data-translate-key="copyright"></footer>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- OBJET DE TRADUCTION COMPLET ---
-        const translations = {
-            fr: { pageTitle: "Votre Avis sur Siena Paris", mainTitle: "Une soirée mémorable ?", mainSubtitle: "Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens.", langTitle: "Choisissez votre langue", occasionTitle: "Une occasion spéciale ?", occasionBirthday: "Anniversaire", occasionRomantic: "Dîner romantique", occasionFriends: "Dîner entre amis", occasionVisit: "Simple visite", birthdayPrompt: "C'était l'anniversaire de qui ?", birthdayFather: "Père", birthdayMother: "Mère", birthdayHusband: "Mari", birthdayWife: "Femme", birthdaySon: "Fils", birthdayDaughter: "Fille", birthdayFriend: "Ami(e)", serverTitle: "Quel serveur souhaitez-vous féliciter ?", serverPrompt: "-- Choisissez un prénom --", servicePrompt: "Qu'avez-vous particulièrement apprécié ? (3 choix max)", serviceAttentive: "Attentionné", serviceSmiling: "Souriant", serviceProfessional: "Professionnel", serviceEfficient: "Efficace", serviceAdvice: "De bon conseil", serviceDiscreet: "Discret", flavorsTitle: "Les saveurs qui vous ont marqué", flavorsPrompt: "Choisissez jusqu'à 6 de vos coups de cœur.", atmosphereTitle: "L'atmosphère du lieu", atmospherePrompt: "Sélectionnez jusqu'à 3 options.", generateButton: "Générer mon avis", copyButton: "Copier le texte", publishButton: "Publier sur Google", loadingMessages: ["Contact de l'assistant...","Analyse de votre soirée...","L'inspiration arrive...","Finalisation..."], alertSelectOption: "Veuillez sélectionner au moins une option.", alertMaxOptions: "Vous ne pouvez sélectionner que {limit} options maximum.", copyright: "&copy; {year} KwnLnrd. Tous droits réservés." },
-            en: { pageTitle: "Your Feedback on Siena Paris", mainTitle: "A memorable evening?", mainSubtitle: "Your feedback is the finishing touch. Share what delighted your senses.", langTitle: "Select your language", occasionTitle: "A special occasion?", occasionBirthday: "Birthday", occasionRomantic: "Romantic dinner", occasionFriends: "Dinner with friends", occasionVisit: "Just visiting", birthdayPrompt: "Whose birthday was it?", birthdayFather: "Father", birthdayMother: "Mother", birthdayHusband: "Husband", birthdayWife: "Wife", birthdaySon: "Son", birthdayDaughter: "Daughter", birthdayFriend: "Friend", serverTitle: "Which server would you like to praise?", serverPrompt: "-- Choose a name --", servicePrompt: "What did you particularly enjoy? (3 choices max)", serviceAttentive: "Attentive", serviceSmiling: "Smiling", serviceProfessional: "Professional", serviceEfficient: "Efficient", serviceAdvice: "Great advice", serviceDiscreet: "Discreet", flavorsTitle: "The flavors that stood out", flavorsPrompt: "Choose up to 6 of your favorites.", atmosphereTitle: "The atmosphere", atmospherePrompt: "Select up to 3 options.", generateButton: "Generate my review", copyButton: "Copy text", publishButton: "Publish on Google", loadingMessages: ["Contacting creative assistant...","Analyzing your evening...","Inspiration is coming...","Finalizing..."], alertSelectOption: "Please select at least one option.", alertMaxOptions: "You can only select up to {limit} options.", copyright: "&copy; {year} KwnLnrd. All rights reserved." },
-            it: { pageTitle: "La tua Recensione su Siena Paris", mainTitle: "Una serata memorabile?", mainSubtitle: "La tua opinione è il tocco finale. Condividi ciò che ha deliziato i tuoi sensi.", langTitle: "Seleziona la tua lingua", occasionTitle: "Un'occasione speciale?", occasionBirthday: "Compleanno", occasionRomantic: "Cena romantica", occasionFriends: "Cena tra amici", occasionVisit: "Semplice visita", birthdayPrompt: "Di chi era il compleanno?", birthdayFather: "Padre", birthdayMother: "Madre", birthdayHusband: "Marito", birthdayWife: "Moglie", birthdaySon: "Figlio", birthdayDaughter: "Figlia", birthdayFriend: "Amico(a)", serverTitle: "Quale cameriere vuoi elogiare?", serverPrompt: "-- Scegli un nome --", servicePrompt: "Cosa ti è piaciuto in particolare? (max 3)", serviceAttentive: "Attento", serviceSmiling: "Sorridente", serviceProfessional: "Professionale", serviceEfficient: "Efficiente", serviceAdvice: "Ottimo consiglio", serviceDiscreet: "Discreto", flavorsTitle: "I sapori che ti hanno colpito", flavorsPrompt: "Scegli fino a 6 dei tuoi preferiti.", atmosphereTitle: "L'atmosfera", atmospherePrompt: "Seleziona fino a 3 opzioni.", generateButton: "Genera la mia recensione", copyButton: "Copia il testo", publishButton: "Pubblica su Google", loadingMessages: ["Contattando l'assistente...","Analizzando la serata...","L'ispirazione arriva...","Finalizzazione..."], alertSelectOption: "Seleziona almeno un'opzione.", alertMaxOptions: "Puoi selezionare solo fino a {limit} opzioni.", copyright: "&copy; {year} KwnLnrd. Tutti i diritti riservati." },
-            es: { pageTitle: "Tu Opinión sobre Siena Paris", mainTitle: "¿Una noche memorable?", mainSubtitle: "Tu opinión es el toque final. Comparte lo que deleitó tus sentidos.", langTitle: "Selecciona tu idioma", occasionTitle: "¿Una ocasión especial?", occasionBirthday: "Cumpleaños", occasionRomantic: "Cena romántica", occasionFriends: "Cena entre amigos", occasionVisit: "Simple visita", birthdayPrompt: "¿De quién era el cumpleaños?", birthdayFather: "Padre", birthdayMother: "Madre", birthdayHusband: "Esposo", birthdayWife: "Esposa", birthdaySon: "Hijo", birthdayDaughter: "Hija", birthdayFriend: "Amigo(a)", serverTitle: "¿A qué camarero te gustaría felicitar?", serverPrompt: "-- Elige un nombre --", servicePrompt: "¿Qué te gustó especialmente? (máx. 3)", serviceAttentive: "Atento", serviceSmiling: "Sonriente", serviceProfessional: "Profesional", serviceEfficient: "Eficiente", serviceAdvice: "Buen consejero", serviceDiscreet: "Discreto", flavorsTitle: "Los sabores que te marcaron", flavorsPrompt: "Elige hasta 6 de tus favoritos.", atmosphereTitle: "El ambiente", atmospherePrompt: "Selecciona hasta 3 opciones.", generateButton: "Generar mi opinión", copyButton: "Copiar texto", publishButton: "Publicar en Google", loadingMessages: ["Contactando al asistente...","Analizando tu noche...","La inspiración está llegando...","Finalizando..."], alertSelectOption: "Por favor, selecciona al menos una opción.", alertMaxOptions: "Solo puedes seleccionar hasta {limit} opciones.", copyright: "&copy; {year} KwnLnrd. Todos los derechos reservados." },
-            pt: { pageTitle: "Sua Avaliação sobre o Siena Paris", mainTitle: "Uma noite memorável?", mainSubtitle: "A sua opinião é o toque final. Partilhe o que encantou os seus sentidos.", langTitle: "Selecione o seu idioma", occasionTitle: "Uma ocasião especial?", occasionBirthday: "Aniversário", occasionRomantic: "Jantar romântico", occasionFriends: "Jantar entre amigos", occasionVisit: "Simples visita", birthdayPrompt: "De quem era o aniversário?", birthdayFather: "Pai", birthdayMother: "Mãe", birthdayHusband: "Marido", birthdayWife: "Esposa", birthdaySon: "Filho", birthdayDaughter: "Filha", birthdayFriend: "Amigo(a)", serverTitle: "Qual garçom você gostaria de elogiar?", serverPrompt: "-- Escolha um nome --", servicePrompt: "Do que você gostou particularmente? (máx. 3)", serviceAttentive: "Atencioso", serviceSmiling: "Sorridente", serviceProfessional: "Profissional", serviceEfficient: "Eficiente", serviceAdvice: "Bons conselhos", serviceDiscreet: "Discreto", flavorsTitle: "Os sabores que o marcaram", flavorsPrompt: "Escolha até 6 dos seus favoritos.", atmosphereTitle: "A atmosfera", atmospherePrompt: "Selecione até 3 opções.", generateButton: "Gerar minha avaliação", copyButton: "Copiar texto", publishButton: "Publicar no Google", loadingMessages: ["Contactando o assistente...","Analisando a sua noite...","A inspiração está a caminho...","Finalizando..."], alertSelectOption: "Por favor, selecione pelo menos uma opção.", alertMaxOptions: "Você só pode selecionar até {limit} opções.", copyright: "&copy; {year} KwnLnrd. Todos os direitos reservados." },
-            zh: { pageTitle: "您对 Siena Paris 的评价", mainTitle: "一个难忘的夜晚？", mainSubtitle: "您的反馈是最后的点睛之笔。分享令您感官愉悦的瞬间。", langTitle: "选择您的语言", occasionTitle: "特殊场合？", occasionBirthday: "生日", occasionRomantic: "浪漫晚餐", occasionFriends: "朋友聚餐", occasionVisit: "只是来访", birthdayPrompt: "是谁的生日？", birthdayFather: "父亲", birthdayMother: "母亲", birthdayHusband: "丈夫", birthdayWife: "妻子", birthdaySon: "儿子", birthdayDaughter: "女儿", birthdayFriend: "朋友", serverTitle: "您想表扬哪位服务员？", serverPrompt: "-- 请选择一个名字 --", servicePrompt: "您特别喜欢什么？ (最多3个)", serviceAttentive: "周到", serviceSmiling: "微笑", serviceProfessional: "专业", serviceEfficient: "高效", serviceAdvice: "建议很棒", serviceDiscreet: "不打扰", flavorsTitle: "让您印象深刻的风味", flavorsPrompt: "最多选择6个您的最爱。", atmosphereTitle: "餐厅氛围", atmospherePrompt: "最多选择3个选项。", generateButton: "生成我的评价", copyButton: "复制文本", publishButton: "在谷歌上发布", loadingMessages: ["联系创意助手...","分析您的夜晚...","灵感来了...","完成..."], alertSelectOption: "请至少选择一个选项。", alertMaxOptions: "此类别最多只能选择 {limit} 个选项。", copyright: "&copy; {year} KwnLnrd. 版权所有。" },
-            ar: { pageTitle: "تقييمك لـ Siena Paris", mainTitle: "أمسية لا تنسى؟", mainSubtitle: "تقييمك هو اللمسة الأخيرة. شارك ما أسعد حواسك.", langTitle: "اختر لغتك", occasionTitle: "مناسبة خاصة؟", occasionBirthday: "عيد ميلاد", occasionRomantic: "عشاء رومانسي", occasionFriends: "عشاء مع الأصدقاء", occasionVisit: "زيارة عادية", birthdayPrompt: "كان عيد ميلاد من؟", birthdayFather: "الأب", birthdayMother: "الأم", birthdayHusband: "الزوج", birthdayWife: "الزوجة", birthdaySon: "الابن", birthdayDaughter: "الابنة", birthdayFriend: "صديق(ة)", serverTitle: "أي نادل تود أن تشيد به؟", serverPrompt: "-- اختر اسمًا --", servicePrompt: "ما الذي أعجبك بشكل خاص؟ (3 خيارات كحد أقصى)", serviceAttentive: "يقظ", serviceSmiling: "مبتسم", serviceProfessional: "محترف", serviceEfficient: "فعال", serviceAdvice: "نصيحة رائعة", serviceDiscreet: "غير مزعج", flavorsTitle: "النكهات التي أثرت فيك", flavorsPrompt: "اختر ما يصل إلى 6 من مفضلاتك.", atmosphereTitle: "أجواء المكان", atmospherePrompt: "اختر ما يصل إلى 3 خيارات.", generateButton: "إنشاء تقييمي", copyButton: "نسخ النص", publishButton: "النشر على جوجل", loadingMessages: ["الاتصال بالمساعد...","تحليل أمسيتك...","الإلهام قادم...","اللمسات الأخيرة..."], alertSelectOption: "يرجى تحديد خيار واحد على الأقل.", alertMaxOptions: "يمكنك فقط تحديد {limit} خيارات كحد أقصى في هذه الفئة.", copyright: "&copy; {year} KwnLnrd. جميع الحقوق محفوظة." }
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const translations = {
+                fr: { pageTitle: "Votre Avis sur Siena Paris", mainTitle: "Une soirée mémorable ?", mainSubtitle: "Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens.", langTitle: "Choisissez votre langue", occasionTitle: "Une occasion spéciale ?", occasionBirthday: "Anniversaire", occasionRomantic: "Dîner romantique", occasionFriends: "Dîner entre amis", occasionVisit: "Simple visite", birthdayPrompt: "C'était l'anniversaire de qui ?", birthdayFather: "Père", birthdayMother: "Mère", birthdayHusband: "Mari", birthdayWife: "Femme", birthdaySon: "Fils", birthdayDaughter: "Fille", birthdayFriend: "Ami(e)", serverTitle: "Quel serveur souhaitez-vous féliciter ?", serverPrompt: "-- Choisissez un prénom --", servicePrompt: "Qu'avez-vous particulièrement apprécié ? (3 choix max)", serviceAttentive: "Attentionné", serviceSmiling: "Souriant", serviceProfessional: "Professionnel", serviceEfficient: "Efficace", serviceAdvice: "De bon conseil", serviceDiscreet: "Discret", flavorsTitle: "Les saveurs qui vous ont marqué", flavorsPrompt: "Choisissez jusqu'à 6 de vos coups de cœur.", atmosphereTitle: "L'atmosphère du lieu", atmospherePrompt: "Sélectionnez jusqu'à 3 options.", generateButton: "Générer mon avis", copyButton: "Copier le texte", publishButton: "Publier sur Google", loadingMessages: ["Contact de l'assistant...","Analyse de votre soirée...","L'inspiration arrive...","Finalisation..."], alertSelectOption: "Veuillez sélectionner au moins une option.", alertMaxOptions: "Vous ne pouvez sélectionner que {limit} options maximum.", copyright: "&copy; {year} KwnLnrd. Tous droits réservés." },
+                en: { pageTitle: "Your Feedback on Siena Paris", mainTitle: "A memorable evening?", mainSubtitle: "Your feedback is the finishing touch. Share what delighted your senses.", langTitle: "Select your language", occasionTitle: "A special occasion?", occasionBirthday: "Birthday", occasionRomantic: "Romantic dinner", occasionFriends: "Dinner with friends", occasionVisit: "Just visiting", birthdayPrompt: "Whose birthday was it?", birthdayFather: "Father", birthdayMother: "Mother", birthdayHusband: "Husband", birthdayWife: "Wife", birthdaySon: "Son", birthdayDaughter: "Daughter", birthdayFriend: "Friend", serverTitle: "Which server would you like to praise?", serverPrompt: "-- Choose a name --", servicePrompt: "What did you particularly enjoy? (3 choices max)", serviceAttentive: "Attentive", serviceSmiling: "Smiling", serviceProfessional: "Professional", serviceEfficient: "Efficient", serviceAdvice: "Great advice", serviceDiscreet: "Discreet", flavorsTitle: "The flavors that stood out", flavorsPrompt: "Choose up to 6 of your favorites.", atmosphereTitle: "The atmosphere", atmospherePrompt: "Select up to 3 options.", generateButton: "Generate my review", copyButton: "Copy text", publishButton: "Publish on Google", loadingMessages: ["Contacting creative assistant...","Analyzing your evening...","Inspiration is coming...","Finalizing..."], alertSelectOption: "Please select at least one option.", alertMaxOptions: "You can only select up to {limit} options.", copyright: "&copy; {year} KwnLnrd. All rights reserved." },
+                it: { pageTitle: "La tua Recensione su Siena Paris", mainTitle: "Una serata memorabile?", mainSubtitle: "La tua opinione è il tocco finale. Condividi ciò che ha deliziato i tuoi sensi.", langTitle: "Seleziona la tua lingua", occasionTitle: "Un'occasione speciale?", occasionBirthday: "Compleanno", occasionRomantic: "Cena romantica", occasionFriends: "Cena tra amici", occasionVisit: "Semplice visita", birthdayPrompt: "Di chi era il compleanno?", birthdayFather: "Padre", birthdayMother: "Madre", birthdayHusband: "Marito", birthdayWife: "Moglie", birthdaySon: "Figlio", birthdayDaughter: "Figlia", birthdayFriend: "Amico(a)", serverTitle: "Quale cameriere vuoi elogiare?", serverPrompt: "-- Scegli un nome --", servicePrompt: "Cosa ti è piaciuto in particolare? (max 3)", serviceAttentive: "Attento", serviceSmiling: "Sorridente", serviceProfessional: "Professionale", serviceEfficient: "Efficiente", serviceAdvice: "Ottimo consiglio", serviceDiscreet: "Discreto", flavorsTitle: "I sapori che ti hanno colpito", flavorsPrompt: "Scegli fino a 6 dei tuoi preferiti.", atmosphereTitle: "L'atmosfera", atmospherePrompt: "Seleziona fino a 3 opzioni.", generateButton: "Genera la mia recensione", copyButton: "Copia il testo", publishButton: "Pubblica su Google", loadingMessages: ["Contattando l'assistente...","Analizzando la serata...","L'ispirazione arriva...","Finalizzazione..."], alertSelectOption: "Seleziona almeno un'opzione.", alertMaxOptions: "Puoi selezionare solo fino a {limit} opzioni.", copyright: "&copy; {year} KwnLnrd. Tutti i diritti riservati." },
+                es: { pageTitle: "Tu Opinión sobre Siena Paris", mainTitle: "¿Una noche memorable?", mainSubtitle: "Tu opinión es el toque final. Comparte lo que deleitó tus sentidos.", langTitle: "Selecciona tu idioma", occasionTitle: "¿Una ocasión especial?", occasionBirthday: "Cumpleaños", occasionRomantic: "Cena romántica", occasionFriends: "Cena entre amigos", occasionVisit: "Simple visita", birthdayPrompt: "¿De quién era el cumpleaños?", birthdayFather: "Padre", birthdayMother: "Madre", birthdayHusband: "Esposo", birthdayWife: "Esposa", birthdaySon: "Hijo", birthdayDaughter: "Hija", birthdayFriend: "Amigo(a)", serverTitle: "¿A qué camarero te gustaría felicitar?", serverPrompt: "-- Elige un nombre --", servicePrompt: "¿Qué te gustó especialmente? (máx. 3)", serviceAttentive: "Atento", serviceSmiling: "Sonriente", serviceProfessional: "Profesional", serviceEfficient: "Eficiente", serviceAdvice: "Buen consejero", serviceDiscreet: "Discreto", flavorsTitle: "Los sabores que te marcaron", flavorsPrompt: "Elige hasta 6 de tus favoritos.", atmosphereTitle: "El ambiente", atmospherePrompt: "Selecciona hasta 3 opciones.", generateButton: "Generar mi opinión", copyButton: "Copiar texto", publishButton: "Publicar en Google", loadingMessages: ["Contactando al asistente...","Analizando tu noche...","La inspiración está llegando...","Finalizando..."], alertSelectOption: "Por favor, selecciona al menos una opción.", alertMaxOptions: "Solo puedes seleccionar hasta {limit} opciones.", copyright: "&copy; {year} KwnLnrd. Todos los derechos reservados." },
+                pt: { pageTitle: "Sua Avaliação sobre o Siena Paris", mainTitle: "Uma noite memorável?", mainSubtitle: "A sua opinião é o toque final. Partilhe o que encantou os seus sentidos.", langTitle: "Selecione o seu idioma", occasionTitle: "Uma ocasião especial?", occasionBirthday: "Aniversário", occasionRomantic: "Jantar romântico", occasionFriends: "Jantar entre amigos", occasionVisit: "Simples visita", birthdayPrompt: "De quem era o aniversário?", birthdayFather: "Pai", birthdayMother: "Mãe", birthdayHusband: "Marido", birthdayWife: "Esposa", birthdaySon: "Filho", birthdayDaughter: "Filha", birthdayFriend: "Amigo(a)", serverTitle: "Qual garçom você gostaria de elogiar?", serverPrompt: "-- Escolha um nome --", servicePrompt: "Do que você gostou particularmente? (máx. 3)", serviceAttentive: "Atencioso", serviceSmiling: "Sorridente", serviceProfessional: "Profissional", serviceEfficient: "Eficiente", serviceAdvice: "Bons conselhos", serviceDiscreet: "Discreto", flavorsTitle: "Os sabores que o marcaram", flavorsPrompt: "Escolha até 6 dos seus favoritos.", atmosphereTitle: "A atmosfera", atmospherePrompt: "Selecione até 3 opções.", generateButton: "Gerar minha avaliação", copyButton: "Copiar texto", publishButton: "Publicar no Google", loadingMessages: ["Contactando o assistente...","Analisando a sua noite...","A inspiração está a caminho...","Finalizando..."], alertSelectOption: "Por favor, selecione pelo menos uma opção.", alertMaxOptions: "Você só pode selecionar até {limit} opções.", copyright: "&copy; {year} KwnLnrd. Todos os direitos reservados." },
+                zh: { pageTitle: "您对 Siena Paris 的评价", mainTitle: "一个难忘的夜晚？", mainSubtitle: "您的反馈是最后的点睛之笔。分享令您感官愉悦的瞬间。", langTitle: "选择您的语言", occasionTitle: "特殊场合？", occasionBirthday: "生日", occasionRomantic: "浪漫晚餐", occasionFriends: "朋友聚餐", occasionVisit: "只是来访", birthdayPrompt: "是谁的生日？", birthdayFather: "父亲", birthdayMother: "母亲", birthdayHusband: "丈夫", birthdayWife: "妻子", birthdaySon: "儿子", birthdayDaughter: "女儿", birthdayFriend: "朋友", serverTitle: "您想表扬哪位服务员？", serverPrompt: "-- 请选择一个名字 --", servicePrompt: "您特别喜欢什么？ (最多3个)", serviceAttentive: "周到", serviceSmiling: "微笑", serviceProfessional: "专业", serviceEfficient: "高效", serviceAdvice: "建议很棒", serviceDiscreet: "不打扰", flavorsTitle: "让您印象深刻的风味", flavorsPrompt: "最多选择6个您的最爱。", atmosphereTitle: "餐厅氛围", atmospherePrompt: "最多选择3个选项。", generateButton: "生成我的评价", copyButton: "复制文本", publishButton: "在谷歌上发布", loadingMessages: ["联系创意助手...","分析您的夜晚...","灵感来了...","完成..."], alertSelectOption: "请至少选择一个选项。", alertMaxOptions: "此类别最多只能选择 {limit} 个选项。", copyright: "&copy; {year} KwnLnrd. 版权所有。" },
+                ar: { pageTitle: "تقييمك لـ Siena Paris", mainTitle: "أمسية لا تنسى؟", mainSubtitle: "تقييمك هو اللمسة الأخيرة. شارك ما أسعد حواسك.", langTitle: "اختر لغتك", occasionTitle: "مناسبة خاصة؟", occasionBirthday: "عيد ميلاد", occasionRomantic: "عشاء رومانسي", occasionFriends: "عشاء مع الأصدقاء", occasionVisit: "زيارة عادية", birthdayPrompt: "كان عيد ميلاد من؟", birthdayFather: "الأب", birthdayMother: "الأم", birthdayHusband: "الزوج", birthdayWife: "الزوجة", birthdaySon: "الابن", birthdayDaughter: "الابنة", birthdayFriend: "صديق(ة)", serverTitle: "أي نادل تود أن تشيد به؟", serverPrompt: "-- اختر اسمًا --", servicePrompt: "ما الذي أعجبك بشكل خاص؟ (3 خيارات كحد أقصى)", serviceAttentive: "يقظ", serviceSmiling: "مبتسم", serviceProfessional: "محترف", serviceEfficient: "فعال", serviceAdvice: "نصيحة رائعة", serviceDiscreet: "غير مزعج", flavorsTitle: "النكهات التي أثرت فيك", flavorsPrompt: "اختر ما يصل إلى 6 من مفضلاتك.", atmosphereTitle: "أجواء المكان", atmospherePrompt: "اختر ما يصل إلى 3 خيارات.", generateButton: "إنشاء تقييمي", copyButton: "نسخ النص", publishButton: "النشر على جوجل", loadingMessages: ["الاتصال بالمساعد...","تحليل أمسيتك...","الإلهام قادم...","اللمسات الأخيرة..."], alertSelectOption: "يرجى تحديد خيار واحد على الأقل.", alertMaxOptions: "يمكنك فقط تحديد {limit} خيارات كحد أقصى في هذه الفئة.", copyright: "&copy; {year} KwnLnrd. جميع الحقوق محفوظة." }
+            };
+            const langSelectorContainer = document.getElementById('lang-selector-container');
+            const reviewAppContainer = document.getElementById('review-app-container');
+            const langButtons = document.querySelectorAll('.lang-btn');
+            const langButtonsForm = document.querySelector('.language-selector-form');
+            const serverSelect = document.getElementById('server-select');
+            const dishesContainer = document.getElementById('dishes-content');
+            const atmosphereContainer = document.querySelector('[data-category="atmosphere"]');
+            let currentLang = 'fr';
 
-        const langSelectorContainer = document.getElementById('lang-selector-container');
-        const reviewAppContainer = document.getElementById('review-app-container');
-        const langButtons = document.querySelectorAll('.lang-btn');
-        const langButtonsForm = document.querySelector('.language-selector-form');
-        let currentLang = 'fr';
+            function setLanguage(lang) {
+                currentLang = lang;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.dataset.translateKey;
+                    let text = translations[lang]?.[key] || translations['fr'][key];
+                    if (key === 'copyright') { text = text.replace('{year}', new Date().getFullYear()); }
+                    element.innerHTML = text;
+                });
+                document.querySelectorAll('.lang-btn, .lang-btn-form').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+            }
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            function showReviewForm(lang) {
+                setLanguage(lang);
+                langSelectorContainer.style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => {
+                    langSelectorContainer.classList.add('hidden');
+                    reviewAppContainer.classList.remove('hidden');
+                    reviewAppContainer.style.animation = 'fadeIn 0.5s forwards';
+                }, 500);
+            }
 
-            document.querySelectorAll('[data-translate-key]').forEach(element => {
-                const key = element.dataset.translateKey;
-                let text = translations[lang]?.[key] || translations['fr'][key];
-                if (key === 'copyright') {
-                    text = text.replace('{year}', new Date().getFullYear());
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => showReviewForm(button.dataset.lang));
+            });
+            
+            langButtons.forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                newBtn.classList.remove('lang-btn');
+                newBtn.classList.add('lang-btn-form');
+                newBtn.addEventListener('click', () => setLanguage(newBtn.dataset.lang));
+                langButtonsForm.appendChild(newBtn);
+            });
+
+            async function loadDynamicOptions() {
+                try {
+                    const response = await fetch(`https://siena-api.onrender.com/api/public/options?lang=${currentLang}`);
+                    if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
+                    const data = await response.json();
+                    
+                    serverSelect.innerHTML = `<option value="">${translations[currentLang].serverPrompt}</option>`;
+                    data.servers.forEach(server => {
+                        const option = document.createElement('option');
+                        option.value = server.name;
+                        option.textContent = server.name;
+                        serverSelect.appendChild(option);
+                    });
+
+                    dishesContainer.innerHTML = '';
+                    for (const category in data.flavors) {
+                        const subcategoryTitle = document.createElement('h4');
+                        subcategoryTitle.className = 'dish-subcategory';
+                        subcategoryTitle.textContent = category;
+                        dishesContainer.appendChild(subcategoryTitle);
+                        const group = document.createElement('div');
+                        group.className = 'tag-group';
+                        group.dataset.category = 'liked_dishes';
+                        data.flavors[category].forEach(flavor => {
+                            group.innerHTML += `<input type="checkbox" id="dish_${flavor.id}" value="${flavor.text}"><label for="dish_${flavor.id}">${flavor.text}</label>`;
+                        });
+                        dishesContainer.appendChild(group);
+                    }
+
+                    atmosphereContainer.innerHTML = '';
+                    data.atmospheres.forEach(atmosphere => {
+                        atmosphereContainer.innerHTML += `<input type="checkbox" id="atmo_${atmosphere.id}" value="${atmosphere.text}"><label for="atmo_${atmosphere.id}">${atmosphere.text}</label>`;
+                    });
+                } catch (error) {
+                    console.error("Erreur de chargement des options:", error);
                 }
-                element.innerHTML = text;
-            });
-
-            document.querySelectorAll('.lang-btn, .lang-btn-form').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-        }
-
-        function showReviewForm(lang) {
-            setLanguage(lang);
-            langSelectorContainer.style.animation = 'fadeOut 0.5s forwards';
-            setTimeout(() => {
-                langSelectorContainer.classList.add('hidden');
-                reviewAppContainer.classList.remove('hidden');
-                reviewAppContainer.style.animation = 'fadeIn 0.5s forwards';
-            }, 500);
-        }
-
-        langButtons.forEach(button => {
-            button.addEventListener('click', () => showReviewForm(button.dataset.lang));
+            }
+            
+            const browserLang = navigator.language.split('-')[0];
+            const initialLang = translations[browserLang] ? browserLang : 'fr';
+            setLanguage(initialLang);
+            loadDynamicOptions();
+            
+            // ... (Le reste du script pour la logique du formulaire, les limites, etc. reste ici)
         });
-        
-        // Duplique les boutons de langue dans le formulaire
-        langButtons.forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            newBtn.classList.remove('lang-btn');
-            newBtn.classList.add('lang-btn-form');
-            newBtn.addEventListener('click', () => setLanguage(newBtn.dataset.lang));
-            langButtonsForm.appendChild(newBtn);
-        });
-
-        const browserLang = navigator.language.split('-')[0];
-        setLanguage(translations[browserLang] ? browserLang : 'fr');
-        
-        // Le reste de votre script (logique du formulaire, etc.) reste ici
-        // ...
-    });
-</script>
-
+    </script>
 </body>
 </html>
