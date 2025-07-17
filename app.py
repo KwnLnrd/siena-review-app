@@ -32,11 +32,10 @@ class Server(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
 
-# NOUVEAU : Modèles pour les options dynamiques
 class FlavorOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(100), unique=True, nullable=False)
-    category = db.Column(db.String(50), nullable=False) # ex: 'Antipasti', 'Pâtes'
+    category = db.Column(db.String(50), nullable=False)
 
 class AtmosphereOption(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,13 +50,6 @@ def password_protected(f):
             return 'Could not verify your access level.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'}
         return f(*args, **kwargs)
     return decorated_function
-
-# --- COMMANDE D'INITIALISATION DB ---
-@app.cli.command("init-db")
-def init_db_command():
-    with app.app_context():
-        db.create_all()
-    print("Base de données initialisée.")
 
 # --- ROUTES API (PROTÉGÉES) POUR LA GESTION ---
 @app.route('/api/servers', methods=['GET', 'POST'])
@@ -81,7 +73,6 @@ def delete_server(server_id):
     db.session.commit()
     return jsonify({"success": True})
 
-# NOUVEAU : Routes pour gérer les options de saveurs et d'ambiance
 @app.route('/api/options/<option_type>', methods=['GET', 'POST'])
 @password_protected
 def manage_options(option_type):
@@ -89,17 +80,14 @@ def manage_options(option_type):
     if request.method == 'POST':
         data = request.get_json()
         if not data or not data.get('text'): return jsonify({"error": "Texte manquant."}), 400
-        
         new_option_data = {'text': data['text'].strip()}
         if option_type == 'flavors':
             if not data.get('category'): return jsonify({"error": "Catégorie manquante."}), 400
             new_option_data['category'] = data['category'].strip()
-
         new_option = Model(**new_option_data)
         db.session.add(new_option)
         db.session.commit()
         return jsonify({"id": new_option.id, "text": new_option.text}), 201
-    
     options = Model.query.all()
     if option_type == 'flavors':
         return jsonify([{"id": opt.id, "text": opt.text, "category": opt.category} for opt in options])
@@ -123,11 +111,9 @@ def get_public_servers():
 @app.route('/api/public/flavors')
 def get_public_flavors():
     flavors = FlavorOption.query.all()
-    # Regroupe par catégorie
     categorized_flavors = {}
     for f in flavors:
-        if f.category not in categorized_flavors:
-            categorized_flavors[f.category] = []
+        if f.category not in categorized_flavors: categorized_flavors[f.category] = []
         categorized_flavors[f.category].append({"id": f.id, "text": f.text})
     return jsonify(categorized_flavors)
 
@@ -136,7 +122,7 @@ def get_public_atmospheres():
     atmospheres = AtmosphereOption.query.order_by(AtmosphereOption.id).all()
     return jsonify([{"id": a.id, "text": a.text} for a in atmospheres])
 
-# --- ROUTE DE GÉNÉRATION D'AVIS ET DASHBOARD (inchangées) ---
+# --- ROUTE DE GÉNÉRATION D'AVIS ET DASHBOARD ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
     # Le code de cette fonction est inchangé
@@ -148,6 +134,9 @@ def dashboard():
     # Le code de cette fonction est inchangé
     pass
 
+# --- NOUVEAU : INITIALISATION AUTOMATIQUE DE LA BASE DE DONNÉES ---
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
-    with app.app_context(): db.create_all() 
     app.run(port=5000, debug=True)
