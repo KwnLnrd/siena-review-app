@@ -173,8 +173,9 @@
                         throw new Error("Mot de passe incorrect.");
                     }
                     if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`Erreur du serveur : ${errorText}`);
+                        // Essaye de lire le message d'erreur du serveur, sinon utilise le statut
+                        let errorText = await response.text();
+                        throw new Error(errorText || `Erreur du serveur : ${response.statusText}`);
                     }
 
                     const data = await response.json();
@@ -198,6 +199,8 @@
 
                 } catch (error) {
                     passwordError.textContent = error.message;
+                } finally {
+                    // NOUVEAU : Assure que le bouton est toujours réactivé
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Valider';
                 }
@@ -207,7 +210,7 @@
                 mainContent.classList.add('hidden');
                 messageArea.classList.remove('hidden');
                 messageArea.textContent = message;
-                dashboardContent.classList.remove('hidden'); // Affiche le conteneur pour voir le message
+                dashboardContent.classList.remove('hidden');
             }
 
             function populateTable(data) {
