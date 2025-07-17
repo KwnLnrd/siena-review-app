@@ -12,7 +12,6 @@
         
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
         
-        /* --- NOUVEAU : Style pour le formulaire de connexion --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -66,10 +65,15 @@
             width: 100%;
             transition: background-color 0.2s;
         }
+        #password-form button:disabled {
+            background-color: var(--text-secondary);
+            cursor: wait;
+        }
         .error-message {
             color: #D32F2F;
             font-size: 0.9rem;
             margin-top: 10px;
+            min-height: 1.2em; /* Pour éviter le décalage de la mise en page */
         }
 
         .dashboard-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:800px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
@@ -104,9 +108,9 @@
             <p>Veuillez entrer le mot de passe pour accéder au tableau de bord.</p>
             <form id="password-form">
                 <input type="password" id="password-input" placeholder="Mot de passe" required>
-                <button type="submit">Valider</button>
+                <button type="submit" id="submit-password-btn">Valider</button>
             </form>
-            <p id="password-error" class="error-message hidden"></p>
+            <p id="password-error" class="error-message"></p>
         </div>
     </div>
 
@@ -139,6 +143,7 @@
             const passwordForm = document.getElementById('password-form');
             const passwordInput = document.getElementById('password-input');
             const passwordError = document.getElementById('password-error');
+            const submitBtn = document.getElementById('submit-password-btn');
             const dashboardContent = document.getElementById('dashboard-content');
             const mainContent = document.getElementById('main-content');
             const messageArea = document.getElementById('message-area');
@@ -149,16 +154,15 @@
                 e.preventDefault();
                 const password = passwordInput.value;
                 if (password) {
-                    passwordError.classList.add('hidden');
+                    passwordError.textContent = '';
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Vérification...';
                     fetchData(password);
                 }
             });
 
             async function fetchData(pass) {
                 const apiUrl = 'https://siena-api.onrender.com/dashboard';
-                messageArea.textContent = "Chargement des données...";
-                messageArea.classList.remove('hidden');
-                mainContent.classList.add('hidden');
                 
                 try {
                     const response = await fetch(apiUrl, {
@@ -169,11 +173,15 @@
                         throw new Error("Mot de passe incorrect.");
                     }
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || `Erreur réseau : ${response.statusText}`);
+                        const errorText = await response.text();
+                        throw new Error(`Erreur du serveur : ${errorText}`);
                     }
 
                     const data = await response.json();
+                    
+                    if (data.error) {
+                         throw new Error(data.error);
+                    }
                     
                     if (data.length === 0) {
                         displayMessage("Aucune donnée d'avis n'a encore été enregistrée.");
@@ -189,8 +197,9 @@
                     messageArea.classList.add('hidden');
 
                 } catch (error) {
-                    passwordError.textContent = `Erreur : ${error.message}`;
-                    passwordError.classList.remove('hidden');
+                    passwordError.textContent = error.message;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Valider';
                 }
             }
 
@@ -198,6 +207,7 @@
                 mainContent.classList.add('hidden');
                 messageArea.classList.remove('hidden');
                 messageArea.textContent = message;
+                dashboardContent.classList.remove('hidden'); // Affiche le conteneur pour voir le message
             }
 
             function populateTable(data) {
