@@ -38,14 +38,14 @@
         
         /* --- NOUVEAUX STYLES CORRIGÉS POUR LA ROULETTE --- */
         .roulette-wrapper { padding: 10px 0; text-align: center; }
-        .roulette-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+        .roulette-container { position: relative; width: 320px; height: 320px; margin: 20px auto; }
         .wheel-pointer { position: absolute; top: 50%; left: -10px; transform: translateY(-50%); width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 30px solid var(--brand-color); z-index: 10; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2)); }
         .wheel-container { position: relative; width: 100%; height: 100%; border-radius: 50%; border: 8px solid #EAE0D5; box-shadow: 0 0 20px rgba(0,0,0,0.15), inset 0 0 15px rgba(0,0,0,0.1); transition: transform 7s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .wheel-background { width: 100%; height: 100%; border-radius: 50%; /* Le dégradé est généré par le script pour plus de précision */ }
-        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; list-style: none; margin: 0; padding: 0; }
+        .wheel-background { width: 100%; height: 100%; border-radius: 50%; /* Le dégradé est généré par le script */ }
+        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; list-style: none; margin: 0; padding: 0; }
         .wheel-labels li { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .wheel-labels li span { display: block; position: absolute; top: 50%; left: 50%; transform-origin: center; transform: translate(75px, -50%) rotate(90deg); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-primary); }
-        .wheel-labels .gros-lot span, .wheel-labels .perdu span { color: white; }
+        .wheel-labels li span { display: block; position: absolute; top: 50%; left: 50%; transform-origin: 0 0; text-align: center; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-primary); }
+        .wheel-labels .gros-lot span { color: white; }
         #spin-btn { margin-top: 20px; }
         #spin-btn:disabled { background-color: var(--text-secondary); border-color: var(--text-secondary); cursor: not-allowed; }
         .prize-result { margin-top: 20px; padding: 15px; border-radius: 10px; background-color: #F7F1E9; border: 1px solid var(--border-color); animation: fadeIn 1s; }
@@ -95,6 +95,7 @@
             &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
         </footer>
     </div>
+
     <script>
         // --- SCRIPT COMPLET AVEC LA NOUVELLE LOGIQUE DE ROULETTE ---
         const reviewForm = document.getElementById('review-form');
@@ -126,42 +127,49 @@
         ];
 
         const visualSegments = [
-            { text: 'CHAMPAGNE', id: 'champagne' }, { text: 'Perdu', id: 'perdu' },
-            { text: 'Cocktail', id: 'cocktail' }, { text: 'Entrée', id: 'entree' },
-            { text: 'Verre de Vin', id: 'vin' }, { text: 'Perdu', id: 'perdu' },
-            { text: 'Dessert', id: 'dessert' }, { text: 'Soft', id: 'soft' },
-            { text: 'Café', id: 'cafe' }, { text: 'Perdu', id: 'perdu' },
-            { text: 'Cocktail', id: 'cocktail' }, { text: 'Entrée', id: 'entree' },
-            { text: 'Verre de Vin', id: 'vin' }, { text: 'Café', id: 'cafe' },
-            { text: 'Dessert', id: 'dessert' }, { text: 'Soft', id: 'soft' }
+            { id: 'champagne', text: 'CHAMPAGNE' }, { id: 'perdu', text: 'Perdu' },
+            { id: 'cocktail', text: 'Cocktail' }, { id: 'entree', text: 'Entrée' },
+            { id: 'vin', text: 'Verre de Vin' }, { id: 'perdu', text: 'Perdu' },
+            { id: 'dessert', text: 'Dessert' }, { id: 'soft', text: 'Soft' },
+            { id: 'cafe', text: 'Café' }, { id: 'perdu', text: 'Perdu' },
+            { id: 'cocktail', text: 'Cocktail' }, { id: 'entree', text: 'Entrée' },
+            { id: 'vin', text: 'Verre de Vin' }, { id: 'cafe', text: 'Café' },
+            { id: 'dessert', text: 'Dessert' }, { id: 'soft', text: 'Soft' }
         ];
 
         function createWheel() {
             wheelLabels.innerHTML = '';
-            let gradientColors = '';
-            const segmentAngle = 360 / visualSegments.length;
+            let gradientParts = [];
+            const segmentAngle = 360 / visualSegments.length; // 22.5deg
 
             visualSegments.forEach((segment, index) => {
-                const rotation = segmentAngle * index;
-                // Création du label
+                const angle = segmentAngle * index;
+                const nextAngle = segmentAngle * (index + 1);
+
+                // Crée le dégradé
+                const color = segment.id === 'champagne' ? 'var(--brand-color)' : (segment.id === 'perdu' ? '#BDBDBD' : (index % 2 === 0 ? '#FFFFFF' : '#F7F1E9'));
+                gradientParts.push(`${color} ${angle}deg ${nextAngle}deg`);
+
+                // Crée le label
                 const li = document.createElement('li');
                 li.className = 'label';
-                li.style.transform = `rotate(${rotation}deg)`;
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = segment.text;
                 
-                const span = document.createElement('span');
-                span.textContent = segment.text;
-                if (segment.id === 'champagne') span.style.color = 'white';
-                if (segment.id === 'perdu') span.style.color = '#9E9E9E';
+                // Positionne et oriente le texte
+                const textAngle = angle + (segmentAngle / 2);
+                li.style.transform = `rotate(${textAngle}deg)`;
+                textSpan.style.transform = `translateX(60px) rotate(-90deg)`;
+                
+                if (segment.id === 'champagne') textSpan.style.color = 'white';
+                if (segment.id === 'perdu') textSpan.style.color = 'white';
 
-                li.appendChild(span);
+                li.appendChild(textSpan);
                 wheelLabels.appendChild(li);
-
-                // Création du dégradé
-                const color1 = segment.id === 'champagne' ? 'var(--brand-color)' : (segment.id === 'perdu' ? '#E0E0E0' : (index % 2 === 0 ? '#FFFFFF' : '#F7F1E9'));
-                gradientColors += `${color1} ${rotation}deg, ${color1} ${rotation + segmentAngle}deg, `;
             });
             
-            wheelBackground.style.backgroundImage = `conic-gradient(${gradientColors.slice(0,-2)})`;
+            wheelBackground.style.backgroundImage = `conic-gradient(${gradientParts.join(', ')})`;
         }
 
         function getWeightedRandomPrize() {
@@ -178,13 +186,15 @@
             
             const possibleSegments = [];
             visualSegments.forEach((seg, i) => { if (seg.id === wonPrize.id) possibleSegments.push(i); });
-            const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 0;
+            const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 1;
             
             const segmentAngle = 360 / visualSegments.length;
-            const targetAngle = (targetSegmentIndex * segmentAngle) + (segmentAngle / 2);
+            const randomOffset = (segmentAngle / 2) * (Math.random() * 0.8 + 0.1); // Pour ne pas tomber pile sur la ligne
+            const targetRotation = (targetSegmentIndex * segmentAngle) + randomOffset;
             
-            const extraSpins = 6 * 360;
-            const finalAngle = extraSpins + targetAngle;
+            const currentRotation = parseInt(wheelContainer.style.transform.replace(/[^0-9-]/g, '')) || 0;
+            const extraSpins = 5 * 360;
+            const finalAngle = extraSpins + targetRotation;
 
             wheelContainer.style.transform = `rotate(${finalAngle}deg)`;
 
@@ -198,7 +208,7 @@
                 prizeResultContainer.innerHTML = resultHTML;
                 prizeResultContainer.classList.remove('hidden');
                 spinBtn.style.display = 'none';
-            }, 7200);
+            }, 7200); // Durée de l'animation + délai
         });
 
         googleBtn.addEventListener('click', () => {
