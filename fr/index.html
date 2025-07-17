@@ -130,25 +130,20 @@
 
             async function loadDynamicOptions() {
                 try {
-                    const [serversRes, flavorsRes, atmospheresRes] = await Promise.all([
-                        fetch('https://siena-api.onrender.com/api/public/servers'),
-                        fetch('https://siena-api.onrender.com/api/public/flavors'),
-                        fetch('https://siena-api.onrender.com/api/public/atmospheres')
-                    ]);
-                    if (!serversRes.ok || !flavorsRes.ok || !atmospheresRes.ok) throw new Error("Erreur réseau lors du chargement des options.");
+                    const response = await fetch('https://siena-api.onrender.com/api/public/options');
+                    if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
                     
-                    const servers = await serversRes.json();
-                    const flavors = await flavorsRes.json();
-                    const atmospheres = await atmospheresRes.json();
+                    const data = await response.json();
 
-                    servers.forEach(server => {
+                    data.servers.forEach(server => {
                         const option = document.createElement('option');
                         option.value = server.name;
                         option.textContent = server.name;
                         serverSelect.appendChild(option);
                     });
 
-                    for (const category in flavors) {
+                    dishesContainer.innerHTML = '';
+                    for (const category in data.flavors) {
                         const subcategoryTitle = document.createElement('h4');
                         subcategoryTitle.className = 'dish-subcategory';
                         subcategoryTitle.textContent = category;
@@ -156,13 +151,14 @@
                         const group = document.createElement('div');
                         group.className = 'tag-group';
                         group.dataset.category = 'liked_dishes';
-                        flavors[category].forEach(flavor => {
+                        data.flavors[category].forEach(flavor => {
                             group.innerHTML += `<input type="checkbox" id="dish_${flavor.id}" value="${flavor.text}"><label for="dish_${flavor.id}">${flavor.text}</label>`;
                         });
                         dishesContainer.appendChild(group);
                     }
 
-                    atmospheres.forEach(atmosphere => {
+                    atmosphereContainer.innerHTML = '';
+                    data.atmospheres.forEach(atmosphere => {
                         atmosphereContainer.innerHTML += `<input type="checkbox" id="atmo_${atmosphere.id}" value="${atmosphere.text}"><label for="atmo_${atmosphere.id}">${atmosphere.text}</label>`;
                     });
 

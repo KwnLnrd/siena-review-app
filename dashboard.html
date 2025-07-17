@@ -28,7 +28,7 @@
         .logo-container img{width:150px;height:auto}
         .header h1{font-family:var(--font-serif);font-size:2.5rem;margin:0;color:var(--text-primary);text-align:center}
         
-        /* --- NOUVEAU : Styles pour les Onglets --- */
+        /* --- Styles pour les Onglets --- */
         .tabs{display:flex;border-bottom:1px solid var(--border-color);margin-top:25px;margin-bottom:25px;}
         .tab-button{padding:10px 20px;cursor:pointer;background:none;border:none;font-family:var(--font-sans);font-size:1rem;font-weight:600;color:var(--text-secondary);position:relative;border-bottom:3px solid transparent;}
         .tab-button.active{color:var(--brand-color);border-bottom-color:var(--brand-color);}
@@ -81,7 +81,6 @@
             <h1>Tableau de Bord</h1>
         </header>
 
-        <!-- NOUVEAU : Barre d'onglets -->
         <div class="tabs">
             <button class="tab-button active" data-tab="stats">Statistiques</button>
             <button class="tab-button" data-tab="servers">Gestion des Serveurs</button>
@@ -89,7 +88,6 @@
         </div>
 
         <main id="main-content">
-            <!-- Onglet 1 : Statistiques -->
             <div id="stats" class="tab-content active">
                 <div class="content-grid">
                     <section class="ranking-section">
@@ -106,7 +104,6 @@
                 </div>
             </div>
             
-            <!-- Onglet 2 : Gestion des Serveurs -->
             <div id="servers" class="tab-content">
                 <div class="content-grid">
                     <section>
@@ -123,7 +120,6 @@
                 </div>
             </div>
 
-            <!-- Onglet 3 : Gestion des Options -->
             <div id="options" class="tab-content">
                 <div class="content-grid">
                     <section id="flavors-section">
@@ -160,20 +156,13 @@
             const mainContent = document.getElementById('main-content');
             const messageArea = document.getElementById('message-area');
             
-            // Éléments des onglets
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
-
-            // Éléments de l'onglet Stats
             const rankingTableBody = document.querySelector('#ranking-table tbody');
             const chartCanvas = document.getElementById('top3-chart');
-
-            // Éléments de l'onglet Serveurs
             const serverList = document.getElementById('server-list');
             const addServerForm = document.getElementById('add-server-form');
             const newServerNameInput = document.getElementById('new-server-name');
-
-            // Éléments de l'onglet Options
             const flavorsList = document.getElementById('flavors-list');
             const addFlavorForm = document.getElementById('add-flavor-form');
             const newFlavorTextInput = document.getElementById('new-flavor-text');
@@ -184,7 +173,6 @@
             
             let currentPassword = '';
 
-            // --- GESTION DE LA CONNEXION ET DES DONNÉES ---
             const storedPassword = sessionStorage.getItem('dashboardPassword');
             if (storedPassword) {
                 passwordModal.classList.add('hidden');
@@ -202,7 +190,7 @@
                     fetchAllData();
                 }
             });
-
+            
             async function fetchWithAuth(url, options = {}) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -219,6 +207,8 @@
 
             async function fetchAllData() {
                 try {
+                    messageArea.classList.remove('hidden');
+                    mainContent.classList.add('hidden');
                     const [dashboardData, serversData, flavorsData, atmospheresData] = await Promise.all([
                         fetchWithAuth('https://siena-api.onrender.com/dashboard'),
                         fetchWithAuth('https://siena-api.onrender.com/api/servers'),
@@ -247,7 +237,6 @@
                 }
             }
             
-            // --- GESTION DES ONGLETS ---
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -257,19 +246,78 @@
                 });
             });
 
-            // --- FONCTIONS D'AFFICHAGE ET DE GESTION ---
             function populateDashboard(data) {
-                // ... (code pour table et graphique inchangé)
+                populateTable(data);
+                if (window.myChart) window.myChart.destroy();
+                createChart(data.slice(0, 3));
             }
+
             function populateServerManagement(servers) {
-                // ... (code pour la liste des serveurs inchangé)
+                serverList.innerHTML = '';
+                if (servers.length === 0) {
+                    serverList.innerHTML = '<li>Aucun serveur enregistré.</li>';
+                    return;
+                }
+                servers.forEach(server => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${server.name}</span><button class="delete-btn" data-id="${server.id}" data-type="servers" title="Supprimer">×</button>`;
+                    serverList.appendChild(li);
+                });
             }
+
             function populateList(listElement, items, type) {
-                // ... (code pour les listes d'options inchangé)
+                listElement.innerHTML = '';
+                if (items.length === 0) {
+                    listElement.innerHTML = '<li>Aucune option enregistrée.</li>';
+                    return;
+                }
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item.text} ${item.category ? `(${item.category})` : ''}</span><button class="delete-btn" data-id="${item.id}" data-type="${type}" title="Supprimer">×</button>`;
+                    listElement.appendChild(li);
+                });
             }
             
-            // ... (tous les écouteurs d'événements pour les formulaires d'ajout/suppression restent ici)
+            addServerForm.addEventListener('submit', async (e) => { e.preventDefault(); const name = newServerNameInput.value.trim(); if (!name) return; try { await fetchWithAuth('https://siena-api.onrender.com/api/servers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name }) }); newServerNameInput.value = ''; fetchAllData(); } catch (error) { alert(`Erreur : ${error.message}`); } });
+            addFlavorForm.addEventListener('submit', async (e) => { e.preventDefault(); const text = newFlavorTextInput.value.trim(); const category = newFlavorCategoryInput.value; if (!text || !category) return; try { await fetchWithAuth('https://siena-api.onrender.com/api/options/flavors', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, category }) }); newFlavorTextInput.value = ''; fetchAllData(); } catch (error) { alert(`Erreur : ${error.message}`); } });
+            addAtmosphereForm.addEventListener('submit', async (e) => { e.preventDefault(); const text = newAtmosphereTextInput.value.trim(); if (!text) return; try { await fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) }); newAtmosphereTextInput.value = ''; fetchAllData(); } catch (error) { alert(`Erreur : ${error.message}`); } });
 
+            document.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const id = e.target.dataset.id;
+                    const type = e.target.dataset.type;
+                    const name = e.target.previousElementSibling.textContent;
+                    if (confirm(`Êtes-vous sûr de vouloir supprimer "${name}" ?`)) {
+                        try {
+                            const url = type === 'servers' ? `/api/servers/${id}` : `/api/options/${type}/${id}`;
+                            await fetchWithAuth('https://siena-api.onrender.com' + url, { method: 'DELETE' });
+                            fetchAllData();
+                        } catch (error) { alert(`Erreur : ${error.message}`); }
+                    }
+                }
+            });
+
+            function populateTable(data) {
+                rankingTableBody.innerHTML = '';
+                if (data.length === 0) {
+                    rankingTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Aucun avis enregistré.</td></tr>';
+                    return;
+                }
+                data.forEach((item, index) => {
+                    const row = `<tr><td class="rank">${index + 1}</td><td class="server">${item.server}</td><td class="count">${item.count}</td></tr>`;
+                    rankingTableBody.innerHTML += row;
+                });
+            }
+
+            function createChart(top3Data) {
+                const labels = top3Data.map(item => item.server);
+                const counts = top3Data.map(item => item.count);
+                window.myChart = new Chart(chartCanvas, {
+                    type: 'bar',
+                    data: { labels, datasets: [{ label: 'Avis générés', data: counts, backgroundColor: ['rgba(191, 91, 63, 0.8)','rgba(191, 91, 63, 0.6)','rgba(191, 91, 63, 0.4)'], borderColor: ['rgba(191, 91, 63, 1)'], borderWidth: 1 }] },
+                    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Top 3 des serveurs', font: { family: "'Cormorant Garamond', serif", size: 18 } } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                });
+            }
         });
     </script>
 </body>
