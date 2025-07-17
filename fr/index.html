@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Votre Avis sur Siena Paris</title>
     <style>
-        /* Le CSS est identique, avec juste un style en plus pour la nouvelle section */
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600&display=swap');
         :root{--brand-color:#BF5B3F;--background-color:#FDFBF5;--surface-color:#FFFFFF;--text-primary:#2C2C2C;--text-secondary:#737373;--border-color:#EAE0D5;--font-serif:'Cormorant Garamond',serif;--font-sans:'Montserrat',sans-serif;}
         @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
@@ -36,9 +35,8 @@
         footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
-        /* NOUVEAU : Style pour le conteneur des qualités de service */
         #service-qualities-container{margin-top:15px;max-height:0;overflow:hidden;transition:max-height .5s ease-in-out,margin-top .5s ease-in-out}
-        #service-qualities-container.visible{max-height:200px} /* Hauteur suffisante pour les options */
+        #service-qualities-container.visible{max-height:200px}
     </style>
 </head>
 <body>
@@ -49,7 +47,6 @@
         <h1>Une soirée mémorable ?</h1>
         <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
         <form id="review-form">
-            
             <div class="tag-section">
                 <h3>Une occasion spéciale ?</h3>
                 <div class="tag-group" data-category="reason_for_visit">
@@ -65,32 +62,11 @@
                     </select>
                 </div>
             </div>
-
             <div class="tag-section">
                 <h3>Quel serveur souhaitez-vous féliciter ?</h3>
                 <select id="server-select" data-category="server_name">
-                    <option value="" selected>-- Choisissez un prénom --</option>
-                    <option value="Kewan">Kewan</option>
-                    <option value="Camille">Camille</option>
-                    <option value="Jerome">Jerome</option>
-                    <option value="Jules">Jules</option>
-                    <option value="Clément">Clément</option>
-                    <option value="Baptiste">Baptiste</option>
-                    <option value="Hazem">Hazem</option>
-                    <option value="Badr">Badr</option>
-                    <option value="Ahmed">Ahmed</option>
-                    <option value="Alejandro">Alejandro</option>
-                    <option value="Diana">Diana</option>
-                    <option value="Emilio">Emilio</option>
-                    <option value="Hyppolyte">Hyppolyte</option>
-                    <option value="Adama">Adama</option>
-                    <option value="Mohamed">Mohamed</option>
-                    <option value="Mathis">Mathis</option>
-                    <option value="Paris">Paris</option>
-                    <option value="Driss">Driss</option>
-                    <option value="Raphael">Raphael</option>
+                    <option value="">-- Choisissez un prénom --</option>
                 </select>
-                
                 <div id="service-qualities-container" class="dropdown-container">
                     <p style="font-size: 0.9rem; margin-top: 20px; margin-bottom: 10px;">Qu'avez-vous particulièrement apprécié ? (3 choix max)</p>
                     <div class="tag-group" data-category="service_qualities">
@@ -103,7 +79,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="tag-section" id="dishes-section-limiter">
                 <h3>Les saveurs qui vous ont marqué</h3>
                 <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p>
@@ -113,16 +88,13 @@
                 <h4 class="dish-subcategory">Pizze</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label><input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label><input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label><input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label></div>
                 <h4 class="dish-subcategory">Douceurs</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label><input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label><input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label><input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label></div>
             </div>
-            
             <div class="tag-section">
                 <h3>L'atmosphère du lieu</h3>
                 <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
                 <div class="tag-group" data-category="atmosphere"><input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label><input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label><input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label><input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label><input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label><input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label></div>
             </div>
-
             <button type="submit" class="button" id="generate-btn">Générer mon avis</button>
         </form>
-        
         <div id="loader" class="loader-container hidden">
             <div class="loader"></div>
             <span id="loader-text">Création en cours...</span>
@@ -137,118 +109,146 @@
         </footer>
     </div>
     <script>
-        // --- SÉLECTION DES ÉLÉMENTS DU DOM ---
-        const reviewForm = document.getElementById('review-form');
-        const generateBtn = document.getElementById('generate-btn');
-        const loaderContainer = document.getElementById('loader');
-        const loaderText = document.getElementById('loader-text');
-        const resultArea = document.getElementById('result-area');
-        const reviewText = document.getElementById('review-text');
-        const copyBtn = document.getElementById('copy-btn');
-        const eventRadios = document.querySelectorAll('input[name="event"]');
-        const birthdayDetailsContainer = document.getElementById('birthday_details_container');
-        const birthdayDetailsSelect = document.getElementById('birthday_details');
-        const serverSelect = document.getElementById('server-select');
-        // NOUVEAU : Sélection du conteneur des qualités de service
-        const serviceQualitiesContainer = document.getElementById('service-qualities-container');
-        const loadingMessages = ["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];
-        let messageInterval;
-        const limitConfig = { "atmosphere": 3, "dishes-section-limiter": 6, "service_qualities": 3 };
+        // On englobe tout le script dans un écouteur d'événement pour s'assurer que le HTML est chargé
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- SÉLECTION DES ÉLÉMENTS DU DOM ---
+            const reviewForm = document.getElementById('review-form');
+            const generateBtn = document.getElementById('generate-btn');
+            const loaderContainer = document.getElementById('loader');
+            const loaderText = document.getElementById('loader-text');
+            const resultArea = document.getElementById('result-area');
+            const reviewText = document.getElementById('review-text');
+            const copyBtn = document.getElementById('copy-btn');
+            const eventRadios = document.querySelectorAll('input[name="event"]');
+            const birthdayDetailsContainer = document.getElementById('birthday_details_container');
+            const birthdayDetailsSelect = document.getElementById('birthday_details');
+            const serverSelect = document.getElementById('server-select');
+            const serviceQualitiesContainer = document.getElementById('service-qualities-container');
+            const loadingMessages = ["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];
+            let messageInterval;
+            const limitConfig = { "atmosphere": 3, "dishes-section-limiter": 6, "service_qualities": 3 };
 
-        // --- GESTION DE L'AFFICHAGE DES QUALITÉS DE SERVICE ---
-        serverSelect.addEventListener('change', () => {
-            if (serverSelect.value) {
-                serviceQualitiesContainer.classList.add('visible'); // On utilise 'visible' pour l'animation
-            } else {
-                serviceQualitiesContainer.classList.remove('visible');
-            }
-        });
+            // --- CHARGEMENT DYNAMIQUE DES SERVEURS (VERSION CORRIGÉE) ---
+            async function loadServers() {
+                try {
+                    const response = await fetch('https://siena-api.onrender.com/api/public/servers');
+                    
+                    if (!response.ok) {
+                        throw new Error(`Le serveur a répondu avec une erreur: ${response.status}`);
+                    }
 
-        // --- GESTION DE LA LIMITE DE SÉLECTION ---
-        reviewForm.addEventListener('change', (e) => {
-            if (e.target.type !== 'checkbox') return;
-            const limiterSection = e.target.closest('#dishes-section-limiter, #service-qualities-container');
-            const simpleSection = e.target.closest('.tag-section');
-            let sectionId, limit;
-            if (limiterSection) {
-                sectionId = limiterSection.id || limiterSection.dataset.category;
-                limit = limitConfig[sectionId];
-            } else if (simpleSection) {
-                const category = simpleSection.querySelector('.tag-group')?.dataset.category;
-                if(limitConfig[category]) { sectionId = category; limit = limitConfig[category]; }
-            }
-            if (sectionId && limit) {
-                const container = document.getElementById(sectionId) || simpleSection;
-                const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
-                if (checkedInSection.length > limit) {
-                    e.target.checked = false;
-                    alert(`Vous ne pouvez sélectionner que ${limit} options maximum dans cette catégorie.`);
+                    const contentType = response.headers.get("content-type");
+                    if (!contentType || !contentType.includes("application/json")) {
+                        throw new Error("La réponse du serveur n'est pas au format JSON attendu.");
+                    }
+
+                    const servers = await response.json();
+                    
+                    serverSelect.innerHTML = '<option value="">-- Choisissez un prénom --</option>'; // Vide la liste
+                    servers.forEach(server => {
+                        const option = document.createElement('option');
+                        option.value = server.name;
+                        option.textContent = server.name;
+                        serverSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Impossible de charger la liste des serveurs:", error);
+                    // Optionnel : Afficher une alerte à l'utilisateur
+                    // alert("Erreur: Impossible de charger la liste des serveurs. Veuillez réessayer plus tard.");
                 }
             }
-        });
+            loadServers(); // On appelle la fonction au chargement de la page
 
-        eventRadios.forEach(radio => { radio.addEventListener('change', (e) => { e.target.id === 'event_birthday' ? birthdayDetailsContainer.classList.add('visible') : birthdayDetailsContainer.classList.remove('visible'); }); });
-
-        reviewForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const selectedTags = [];
-            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
-            
-            // On ajoute le serveur sélectionné
-            if (serverSelect.value) {
-                selectedTags.push({ category: serverSelect.dataset.category, value: serverSelect.value });
-            }
-            
-            checkedInputs.forEach(input => {
-                // On s'assure de ne pas ajouter le serveur une deuxième fois si la logique change
-                if(input.name !== 'server_name_placeholder') {
-                     selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
+            // --- GESTION DES ÉVÉNEMENTS ---
+            serverSelect.addEventListener('change', () => {
+                if (serverSelect.value) {
+                    serviceQualitiesContainer.classList.add('visible');
+                } else {
+                    serviceQualitiesContainer.classList.remove('visible');
                 }
             });
 
-            if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
-                selectedTags.push({ category: birthdayDetailsSelect.dataset.category, value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
-            }
+            reviewForm.addEventListener('change', (e) => {
+                if (e.target.type !== 'checkbox') return;
+                const limiterSection = e.target.closest('#dishes-section-limiter');
+                const serviceSection = e.target.closest('#service-qualities-container');
+                const simpleSection = e.target.closest('.tag-section');
+                let sectionId, limit;
 
-            if (selectedTags.length === 0) {
-                alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
-                return;
-            }
+                if (limiterSection) { sectionId = 'dishes-section-limiter'; }
+                else if (serviceSection) { sectionId = 'service_qualities'; }
+                else if (simpleSection) { sectionId = simpleSection.querySelector('.tag-group')?.dataset.category; }
 
-            reviewForm.classList.add('hidden');
-            loaderContainer.classList.remove('hidden');
-            let messageIndex = 0;
-            loaderText.textContent = loadingMessages[messageIndex];
-            messageInterval = setInterval(() => {
-                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                limit = limitConfig[sectionId];
+                if (sectionId && limit) {
+                    const container = document.getElementById(sectionId) || serviceSection || simpleSection;
+                    const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
+                    if (checkedInSection.length > limit) {
+                        e.target.checked = false;
+                        alert(`Vous ne pouvez sélectionner que ${limit} options maximum dans cette catégorie.`);
+                    }
+                }
+            });
+
+            eventRadios.forEach(radio => { radio.addEventListener('change', (e) => { e.target.id === 'event_birthday' ? birthdayDetailsContainer.classList.add('visible') : birthdayDetailsContainer.classList.remove('visible'); }); });
+
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const selectedTags = [];
+                
+                if (serverSelect.value) {
+                    selectedTags.push({ category: 'server_name', value: serverSelect.value });
+                }
+                
+                const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+                checkedInputs.forEach(input => {
+                    selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
+                });
+
+                if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
+                    selectedTags.push({ category: 'birthday_details', value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
+                }
+
+                if (selectedTags.length === 0) {
+                    alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
+                    return;
+                }
+
+                reviewForm.classList.add('hidden');
+                loaderContainer.classList.remove('hidden');
+                let messageIndex = 0;
                 loaderText.textContent = loadingMessages[messageIndex];
-            }, 2500);
-            try {
-                const generatedReview = await realApiCall(selectedTags);
-                reviewText.value = generatedReview;
-                resultArea.classList.remove('hidden');
-            } catch (error) {
-                console.error('Erreur lors de la génération :', error);
-                alert('Une erreur est survenue. Veuillez réessayer.');
-                reviewForm.classList.remove('hidden');
-            } finally {
-                clearInterval(messageInterval);
-                loaderContainer.classList.add('hidden');
+                messageInterval = setInterval(() => {
+                    messageIndex = (messageIndex + 1) % loadingMessages.length;
+                    loaderText.textContent = loadingMessages[messageIndex];
+                }, 2500);
+                try {
+                    const generatedReview = await realApiCall(selectedTags);
+                    reviewText.value = generatedReview;
+                    resultArea.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Erreur lors de la génération :', error);
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    reviewForm.classList.remove('hidden');
+                } finally {
+                    clearInterval(messageInterval);
+                    loaderContainer.classList.add('hidden');
+                }
+            });
+            
+            copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(reviewText.value).then(() => { copyBtn.textContent = 'Copié !'; setTimeout(() => { copyBtn.textContent = 'Copier le texte'; }, 2000); }); });
+
+            async function realApiCall(tags) {
+                const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
+                const lang = 'fr';
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lang: lang, tags: tags }), });
+                if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+                const data = await response.json();
+                return data.review;
             }
+
+            document.getElementById('copyright-year').textContent = new Date().getFullYear();
         });
-        
-        copyBtn.addEventListener('click', () => { navigator.clipboard.writeText(reviewText.value).then(() => { copyBtn.textContent = 'Copié !'; setTimeout(() => { copyBtn.textContent = 'Copier le texte'; }, 2000); }); });
-
-        async function realApiCall(tags) {
-            const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
-            const lang = 'fr';
-            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lang: lang, tags: tags }), });
-            if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-            const data = await response.json();
-            return data.review;
-        }
-
-        document.getElementById('copyright-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>

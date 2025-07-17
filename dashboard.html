@@ -76,12 +76,12 @@
             min-height: 1.2em; /* Pour éviter le décalage de la mise en page */
         }
 
-        .dashboard-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:800px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
+        .dashboard-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);width:100%;max-width:900px;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
         .header{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:20px;border-bottom:1px solid var(--border-color);padding-bottom:20px;}
         .header img{width:150px;height:auto;}
         .header h1{font-family:var(--font-serif);font-size:2.5rem;margin:0;color:var(--text-primary);}
-        .content{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;text-align:left;}
-        .ranking-section h2, .chart-section h2 {font-family:var(--font-serif);color:var(--brand-color);border-bottom:2px solid var(--border-color);padding-bottom:10px;margin-bottom:20px;}
+        .content{display:grid;grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));gap:40px;margin-top:30px;text-align:left;}
+        .section-title {font-family:var(--font-serif);color:var(--brand-color);border-bottom:2px solid var(--border-color);padding-bottom:10px;margin-bottom:20px;font-size:1.8rem;}
         table{width:100%;border-collapse:collapse;}
         th, td{padding:12px 15px;border-bottom:1px solid var(--border-color);text-align:left;}
         th{font-weight:600;font-size:0.9rem;text-transform:uppercase;color:var(--text-secondary);}
@@ -92,12 +92,15 @@
         td.count {text-align:right;font-weight:700;font-size:1.1rem;}
         #message-area {padding: 40px; text-align: center; font-size: 1.2rem; color: var(--text-secondary);}
         .hidden{display:none !important;}
+        .server-management-list {list-style: none; padding: 0; margin: 0;}
+        .server-management-list li {display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border-color);}
+        .server-management-list li:last-child {border-bottom: none;}
+        .delete-btn {background: none; border: none; color: #D32F2F; cursor: pointer; font-size: 1.2rem; padding: 5px;}
+        .add-server-form {display: flex; gap: 10px; margin-top: 20px;}
+        .add-server-form input {flex-grow: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;}
+        .add-server-form button {background-color: var(--brand-color); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer;}
 
-        @media (max-width: 768px) {
-            .content {grid-template-columns: 1fr;}
-            .dashboard-container {padding: 20px;}
-            .header {flex-direction: column; gap: 10px;}
-        }
+        @media (max-width:768px){.content{grid-template-columns:1fr}.dashboard-container{padding:20px}.header{flex-direction:column;gap:10px}}
     </style>
 </head>
 <body>
@@ -122,15 +125,23 @@
         <main id="main-content" class="hidden">
             <div class="content">
                 <section class="ranking-section">
-                    <h2>Classement Complet</h2>
+                    <h2 class="section-title">Classement des Avis</h2>
                     <table id="ranking-table">
-                        <thead><tr><th>#</th><th>Serveur</th><th style="text-align:right;">Avis Générés</th></tr></thead>
+                        <thead><tr><th>#</th><th>Serveur</th><th style="text-align:right;">Avis</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </section>
                 <section class="chart-section">
-                    <h2>Top 3</h2>
+                    <h2 class="section-title">Top 3</h2>
                     <canvas id="top3-chart"></canvas>
+                </section>
+                <section class="server-management-section">
+                    <h2 class="section-title">Gestion des Serveurs</h2>
+                    <ul id="server-management-list"></ul>
+                    <form id="add-server-form" class="add-server-form">
+                        <input type="text" id="new-server-name" placeholder="Prénom du nouveau serveur" required>
+                        <button type="submit">Ajouter</button>
+                    </form>
                 </section>
             </div>
         </main>
@@ -149,72 +160,115 @@
             const messageArea = document.getElementById('message-area');
             const rankingTableBody = document.querySelector('#ranking-table tbody');
             const chartCanvas = document.getElementById('top3-chart');
+            const serverList = document.getElementById('server-management-list');
+            const addServerForm = document.getElementById('add-server-form');
+            const newServerNameInput = document.getElementById('new-server-name');
             
+            let currentPassword = '';
+
             passwordForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const password = passwordInput.value;
-                if (password) {
+                currentPassword = passwordInput.value;
+                if (currentPassword) {
                     passwordError.textContent = '';
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Vérification...';
-                    fetchData(password);
+                    fetchAllData();
                 }
             });
+            
+            async function fetchWithAuth(url, options = {}) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
 
-            async function fetchData(pass) {
-                const apiUrl = 'https://siena-api.onrender.com/dashboard';
+                const headers = { ...options.headers, 'Authorization': 'Basic ' + btoa('admin:' + currentPassword) };
+                const response = await fetch(url, { ...options, headers, signal: controller.signal });
                 
+                clearTimeout(timeoutId);
+
+                if (response.status === 401) throw new Error("Mot de passe incorrect.");
+                if (!response.ok) throw new Error(`Erreur du serveur (status ${response.status})`);
+                return response.json();
+            }
+
+            async function fetchAllData() {
                 try {
-                    const response = await fetch(apiUrl, {
-                        headers: { 'Authorization': 'Basic ' + btoa('admin:' + pass) }
-                    });
+                    const [dashboardData, serversData] = await Promise.all([
+                        fetchWithAuth('https://siena-api.onrender.com/dashboard'),
+                        fetchWithAuth('https://siena-api.onrender.com/api/servers')
+                    ]);
 
-                    if (response.status === 401) {
-                        throw new Error("Mot de passe incorrect.");
-                    }
-                    if (!response.ok) {
-                        // Essaye de lire le message d'erreur du serveur, sinon utilise le statut
-                        let errorText = await response.text();
-                        throw new Error(errorText || `Erreur du serveur : ${response.statusText}`);
-                    }
-
-                    const data = await response.json();
-                    
-                    if (data.error) {
-                         throw new Error(data.error);
+                    if (dashboardData.error || serversData.error) {
+                        throw new Error(dashboardData.error || serversData.error);
                     }
                     
-                    if (data.length === 0) {
-                        displayMessage("Aucune donnée d'avis n'a encore été enregistrée.");
-                        return;
-                    }
-
-                    populateTable(data);
-                    createChart(data.slice(0, 3));
+                    populateDashboard(dashboardData);
+                    populateServerManagement(serversData);
                     
                     passwordModal.classList.add('hidden');
                     dashboardContent.classList.remove('hidden');
                     mainContent.classList.remove('hidden');
                     messageArea.classList.add('hidden');
-
                 } catch (error) {
                     passwordError.textContent = error.message;
                 } finally {
-                    // NOUVEAU : Assure que le bouton est toujours réactivé
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Valider';
                 }
             }
-
-            function displayMessage(message) {
-                mainContent.classList.add('hidden');
-                messageArea.classList.remove('hidden');
-                messageArea.textContent = message;
-                dashboardContent.classList.remove('hidden');
+            
+            function populateDashboard(data) {
+                populateTable(data);
+                if (window.myChart) window.myChart.destroy();
+                createChart(data.slice(0, 3));
             }
+
+            function populateServerManagement(servers) {
+                serverList.innerHTML = '';
+                servers.forEach(server => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${server.name}</span><button class="delete-btn" data-id="${server.id}">×</button>`;
+                    serverList.appendChild(li);
+                });
+            }
+
+            addServerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = newServerNameInput.value.trim();
+                if (!name) return;
+                try {
+                    await fetchWithAuth('https://siena-api.onrender.com/api/servers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: name })
+                    });
+                    newServerNameInput.value = '';
+                    fetchAllData();
+                } catch (error) {
+                    alert(`Erreur lors de l'ajout : ${error.message}`);
+                }
+            });
+
+            serverList.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const serverId = e.target.dataset.id;
+                    if (confirm('Êtes-vous sûr de vouloir supprimer ce serveur ?')) {
+                        try {
+                            await fetchWithAuth(`https://siena-api.onrender.com/api/servers/${serverId}`, { method: 'DELETE' });
+                            fetchAllData();
+                        } catch (error) {
+                            alert(`Erreur lors de la suppression : ${error.message}`);
+                        }
+                    }
+                }
+            });
 
             function populateTable(data) {
                 rankingTableBody.innerHTML = '';
+                if (data.length === 0) {
+                    rankingTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Aucun avis enregistré.</td></tr>';
+                    return;
+                }
                 data.forEach((item, index) => {
                     const row = `<tr><td class="rank">${index + 1}</td><td class="server">${item.server}</td><td class="count">${item.count}</td></tr>`;
                     rankingTableBody.innerHTML += row;
@@ -224,28 +278,10 @@
             function createChart(top3Data) {
                 const labels = top3Data.map(item => item.server);
                 const counts = top3Data.map(item => item.count);
-
-                new Chart(chartCanvas, {
+                window.myChart = new Chart(chartCanvas, {
                     type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Avis générés',
-                            data: counts,
-                            backgroundColor: ['rgba(191, 91, 63, 0.8)','rgba(191, 91, 63, 0.6)','rgba(191, 91, 63, 0.4)'],
-                            borderColor: ['rgba(191, 91, 63, 1)','rgba(191, 91, 63, 1)','rgba(191, 91, 63, 1)'],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            title: { display: true, text: 'Top 3 des serveurs', font: { family: "'Cormorant Garamond', serif", size: 18 } }
-                        },
-                        scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                    }
+                    data: { labels, datasets: [{ label: 'Avis générés', data: counts, backgroundColor: ['rgba(191, 91, 63, 0.8)','rgba(191, 91, 63, 0.6)','rgba(191, 91, 63, 0.4)'], borderColor: ['rgba(191, 91, 63, 1)'], borderWidth: 1 }] },
+                    options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false }, title: { display: true, text: 'Top 3 des serveurs', font: { family: "'Cormorant Garamond', serif", size: 18 } } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
                 });
             }
         });
