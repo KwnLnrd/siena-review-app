@@ -36,21 +36,21 @@
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
         
-        /* --- NOUVEAUX STYLES CORRIGÉS POUR LA ROULETTE --- */
-        .roulette-wrapper { padding: 10px 0; text-align: center; }
-        .roulette-container { position: relative; width: 320px; height: 320px; margin: 20px auto; }
-        .wheel-pointer { position: absolute; top: 50%; left: -10px; transform: translateY(-50%); width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 30px solid var(--brand-color); z-index: 10; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2)); }
-        .wheel-container { position: relative; width: 100%; height: 100%; border-radius: 50%; border: 8px solid #EAE0D5; box-shadow: 0 0 20px rgba(0,0,0,0.15), inset 0 0 15px rgba(0,0,0,0.1); transition: transform 7s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .wheel-background { width: 100%; height: 100%; border-radius: 50%; /* Le dégradé est généré par le script */ }
-        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; list-style: none; margin: 0; padding: 0; }
-        .wheel-labels li { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .wheel-labels li span { display: block; position: absolute; top: 50%; left: 50%; transform-origin: 0 0; text-align: center; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; color: var(--text-primary); }
-        .wheel-labels .gros-lot span { color: white; }
-        #spin-btn { margin-top: 20px; }
-        #spin-btn:disabled { background-color: var(--text-secondary); border-color: var(--text-secondary); cursor: not-allowed; }
-        .prize-result { margin-top: 20px; padding: 15px; border-radius: 10px; background-color: #F7F1E9; border: 1px solid var(--border-color); animation: fadeIn 1s; }
-        .prize-result h3 { margin: 0; font-family: var(--font-serif); color: var(--brand-color); }
-        .prize-result p { margin: 5px 0 0; font-size: 1rem; color: var(--text-primary); }
+        /* --- STYLES ROULETTE "EXPERT" --- */
+        .roulette-wrapper{padding:10px 0;text-align:center}
+        .roulette-container{position:relative;width:320px;height:320px;margin:20px auto}
+        .wheel-pointer{position:absolute;top:50%;left:-10px;transform:translateY(-50%);width:0;height:0;border-top:15px solid transparent;border-bottom:15px solid transparent;border-right:30px solid var(--brand-color);z-index:10;filter:drop-shadow(2px 2px 2px rgba(0,0,0,.2))}
+        .wheel-container{position:relative;width:100%;height:100%;border-radius:50%;border:8px solid #EAE0D5;box-shadow:0 0 20px rgba(0,0,0,.15),inset 0 0 15px rgba(0,0,0,.1);transition:transform 7s cubic-bezier(.2,.8,.2,1)}
+        .wheel-background{width:100%;height:100%;border-radius:50%}
+        .wheel-labels{position:absolute;top:0;left:0;width:100%;height:100%;list-style:none;margin:0;padding:0}
+        .wheel-labels .label{position:absolute;top:0;left:0;width:100%;height:100%;}
+        .wheel-labels .label-text{display:block;position:absolute;width:50%;top:50%;left:0;transform-origin:100% 50%;text-align:center;padding-right:20px;box-sizing:border-box;font-weight:600;font-size:.8rem;text-transform:uppercase;color:var(--text-primary)}
+        .wheel-labels .gros-lot .label-text,.wheel-labels .perdu .label-text{color:#fff}
+        #spin-btn{margin-top:20px}
+        #spin-btn:disabled{background-color:var(--text-secondary);border-color:var(--text-secondary);cursor:not-allowed}
+        .prize-result{margin-top:20px;padding:15px;border-radius:10px;background-color:#F7F1E9;border:1px solid var(--border-color);animation:fadeIn 1s}
+        .prize-result h3{margin:0;font-family:var(--font-serif);color:var(--brand-color)}
+        .prize-result p{margin:5px 0 0;font-size:1rem;color:var(--text-primary)}
     </style>
 </head>
 <body>
@@ -114,7 +114,6 @@
         reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
         copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
         
-        // --- NOUVELLE LOGIQUE CORRIGÉE POUR LA ROULETTE ---
         const prizes = [
             { id: 'champagne', text: 'UNE BOUTEILLE DE CHAMPAGNE', weight: 1 },
             { id: 'perdu', text: 'Perdu', weight: 81 },
@@ -140,31 +139,26 @@
         function createWheel() {
             wheelLabels.innerHTML = '';
             let gradientParts = [];
-            const segmentAngle = 360 / visualSegments.length; // 22.5deg
+            const segmentAngle = 360 / visualSegments.length;
 
             visualSegments.forEach((segment, index) => {
                 const angle = segmentAngle * index;
                 const nextAngle = segmentAngle * (index + 1);
 
-                // Crée le dégradé
                 const color = segment.id === 'champagne' ? 'var(--brand-color)' : (segment.id === 'perdu' ? '#BDBDBD' : (index % 2 === 0 ? '#FFFFFF' : '#F7F1E9'));
-                gradientParts.push(`${color} ${angle}deg ${nextAngle}deg`);
+                gradientParts.push(`${color} ${angle}deg, ${color} ${nextAngle}deg`);
 
-                // Crée le label
                 const li = document.createElement('li');
-                li.className = 'label';
+                li.className = 'label ' + segment.id;
 
                 const textSpan = document.createElement('span');
+                textSpan.className = 'label-text';
                 textSpan.textContent = segment.text;
-                
-                // Positionne et oriente le texte
+
                 const textAngle = angle + (segmentAngle / 2);
                 li.style.transform = `rotate(${textAngle}deg)`;
                 textSpan.style.transform = `translateX(60px) rotate(-90deg)`;
                 
-                if (segment.id === 'champagne') textSpan.style.color = 'white';
-                if (segment.id === 'perdu') textSpan.style.color = 'white';
-
                 li.appendChild(textSpan);
                 wheelLabels.appendChild(li);
             });
@@ -189,11 +183,11 @@
             const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 1;
             
             const segmentAngle = 360 / visualSegments.length;
-            const randomOffset = (segmentAngle / 2) * (Math.random() * 0.8 + 0.1); // Pour ne pas tomber pile sur la ligne
+            const randomOffset = (segmentAngle * 0.6) + (Math.random() * (segmentAngle * 0.2) - (segmentAngle * 0.1));
             const targetRotation = (targetSegmentIndex * segmentAngle) + randomOffset;
             
             const currentRotation = parseInt(wheelContainer.style.transform.replace(/[^0-9-]/g, '')) || 0;
-            const extraSpins = 5 * 360;
+            const extraSpins = 6 * 360;
             const finalAngle = extraSpins + targetRotation;
 
             wheelContainer.style.transform = `rotate(${finalAngle}deg)`;
@@ -208,7 +202,7 @@
                 prizeResultContainer.innerHTML = resultHTML;
                 prizeResultContainer.classList.remove('hidden');
                 spinBtn.style.display = 'none';
-            }, 7200); // Durée de l'animation + délai
+            }, 7200);
         });
 
         googleBtn.addEventListener('click', () => {
