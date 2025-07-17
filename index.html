@@ -131,57 +131,42 @@
                         fetch('https://siena-api.onrender.com/api/public/flavors'),
                         fetch('https://siena-api.onrender.com/api/public/atmospheres')
                     ]);
-
-                    // Vérification robuste des réponses
                     for (const response of [serversRes, flavorsRes, atmospheresRes]) {
-                        if (!response.ok) {
-                            throw new Error(`Le serveur a répondu avec une erreur: ${response.status}`);
-                        }
+                        if (!response.ok) throw new Error(`Erreur réseau: ${response.status}`);
                         const contentType = response.headers.get("content-type");
-                        if (!contentType || !contentType.includes("application/json")) {
-                            throw new TypeError("La réponse du serveur n'est pas au format JSON. Le backend est peut-être en erreur ou en cours de démarrage.");
-                        }
+                        if (!contentType || !contentType.includes("application/json")) throw new TypeError("Réponse invalide du serveur.");
                     }
-                    
                     const servers = await serversRes.json();
                     const flavors = await flavorsRes.json();
                     const atmospheres = await atmospheresRes.json();
 
-                    // Peuplement des serveurs
-                    serverSelect.innerHTML = '<option value="">-- Choisissez un prénom --</option>';
                     servers.forEach(server => {
                         const option = document.createElement('option');
-                        option.value = server.name;
-                        option.textContent = server.name;
+                        option.value = server.name; option.textContent = server.name;
                         serverSelect.appendChild(option);
                     });
 
-                    // Peuplement des saveurs
                     dishesContainer.innerHTML = '';
                     for (const category in flavors) {
-                        const subcategoryTitle = document.createElement('h4');
-                        subcategoryTitle.className = 'dish-subcategory';
-                        subcategoryTitle.textContent = category;
-                        dishesContainer.appendChild(subcategoryTitle);
+                        const title = document.createElement('h4');
+                        title.className = 'dish-subcategory'; title.textContent = category;
+                        dishesContainer.appendChild(title);
                         const group = document.createElement('div');
-                        group.className = 'tag-group';
-                        group.dataset.category = 'liked_dishes';
+                        group.className = 'tag-group'; group.dataset.category = 'liked_dishes';
                         flavors[category].forEach(flavor => {
                             group.innerHTML += `<input type="checkbox" id="dish_${flavor.id}" value="${flavor.text}"><label for="dish_${flavor.id}">${flavor.text}</label>`;
                         });
                         dishesContainer.appendChild(group);
                     }
 
-                    // Peuplement de l'atmosphère
                     atmosphereContainer.innerHTML = '';
                     atmospheres.forEach(atmosphere => {
                         atmosphereContainer.innerHTML += `<input type="checkbox" id="atmo_${atmosphere.id}" value="${atmosphere.text}"><label for="atmo_${atmosphere.id}">${atmosphere.text}</label>`;
                     });
 
                 } catch (error) {
-                    console.error("Erreur de chargement des options dynamiques:", error);
-                    // Affiche un message clair à l'utilisateur
-                    reviewForm.innerHTML = `<p style="color: var(--text-secondary); text-align: center;">Impossible de charger les options pour le moment.<br>Le serveur est peut-être en cours de démarrage. Veuillez rafraîchir la page dans une minute.</p>`;
+                    console.error("Erreur de chargement des options:", error);
+                    reviewForm.innerHTML = `<p style="color: var(--text-secondary); text-align: center;">Impossible de charger les options.<br>Le serveur est peut-être en cours de démarrage. Veuillez rafraîchir la page dans une minute.</p>`;
                 }
             }
             loadDynamicOptions();
@@ -194,20 +179,11 @@
                 if (e.target.type !== 'checkbox') return;
                 let container, limitKey;
                 const limiterSection = e.target.closest('#dishes-section-limiter');
-                const serviceSection = e.target.closest('#service-qualities-container');
-                const simpleSection = e.target.closest('.tag-section');
-                if (limiterSection) {
-                    container = limiterSection;
-                    limitKey = 'dishes-section-limiter';
-                } else if (serviceSection) {
-                    container = serviceSection;
-                    limitKey = 'service_qualities';
-                } else if (simpleSection) {
-                    const tagGroup = simpleSection.querySelector('.tag-group');
-                    if (tagGroup) {
-                        limitKey = tagGroup.dataset.category;
-                        container = simpleSection;
-                    }
+                if (limiterSection) { container = limiterSection; limitKey = 'dishes-section-limiter'; }
+                else {
+                    container = e.target.closest('.tag-section');
+                    const tagGroup = container.querySelector('.tag-group');
+                    if (tagGroup) limitKey = tagGroup.dataset.category;
                 }
                 const limit = limitConfig[limitKey];
                 if (container && limit) {
@@ -228,9 +204,7 @@
                 }
                 document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(input => {
                     const group = input.closest('.tag-group');
-                    if (group) {
-                        selectedTags.push({ category: group.dataset.category, value: input.value });
-                    }
+                    if(group) selectedTags.push({ category: group.dataset.category, value: input.value });
                 });
                 if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
                     selectedTags.push({ category: 'birthday_details', value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
