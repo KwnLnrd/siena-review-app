@@ -6,3 +6,6 @@
 
 # Dossiers de cache Python
 __pycache__/
+
+# Ignorer la base de données de développement locale
+reviews.db
