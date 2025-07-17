@@ -36,45 +36,20 @@
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
         
-        /* --- NOUVEAUX STYLES POUR LA ROULETTE --- */
-        .roulette-wrapper{padding:10px 0; text-align:center;}
-        .roulette-container{position:relative;width:300px;height:300px;margin:20px auto;border-radius:50%;border:8px solid #EAE0D5;box-shadow:0 0 20px rgba(0,0,0,0.15);overflow:hidden;}
-        .pointer{position:absolute;top:50%;left:-20px;transform:translateY(-50%);width:0;height:0;border-top:20px solid transparent;border-bottom:20px solid transparent;border-right:30px solid var(--brand-color);z-index: 10;}
-        .wheel{width:100%;height:100%;border-radius:50%;position:relative;transition:transform 7s cubic-bezier(0.3, 1, 0.4, 1);transform:rotate(0deg);}
-        .wheel-segment{position:absolute;width:50%;height:50%;transform-origin:100% 100%;overflow:hidden;}
-        /* Positionne chaque segment de 22.5deg (360/16) */
-        .wheel-segment:nth-child(1){transform:rotate(0deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(2){transform:rotate(22.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(3){transform:rotate(45deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(4){transform:rotate(67.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(5){transform:rotate(90deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(6){transform:rotate(112.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(7){transform:rotate(135deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(8){transform:rotate(157.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(9){transform:rotate(180deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(10){transform:rotate(202.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(11){transform:rotate(225deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(12){transform:rotate(247.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(13){transform:rotate(270deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(14){transform:rotate(292.5deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(15){transform:rotate(315deg) skewY(-67.5deg);}
-        .wheel-segment:nth-child(16){transform:rotate(337.5deg) skewY(-67.5deg);}
-        
-        .segment-content{position:absolute;left:-100%;width:200%;height:200%;text-align:center;transform:skewY(67.5deg) rotate(11.25deg);padding-top:20px;color:var(--text-primary);font-weight:600;font-size:0.8rem;}
-        
-        /* Couleurs des segments en alternance */
-        .wheel-segment:nth-child(odd) { background-color: #F7F1E9; }
-        .wheel-segment:nth-child(even) { background-color: #FFFFFF; }
-        
-        /* Couleurs spéciales pour les prix */
-        .wheel-segment.perdu .segment-content { color: var(--text-secondary); }
-        .wheel-segment.perdu { background-color: #E0E0E0; }
-        .wheel-segment.gros-lot { background-color: var(--brand-color); }
-        .wheel-segment.gros-lot .segment-content { color: white; font-weight: bold; }
-        
-        .prize-result{margin-top:20px;padding:15px;border-radius:10px;background-color:#F7F1E9;border:1px solid var(--border-color);animation:fadeIn 1s;}
-        .prize-result h3{margin:0;font-family:var(--font-serif);color:var(--brand-color);}
-        .prize-result p{margin:5px 0 0;font-size:1rem;color:var(--text-primary);}
+        /* --- NOUVEAUX STYLES PROFESSIONNELS POUR LA ROULETTE --- */
+        .roulette-wrapper { padding: 10px 0; text-align: center; }
+        .roulette-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+        .wheel-pointer { position: absolute; top: 50%; left: -10px; transform: translateY(-50%); width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 30px solid var(--brand-color); z-index: 10; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2)); }
+        .wheel-container { position: relative; width: 100%; height: 100%; border-radius: 50%; border: 8px solid #EAE0D5; box-shadow: 0 0 20px rgba(0,0,0,0.15), inset 0 0 15px rgba(0,0,0,0.1); transition: transform 7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .wheel-background { width: 100%; height: 100%; border-radius: 50%; background-image: conic-gradient(from -11.25deg, #FDFBF5 0% 6.25%, #FFFFFF 6.25% 12.5%, #FDFBF5 12.5% 18.75%, #FFFFFF 18.75% 25%, #FDFBF5 25% 31.25%, #FFFFFF 31.25% 37.5%, #FDFBF5 37.5% 43.75%, #FFFFFF 43.75% 50%, #FDFBF5 50% 56.25%, #FFFFFF 56.25% 62.5%, #FDFBF5 62.5% 68.75%, #FFFFFF 68.75% 75%, #FDFBF5 75% 81.25%, #FFFFFF 81.25% 87.5%, #FDFBF5 87.5% 93.75%, #FFFFFF 93.75% 100%); }
+        .wheel-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; }
+        .wheel-labels .label { position: absolute; top: 50%; left: 50%; width: 50%; height: 50px; transform-origin: 0 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+        .wheel-labels .label span { display: block; padding-left: 20px; }
+        #spin-btn { margin-top: 20px; }
+        #spin-btn:disabled { background-color: var(--text-secondary); border-color: var(--text-secondary); cursor: not-allowed; }
+        .prize-result { margin-top: 20px; padding: 15px; border-radius: 10px; background-color: #F7F1E9; border: 1px solid var(--border-color); animation: fadeIn 1s; }
+        .prize-result h3 { margin: 0; font-family: var(--font-serif); color: var(--brand-color); }
+        .prize-result p { margin: 5px 0 0; font-size: 1rem; color: var(--text-primary); }
     </style>
 </head>
 <body>
@@ -108,9 +83,11 @@
         <div id="roulette-section" class="roulette-wrapper hidden">
             <h3>Tentez votre chance !</h3>
             <div class="roulette-container">
-                <div class="pointer"></div>
-                <div class="wheel" id="wheel">
-                    </div>
+                <div class="wheel-pointer"></div>
+                <div class="wheel-container" id="wheel">
+                    <div class="wheel-background"></div>
+                    <ul class="wheel-labels" id="wheel-labels"></ul>
+                </div>
             </div>
             <button id="spin-btn" class="button">Lancer la roue</button>
             <div id="prize-result-container" class="hidden"></div>
@@ -123,31 +100,25 @@
 
     <script>
         // --- SCRIPT COMPLET AVEC LA NOUVELLE LOGIQUE DE ROULETTE ---
-
-        // --- SÉLECTION DES ÉLÉMENTS DU DOM ---
         const reviewForm = document.getElementById('review-form');
         const resultArea = document.getElementById('result-area');
         const googleBtn = document.getElementById('google-btn');
         const rouletteSection = document.getElementById('roulette-section');
         const wheel = document.getElementById('wheel');
+        const wheelLabels = document.getElementById('wheel-labels');
         const spinBtn = document.getElementById('spin-btn');
         const prizeResultContainer = document.getElementById('prize-result-container');
         const generateBtn=document.getElementById("generate-btn"),loaderContainer=document.getElementById("loader"),loaderText=document.getElementById("loader-text"),reviewText=document.getElementById("review-text"),copyBtn=document.getElementById("copy-btn"),eventRadios=document.querySelectorAll('input[name="event"]'),birthdayDetailsContainer=document.getElementById("birthday_details_container"),birthdayDetailsSelect=document.getElementById("birthday_details"),loadingMessages=["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];let messageInterval;const limitConfig={service_kewan:3,atmosphere:3,"dishes-section-limiter":6};
         
-        // --- GESTION DES LIMITES DE SÉLECTION (inchangée)---
         reviewForm.addEventListener("change",e=>{if("checkbox"!==e.target.type)return;const t=e.target.closest("#dishes-section-limiter"),a=e.target.closest(".tag-section");let n,i;if(t?(n="dishes-section-limiter",i=limitConfig[n]):a){const e=a.querySelector(".tag-group")?.dataset.category;limitConfig[e]&&(n=e,i=limitConfig[n])}if(n&&i){const t=document.getElementById(n)||a;t.querySelectorAll('input[type="checkbox"]:checked').length>i&&(e.target.checked=!1,alert(`Vous ne pouvez sélectionner que ${i} options maximum dans cette catégorie.`))}});
         eventRadios.forEach(e=>{e.addEventListener("change",e=>{e.target.id==="event_birthday"?birthdayDetailsContainer.classList.add("visible"):birthdayDetailsContainer.classList.remove("visible")})});
-        
-        // --- GESTION DE LA SOUMISSION DU FORMULAIRE (inchangée) ---
         reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
         copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
-
+        
         // --- NOUVELLE LOGIQUE POUR LA ROULETTE ---
-
-        // Configuration des prix (logique) et des segments (visuel)
         const prizes = [
             { id: 'champagne', text: 'UNE BOUTEILLE DE CHAMPAGNE', weight: 1 },
-            { id: 'perdu', text: 'PERDU', weight: 81 },
+            { id: 'perdu', text: 'Perdu', weight: 81 },
             { id: 'cafe', text: 'UN CAFÉ OFFERT', weight: 4 },
             { id: 'soft', text: 'UN SOFT OFFERT', weight: 4 },
             { id: 'entree', text: 'UNE ENTRÉE OFFERTE', weight: 3 },
@@ -156,9 +127,8 @@
             { id: 'vin', text: 'UN VERRE DE VIN OFFERT', weight: 2 }
         ];
 
-        // 16 segments visuels, avec les paires en face (i et i+8)
         const visualSegments = [
-            { id: 'gros-lot', text: 'CHAMPAGNE' }, // 0
+            { id: 'champagne', text: 'CHAMPAGNE' }, // 0
             { id: 'perdu', text: 'Perdu' },         // 1
             { id: 'cocktail', text: 'Cocktail' },   // 2
             { id: 'perdu', text: 'Perdu' },         // 3
@@ -166,31 +136,32 @@
             { id: 'entree', text: 'Entrée' },       // 5
             { id: 'dessert', text: 'Dessert' },     // 6
             { id: 'perdu', text: 'Perdu' },         // 7
-            { id: 'cafe', text: 'Café' },           // 8 (en face de Champagne)
-            { id: 'soft', text: 'Soft' },           // 9 (en face de perdu)
-            { id: 'cocktail', text: 'Cocktail' },   // 10 (en face de cocktail)
-            { id: 'cafe', text: 'Café' },           // 11 (en face de perdu)
-            { id: 'vin', text: 'Verre de Vin' },    // 12 (en face de vin)
-            { id: 'entree', text: 'Entrée' },       // 13 (en face d'entrée')
-            { id: 'dessert', text: 'Dessert' },     // 14 (en face de dessert)
-            { id: 'soft', text: 'Soft' }            // 15 (en face de perdu)
+            { id: 'cocktail', text: 'Cocktail' },   // 8 (en face de 0, mais on met un autre lot)
+            { id: 'soft', text: 'Soft' },           // 9 
+            { id: 'vin', text: 'Verre de Vin' },    // 10
+            { id: 'cafe', text: 'Café' },           // 11
+            { id: 'dessert', text: 'Dessert' },     // 12
+            { id: 'entree', text: 'Entrée' },       // 13
+            { id: 'soft', text: 'Soft' },           // 14
+            { id: 'cafe', text: 'Café' }            // 15
         ];
 
-        // Créer les segments de la roue dynamiquement
-        visualSegments.forEach((segment, index) => {
-            const segmentEl = document.createElement('div');
-            segmentEl.className = 'wheel-segment';
-            if (segment.id === 'gros-lot') segmentEl.classList.add('gros-lot');
-            if (segment.id === 'perdu') segmentEl.classList.add('perdu');
-            
-            const contentEl = document.createElement('div');
-            contentEl.className = 'segment-content';
-            contentEl.textContent = segment.text;
-            segmentEl.appendChild(contentEl);
-            wheel.appendChild(segmentEl);
-        });
-        
-        // Tirage au sort pondéré
+        function createWheel() {
+            wheelLabels.innerHTML = ''; // Vide la roue avant de la recréer
+            const segmentAngle = 360 / visualSegments.length;
+            visualSegments.forEach((segment, index) => {
+                const li = document.createElement('li');
+                li.className = 'label';
+                li.style.transform = `rotate(${segmentAngle * index}deg) translate(75px)`;
+                
+                const span = document.createElement('span');
+                span.textContent = segment.text;
+                span.style.transform = `rotate(90deg)`;
+                li.appendChild(span);
+                wheelLabels.appendChild(li);
+            });
+        }
+
         function getWeightedRandomPrize() {
             const weightedList = [];
             prizes.forEach(prize => {
@@ -203,39 +174,55 @@
 
         spinBtn.addEventListener('click', () => {
             spinBtn.disabled = true;
-            prizeResultContainer.classList.add('hidden'); // Cache le résultat précédent
+            prizeResultContainer.classList.add('hidden');
             
             const wonPrize = getWeightedRandomPrize();
             
-            // Trouve tous les segments visuels correspondant au prix gagné
-            const possibleSegments = visualSegments.map((seg, i) => seg.id.includes(wonPrize.id) ? i : -1).filter(i => i !== -1);
-            const targetSegmentIndex = possibleSegments[Math.floor(Math.random() * possibleSegments.length)];
-            
-            const segmentAngle = 360 / 16;
-            const randomOffset = (Math.random() * 0.8 + 0.1) * segmentAngle; // Pour atterrir au milieu du segment
-            const targetAngle = (targetSegmentIndex * segmentAngle) + randomOffset;
-            
-            const extraSpins = 6 * 360; // Pour une belle animation longue
-            const finalAngle = extraSpins + (360 - targetAngle); // On tourne dans le sens inverse du texte
+            const possibleSegments = [];
+            visualSegments.forEach((seg, i) => {
+                if (seg.id === wonPrize.id) {
+                    possibleSegments.push(i);
+                }
+            });
 
-            wheel.style.transform = `rotate(${finalAngle}deg)`;
+            const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 0;
+            
+            const segmentAngle = 360 / visualSegments.length;
+            const targetAngle = (targetSegmentIndex * segmentAngle) + (segmentAngle / 2) - 90; // -90 pour aligner avec le pointeur à gauche
+            
+            const extraSpins = 5 * 360;
+            const finalAngle = extraSpins + targetAngle;
+
+            wheel.style.transform = `rotate(-${finalAngle}deg)`;
 
             setTimeout(() => {
-                prizeResultContainer.innerHTML = `
-                    <div class="prize-result">
-                        <h3>Félicitations !</h3>
-                        <p>${wonPrize.text}</p>
-                        <p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p>
-                    </div>
-                `;
+                let resultHTML;
+                if (wonPrize.id === 'perdu') {
+                    resultHTML = `
+                        <div class="prize-result">
+                            <h3>Dommage...</h3>
+                            <p>Ce n'est pas pour cette fois, mais merci beaucoup pour votre avis !</p>
+                        </div>
+                    `;
+                } else {
+                    resultHTML = `
+                        <div class="prize-result">
+                            <h3>Félicitations !</h3>
+                            <p>Vous avez gagné : <strong>${wonPrize.text}</strong></p>
+                            <p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p>
+                        </div>
+                    `;
+                }
+                prizeResultContainer.innerHTML = resultHTML;
                 prizeResultContainer.classList.remove('hidden');
-                spinBtn.style.display = 'none'; // Cache le bouton après le premier tour
-            }, 7200); // Doit être plus long que la durée de la transition CSS
+                spinBtn.style.display = 'none';
+            }, 7200);
         });
 
         googleBtn.addEventListener('click', () => {
             resultArea.classList.add('hidden');
             rouletteSection.classList.remove('hidden');
+            createWheel(); // Crée la roue uniquement quand on l'affiche
         });
 
         async function realApiCall(tags) {
