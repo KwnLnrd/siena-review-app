@@ -13,27 +13,22 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app) 
 
-# --- CONFIGURATION INTELLIGENTE DE LA BASE DE DONNÉES (VERSION CORRIGÉE) ---
+# --- CONFIGURATION INTELLIGENTE DE LA BASE DE DONNÉES ---
 database_url = os.getenv('DATABASE_URL')
 
-# On vérifie si on est en production (sur Render)
 if database_url:
-    # Render utilise "postgres://", mais SQLAlchemy préfère "postgresql://"
     if database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://", "postgresql://", 1)
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 else:
-    # Si on est en local, on utilise une base de données simple (fichier SQLite)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///reviews.db'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Le mot de passe pour votre tableau de bord (chargé depuis .env)
 DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'default_password')
 
 db = SQLAlchemy(app)
 
-# --- MODÈLE DE LA BASE DE DONNÉES (inchangé) ---
+# --- MODÈLE DE LA BASE DE DONNÉES ---
 class GeneratedReview(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     server_name = db.Column(db.String(80), nullable=False)
@@ -42,7 +37,15 @@ class GeneratedReview(db.Model):
     def __repr__(self):
         return f'<Review for {self.server_name}>'
 
-# --- SÉCURISATION DU TABLEAU DE BORD (inchangée) ---
+# --- NOUVELLE COMMANDE POUR INITIALISER LA BASE DE DONNÉES ---
+@app.cli.command("init-db")
+def init_db_command():
+    """Crée les tables de la base de données."""
+    with app.app_context():
+        db.create_all()
+    print("Base de données initialisée avec succès.")
+
+# --- SÉCURISATION DU TABLEAU DE BORD ---
 def password_protected(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -54,7 +57,7 @@ def password_protected(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# --- ROUTE DE GÉNÉRATION D'AVIS (inchangée) ---
+# --- ROUTE DE GÉNÉRATION D'AVIS ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
     try:
@@ -79,10 +82,7 @@ def generate_review():
         elif category == 'birthday_details': event += f" ({value})"
         elif category == 'liked_dishes': liked_dishes.append(value)
         elif category == 'atmosphere': atmosphere_notes.append(value)
-    prompt_details = "Points que le client a aimés : "
-    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}. "
-    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}. "
-    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}. "
+    
     if prenom_serveur != "notre serveur(se)":
         try:
             new_review_record = GeneratedReview(server_name=prenom_serveur)
@@ -91,6 +91,12 @@ def generate_review():
         except Exception as e:
             print(f"Erreur lors de l'enregistrement en base de données : {e}")
             db.session.rollback()
+
+    prompt_details = "Points que le client a aimés : "
+    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}. "
+    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}. "
+    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}. "
+    
     system_prompt = f"""
     Tu es un client du restaurant italien chic Siena Paris, très satisfait, qui rédige un avis sur Google.
     Rédige un avis court (2-4 phrases), chaleureux et authentique.
@@ -108,7 +114,7 @@ def generate_review():
         print(f"Erreur lors de l'appel à OpenAI: {e}")
         return jsonify({"error": "Erreur lors de la génération de l'avis."}), 500
 
-# --- ROUTE DU TABLEAU DE BORD (inchangée) ---
+# --- ROUTE DU TABLEAU DE BORD ---
 @app.route('/dashboard')
 @password_protected
 def dashboard():
@@ -122,6 +128,5 @@ def dashboard():
 # --- Lancement de l'application ---
 if __name__ == '__main__':
     with app.app_context():
-        # Crée les tables de la base de données si elles n'existent pas
         db.create_all() 
     app.run(port=5000, debug=True)
