@@ -8,18 +8,21 @@ from sqlalchemy import func
 from datetime import datetime
 from functools import wraps
 
-# --- CONFIGURATION INITIALE ---
+# --- CONFIGURATION ---
 load_dotenv()
 app = Flask(__name__)
 CORS(app) 
 
-# --- CONFIGURATION DE LA BASE DE DONNÉES ---
+# --- CONFIGURATION DE LA BASE DE DONNÉES (VERSION FINALE) ---
 database_url = os.getenv('DATABASE_URL')
 if database_url and database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///reviews.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url.replace("postgres://", "postgresql://", 1)
+else:
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'local_reviews.db')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'default_password')
+DASHBOARD_PASSWORD = os.getenv('DASHBOARD_PASSWORD', 'siena_secret_password')
 db = SQLAlchemy(app)
 
 # --- MODÈLES DE LA BASE DE DONNÉES ---
@@ -47,11 +50,20 @@ def password_protected(f):
     def decorated_function(*args, **kwargs):
         auth = request.authorization
         if not auth or not (auth.username == 'admin' and auth.password == DASHBOARD_PASSWORD):
-            return 'Could not verify your access level.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'}
+            return 'Accès non autorisé.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'}
         return f(*args, **kwargs)
     return decorated_function
 
+# --- COMMANDE D'INITIALISATION DB ---
+@app.cli.command("init-db")
+def init_db_command():
+    """Crée les tables de la base de données."""
+    with app.app_context():
+        db.create_all()
+    print("Base de données initialisée avec succès.")
+
 # --- ROUTES API (PROTÉGÉES) POUR LA GESTION ---
+# (Le code de gestion des serveurs et des options reste le même)
 @app.route('/api/servers', methods=['GET', 'POST'])
 @password_protected
 def manage_servers():
@@ -102,7 +114,8 @@ def delete_option(option_type, option_id):
     db.session.commit()
     return jsonify({"success": True})
 
-# --- ROUTES API PUBLIQUES POUR LES PAGES D'AVIS ---
+# --- ROUTES API PUBLIQUES ---
+# (Les routes publiques restent les mêmes)
 @app.route('/api/public/servers')
 def get_public_servers():
     servers = Server.query.order_by(Server.name).all()
@@ -122,21 +135,22 @@ def get_public_atmospheres():
     atmospheres = AtmosphereOption.query.order_by(AtmosphereOption.id).all()
     return jsonify([{"id": a.id, "text": a.text} for a in atmospheres])
 
-# --- ROUTE DE GÉNÉRATION D'AVIS ET DASHBOARD ---
+
+# --- ROUTE DE GÉNÉRATION D'AVIS ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
     # Le code de cette fonction est inchangé
     pass
 
+# --- ROUTE DU TABLEAU DE BORD ---
 @app.route('/dashboard')
 @password_protected
 def dashboard():
     # Le code de cette fonction est inchangé
     pass
 
-# --- NOUVEAU : INITIALISATION AUTOMATIQUE DE LA BASE DE DONNÉES ---
-with app.app_context():
-    db.create_all()
-
+# --- Lancement de l'application ---
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all() 
     app.run(port=5000, debug=True)
