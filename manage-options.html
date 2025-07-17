@@ -88,10 +88,135 @@
     </div>
 
     <script>
-        // Le script de cette page est très similaire à celui de la gestion des serveurs,
-        // mais adapté pour gérer deux types d'options.
-        // ... (Le code complet est omis pour la concision, mais il gère l'authentification,
-        // le chargement des listes, l'ajout et la suppression via les nouvelles routes API)
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordModal = document.getElementById('password-modal');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const passwordError = document.getElementById('password-error');
+            const submitBtn = document.getElementById('submit-password-btn');
+            const mainContent = document.getElementById('main-content');
+            
+            const flavorsList = document.getElementById('flavors-list');
+            const addFlavorForm = document.getElementById('add-flavor-form');
+            const newFlavorTextInput = document.getElementById('new-flavor-text');
+            const newFlavorCategoryInput = document.getElementById('new-flavor-category');
+
+            const atmospheresList = document.getElementById('atmospheres-list');
+            const addAtmosphereForm = document.getElementById('add-atmosphere-form');
+            const newAtmosphereTextInput = document.getElementById('new-atmosphere-text');
+            
+            let currentPassword = '';
+
+            const storedPassword = sessionStorage.getItem('dashboardPassword');
+            if (storedPassword) {
+                passwordModal.classList.add('hidden');
+                currentPassword = storedPassword;
+                loadAllOptions();
+            }
+
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                currentPassword = passwordInput.value;
+                if (currentPassword) {
+                    passwordError.textContent = '';
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Vérification...';
+                    loadAllOptions();
+                }
+            });
+
+            async function fetchWithAuth(url, options = {}) {
+                const headers = { ...options.headers, 'Authorization': 'Basic ' + btoa('admin:' + currentPassword) };
+                const response = await fetch(url, { ...options, headers });
+                if (response.status === 401) {
+                    sessionStorage.removeItem('dashboardPassword');
+                    throw new Error("Mot de passe incorrect.");
+                }
+                if (!response.ok) throw new Error(`Erreur du serveur (status ${response.status})`);
+                return response.json();
+            }
+
+            async function loadAllOptions() {
+                try {
+                    const [flavors, atmospheres] = await Promise.all([
+                        fetchWithAuth('https://siena-api.onrender.com/api/options/flavors'),
+                        fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres')
+                    ]);
+                    
+                    sessionStorage.setItem('dashboardPassword', currentPassword);
+                    
+                    populateList(flavorsList, flavors, 'flavors');
+                    populateList(atmospheresList, atmospheres, 'atmospheres');
+
+                    passwordModal.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                } catch (error) {
+                    passwordModal.classList.remove('hidden');
+                    mainContent.classList.add('hidden');
+                    passwordError.textContent = error.message;
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Valider';
+                }
+            }
+
+            function populateList(listElement, items, type) {
+                listElement.innerHTML = '';
+                if (items.length === 0) {
+                    listElement.innerHTML = '<li>Aucune option enregistrée.</li>';
+                    return;
+                }
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${item.text} ${item.category ? `(${item.category})` : ''}</span><button class="delete-btn" data-id="${item.id}" data-type="${type}" title="Supprimer">×</button>`;
+                    listElement.appendChild(li);
+                });
+            }
+
+            addFlavorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = newFlavorTextInput.value.trim();
+                const category = newFlavorCategoryInput.value;
+                if (!text || !category) return;
+                try {
+                    await fetchWithAuth('https://siena-api.onrender.com/api/options/flavors', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text, category })
+                    });
+                    newFlavorTextInput.value = '';
+                    loadAllOptions();
+                } catch (error) { alert(`Erreur : ${error.message}`); }
+            });
+
+            addAtmosphereForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = newAtmosphereTextInput.value.trim();
+                if (!text) return;
+                try {
+                    await fetchWithAuth('https://siena-api.onrender.com/api/options/atmospheres', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text })
+                    });
+                    newAtmosphereTextInput.value = '';
+                    loadAllOptions();
+                } catch (error) { alert(`Erreur : ${error.message}`); }
+            });
+
+            document.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('delete-btn')) {
+                    const id = e.target.dataset.id;
+                    const type = e.target.dataset.type;
+                    if (confirm('Êtes-vous sûr de vouloir supprimer cette option ?')) {
+                        try {
+                            await fetchWithAuth(`https://siena-api.onrender.com/api/options/${type}/${id}`, { method: 'DELETE' });
+                            loadAllOptions();
+                        } catch (error) { alert(`Erreur : ${error.message}`); }
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
