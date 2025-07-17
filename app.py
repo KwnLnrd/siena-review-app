@@ -6,8 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-# Configure CORS pour n'autoriser que les requêtes de votre site Netlify
-CORS(app, origins="https://sienarestaurant.netlify.app")
+CORS(app) 
 
 try:
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -27,34 +26,48 @@ def generate_review():
     lang = data.get('lang', 'fr')
     selected_tags = data.get('tags', [])
 
-    # On utilise maintenant des identifiants simples pour plus de robustesse
-    prenom_serveur = "Kewan"
-    prompt_details = ""
+    # --- NOUVELLE LOGIQUE AMÉLIORÉE ---
+    prenom_serveur = ""
+    service_qualities = []
     event = "une simple visite"
-    
-    # Dictionnaires pour recréer de jolies catégories pour l'IA
-    category_map = {
-        "service_kewan": f"Le service de {prenom_serveur}",
-        "liked_dishes": "Les plats appréciés",
-        "atmosphere": "L'ambiance"
-    }
+    liked_dishes = []
+    atmosphere_notes = []
 
+    # On trie toutes les informations reçues
     for tag in selected_tags:
-        category_key = tag.get('category')
-        if category_key == 'reason_for_visit':
-            event = tag['value']
-        # On ignore la catégorie si elle n'est pas dans notre dictionnaire
-        elif category_key in category_map:
-            pretty_category = category_map[category_key]
-            prompt_details += f"- {pretty_category}: {tag['value']}. "
+        category = tag.get('category')
+        value = tag.get('value')
+        
+        if category == 'server_name':
+            prenom_serveur = value
+        elif category == 'service_qualities':
+            service_qualities.append(value)
+        elif category == 'reason_for_visit':
+            event = value
+        elif category == 'birthday_details':
+            event += f" ({value})"
+        elif category == 'liked_dishes':
+            liked_dishes.append(value)
+        elif category == 'atmosphere':
+            atmosphere_notes.append(value)
 
+    # On construit le message pour l'IA
+    prompt_details = "Points que le client a aimés : "
+    if service_qualities:
+        prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}. "
+    if liked_dishes:
+        prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}. "
+    if atmosphere_notes:
+        prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}. "
+    
+    # Le prompt système reste le même, il utilise le nom du serveur dynamiquement
     system_prompt = f"""
     Tu es un client du restaurant italien chic Siena Paris, très satisfait, qui rédige un avis sur Google.
     Rédige un avis court (2-4 phrases), chaleureux et authentique.
     IMPORTANT : Tu dois impérativement répondre dans la langue suivante : {lang}.
     
-    L'avis doit inclure une mention positive du service de "{prenom_serveur}".
-    Intègre de manière fluide les points que le client a aimés, qui te sont fournis.
+    Mentionne impérativement le super service de "{prenom_serveur}".
+    Intègre de manière fluide les points que le client a aimés.
     Si une occasion spéciale est mentionnée, intègre-la naturellement dans l'avis.
     Varie la formulation de chaque avis pour qu'il soit unique.
     """
