@@ -11,7 +11,7 @@
         body{font-family:var(--font-sans);background-color:var(--background-color);color:var(--text-primary);margin:0;padding:20px;display:flex;justify-content:center;align-items:center;min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
         .review-container{background-color:var(--surface-color);border-radius:16px;padding:28px 32px;box-shadow:0 10px 50px -10px rgba(133,93,67,.2);max-width:480px;width:100%;text-align:center;box-sizing:border-box;border:1px solid var(--border-color);animation:fadeIn .8s ease-out;}
         .logo-container img{width:180px;height:auto;margin-bottom:10px}
-        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px;margin-top:10px}
+        h1{font-family:var(--font-serif);font-size:2.2rem;margin-bottom:12px; margin-top: 10px;}
         p{font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:32px}
         .tag-section{margin-bottom:28px;text-align:left}
         .tag-section h3{font-family:var(--font-serif);font-size:1.4rem;margin-bottom:16px;color:var(--brand-color)}
@@ -35,36 +35,106 @@
         footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
-        
-        /* --- STYLES ROULETTE "EXPERT" --- */
-        .roulette-wrapper{padding:10px 0;text-align:center}
-        .roulette-container{position:relative;width:320px;height:320px;margin:20px auto}
-        .wheel-pointer{position:absolute;top:50%;left:-10px;transform:translateY(-50%);width:0;height:0;border-top:15px solid transparent;border-bottom:15px solid transparent;border-right:30px solid var(--brand-color);z-index:10;filter:drop-shadow(2px 2px 2px rgba(0,0,0,.2))}
-        .wheel-container{position:relative;width:100%;height:100%;border-radius:50%;border:8px solid #EAE0D5;box-shadow:0 0 20px rgba(0,0,0,.15),inset 0 0 15px rgba(0,0,0,.1);transition:transform 7s cubic-bezier(.2,.8,.2,1)}
-        .wheel-background{width:100%;height:100%;border-radius:50%}
-        .wheel-labels{position:absolute;top:0;left:0;width:100%;height:100%;list-style:none;margin:0;padding:0}
-        .wheel-labels .label{position:absolute;top:0;left:0;width:100%;height:100%;}
-        .wheel-labels .label-text{display:block;position:absolute;width:50%;top:50%;left:0;transform-origin:100% 50%;text-align:center;padding-right:20px;box-sizing:border-box;font-weight:600;font-size:.8rem;text-transform:uppercase;color:var(--text-primary)}
-        .wheel-labels .gros-lot .label-text,.wheel-labels .perdu .label-text{color:#fff}
-        #spin-btn{margin-top:20px}
-        #spin-btn:disabled{background-color:var(--text-secondary);border-color:var(--text-secondary);cursor:not-allowed}
-        .prize-result{margin-top:20px;padding:15px;border-radius:10px;background-color:#F7F1E9;border:1px solid var(--border-color);animation:fadeIn 1s}
-        .prize-result h3{margin:0;font-family:var(--font-serif);color:var(--brand-color)}
-        .prize-result p{margin:5px 0 0;font-size:1rem;color:var(--text-primary)}
     </style>
 </head>
 <body>
     <div class="review-container">
         <div class="logo-container">
-            <a href="/"><img src="/assets/logosiena-1.png" alt="Logo Siena Paris - Retour à l'accueil"></a>
+            <a href="/">
+                <img src="/assets/logosiena-1.png" alt="Logo Siena Paris - Retour à l'accueil">
+            </a>
         </div>
         <h1>Une soirée mémorable ?</h1>
         <p>Votre avis est la touche finale de votre expérience. Partagez ce qui a enchanté vos sens pour nous aider à rester fidèles à l'esprit de la Toscane.</p>
         <form id="review-form">
-            <div class="tag-section"><h3>Une occasion spéciale ?</h3><div class="tag-group" data-category="reason_for_visit"><input type="radio" id="event_birthday" name="event" value="un anniversaire"><label for="event_birthday">Anniversaire</label><input type="radio" id="event_romantic" name="event" value="un dîner romantique"><label for="event_romantic">Dîner romantique</label><input type="radio" id="event_friends" name="event" value="un dîner entre amis"><label for="event_friends">Dîner entre amis</label><input type="radio" id="event_visit" name="event" value="une simple visite" checked><label for="event_visit">Simple visite</label></div><div id="birthday_details_container" class="dropdown-container"><select id="birthday_details" name="birthday_details" data-category="birthday_details"><option value="" disabled selected>C'était l'anniversaire de qui ?</option><option value="de mon père">Père</option><option value="de ma mère">Mère</option><option value="de mon mari">Mari</option><option value="de ma femme">Femme</option><option value="de mon fils">Fils</option><option value="de ma fille">Fille</option><option value="d'un(e) ami(e)">Ami(e)</option></select></div></div>
-            <div class="tag-section"><h3>Le service de Kewan</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p><div class="tag-group" data-category="service_kewan"><input type="checkbox" id="tag_service_1" value="attentionné"><label for="tag_service_1">Attentionné</label><input type="checkbox" id="tag_service_2" value="souriant et chaleureux"><label for="tag_service_2">Souriant</label><input type="checkbox" id="tag_service_3" value="professionnel"><label for="tag_service_3">Professionnel</label><input type="checkbox" id="tag_service_4" value="efficace et rapide"><label for="tag_service_4">Efficace</label><input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label><input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label></div></div>
-            <div class="tag-section" id="dishes-section-limiter"><h3>Les saveurs qui vous ont marqué</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p><h4 class="dish-subcategory">Antipasti & Crudo</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label><input type="checkbox" id="dish_arancini" value="les Arancini au caviar"><label for="dish_arancini">Arancini</label><input type="checkbox" id="dish_calamari" value="les Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label><input type="checkbox" id="dish_tartare" value="le Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label></div><h4 class="dish-subcategory">Pâtes</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_ravioli" value="les Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label><input type="checkbox" id="dish_linguine" value="les Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label><input type="checkbox" id="dish_tagliolini" value="les Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label></div><h4 class="dish-subcategory">Viandes & Poissons</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_milanese" value="la Milanese 'Orecchie di elefante'"><label for="dish_milanese">La Milanese</label><input type="checkbox" id="dish_wagyu" value="le Wagyu de Kagoshima"><label for="dish_wagyu">Wagyu de Kagoshima</label><input type="checkbox" id="dish_gamberoni" value="les Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label></div><h4 class="dish-subcategory">Pizze</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label><input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label><input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label><input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label></div><h4 class="dish-subcategory">Douceurs</h4><div class="tag-group" data-category="liked_dishes"><input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label><input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label><input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label><input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label></div></div>
-            <div class="tag-section"><h3>L'atmosphère du lieu</h3><p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p><div class="tag-group" data-category="atmosphere"><input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label><input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label><input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label><input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label><input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label><input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label></div></div>
+            
+            <div class="tag-section">
+                <h3>Une occasion spéciale ?</h3>
+                <div class="tag-group" data-category="reason_for_visit">
+                    <input type="radio" id="event_birthday" name="event" value="un anniversaire"><label for="event_birthday">Anniversaire</label>
+                    <input type="radio" id="event_romantic" name="event" value="un dîner romantique"><label for="event_romantic">Dîner romantique</label>
+                    <input type="radio" id="event_friends" name="event" value="un dîner entre amis"><label for="event_friends">Dîner entre amis</label>
+                    <input type="radio" id="event_visit" name="event" value="une simple visite" checked><label for="event_visit">Simple visite</label>
+                </div>
+                <div id="birthday_details_container" class="dropdown-container">
+                    <select id="birthday_details" name="birthday_details" data-category="birthday_details">
+                        <option value="" disabled selected>C'était l'anniversaire de qui ?</option>
+                        <option value="de mon père">Père</option>
+                        <option value="de ma mère">Mère</option>
+                        <option value="de mon mari">Mari</option>
+                        <option value="de ma femme">Femme</option>
+                        <option value="de mon fils">Fils</option>
+                        <option value="de ma fille">Fille</option>
+                        <option value="d'un(e) ami(e)">Ami(e)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tag-section">
+                <h3>Le service de Kewan</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
+                <div class="tag-group" data-category="service_kewan">
+                    <input type="checkbox" id="tag_service_1" value="attentionné"><label for="tag_service_1">Attentionné</label>
+                    <input type="checkbox" id="tag_service_2" value="souriant et chaleureux"><label for="tag_service_2">Souriant</label>
+                    <input type="checkbox" id="tag_service_3" value="professionnel"><label for="tag_service_3">Professionnel</label>
+                    <input type="checkbox" id="tag_service_4" value="efficace et rapide"><label for="tag_service_4">Efficace</label>
+                    <input type="checkbox" id="tag_service_5" value="de très bon conseil"><label for="tag_service_5">De bon conseil</label>
+                    <input type="checkbox" id="tag_service_6" value="discret"><label for="tag_service_6">Discret</label>
+                </div>
+            </div>
+
+            <div class="tag-section" id="dishes-section-limiter">
+                <h3>Les saveurs qui vous ont marqué</h3>
+                <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Choisissez jusqu'à 6 de vos coups de cœur.</p>
+
+                <h4 class="dish-subcategory">Antipasti & Crudo</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_burrata" value="la Burrata al tartufo"><label for="dish_burrata">Burrata al Tartufo</label>
+                    <input type="checkbox" id="dish_arancini" value="les Arancini au caviar"><label for="dish_arancini">Arancini</label>
+                    <input type="checkbox" id="dish_calamari" value="les Calamari Fritti"><label for="dish_calamari">Calamari Fritti</label>
+                    <input type="checkbox" id="dish_tartare" value="le Tartare di tonno"><label for="dish_tartare">Tartare di Tonno</label>
+                </div>
+                <h4 class="dish-subcategory">Pâtes</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_ravioli" value="les Ravioli al tartufo"><label for="dish_ravioli">Ravioli al Tartufo</label>
+                    <input type="checkbox" id="dish_linguine" value="les Linguine all'astice"><label for="dish_linguine">Linguine all’Astice</label>
+                    <input type="checkbox" id="dish_tagliolini" value="les Tagliolini gamberi e caviale"><label for="dish_tagliolini">Tagliolini Gamberi & Caviale</label>
+                </div>
+                <h4 class="dish-subcategory">Viandes & Poissons</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_milanese" value="la Milanese 'Orecchie di elefante'"><label for="dish_milanese">La Milanese</label>
+                    <input type="checkbox" id="dish_wagyu" value="le Wagyu de Kagoshima"><label for="dish_wagyu">Wagyu de Kagoshima</label>
+                    <input type="checkbox" id="dish_gamberoni" value="les Gamberoni alla griglia"><label for="dish_gamberoni">Gamberoni alla Griglia</label>
+                </div>
+                <h4 class="dish-subcategory">Pizze</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                     <input type="checkbox" id="dish_pizza_margherita" value="la pizza Margherita"><label for="dish_pizza_margherita">Margherita</label>
+                     <input type="checkbox" id="dish_pizza_diavola" value="la pizza Diavola"><label for="dish_pizza_diavola">Diavola</label>
+                     <input type="checkbox" id="dish_pizza_italiana" value="la pizza Italiana"><label for="dish_pizza_italiana">Italiana</label>
+                     <input type="checkbox" id="dish_pizza_tartufo" value="la pizza Al Tartufo"><label for="dish_pizza_tartufo">Al Tartufo</label>
+                </div>
+                <h4 class="dish-subcategory">Douceurs</h4>
+                <div class="tag-group" data-category="liked_dishes">
+                    <input type="checkbox" id="dish_tiramisu" value="le Tiramisù classique"><label for="dish_tiramisu">Tiramisù</label>
+                    <input type="checkbox" id="dish_sainthonore" value="le Siena Saint-Honoré"><label for="dish_sainthonore">Siena Saint-Honoré</label>
+                    <input type="checkbox" id="dish_pavlova" value="la Pavlova aux fruits rouges"><label for="dish_pavlova">Pavlova</label>
+                    <input type="checkbox" id="dish_ananas" value="l'Ananas rôti au miel"><label for="dish_ananas">Ananas Rôti</label>
+                </div>
+            </div>
+            
+            <div class="tag-section">
+                <h3>L'atmosphère du lieu</h3>
+                 <p style="font-size: 0.9rem; margin-top: -10px; margin-bottom: 20px;">Sélectionnez jusqu'à 3 options.</p>
+                <div class="tag-group" data-category="atmosphere">
+                    <input type="checkbox" id="tag_atmo_1" value="la décoration chic"><label for="tag_atmo_1">La Décoration</label>
+                    <input type="checkbox" id="tag_atmo_2" value="l'ambiance musicale live"><label for="tag_atmo_2">La Musique Live</label>
+                    <input type="checkbox" id="tag_atmo_3" value="l'énergie festive"><label for="tag_atmo_3">L'Énergie Festive</label>
+                    <input type="checkbox" id="tag_atmo_4" value="l'éclairage tamisé et intime"><label for="tag_atmo_4">L'Éclairage Intime</label>
+                    <input type="checkbox" id="tag_atmo_5" value="le confort des assises"><label for="tag_atmo_5">Le Confort</label>
+                    <input type="checkbox" id="tag_atmo_6" value="parfait pour les photos"><label for="tag_atmo_6">Idéal pour les photos</label>
+                </div>
+            </div>
+
             <button type="submit" class="button" id="generate-btn">Générer mon avis</button>
         </form>
         
@@ -73,148 +143,124 @@
             <span id="loader-text">Création en cours...</span>
         </div>
         <div id="result-area" class="hidden">
-            <p><strong>Merci ! Votre avis est prêt.</strong></p>
-            <p style="font-size: 0.9rem; margin-bottom: 20px;">Publiez-le sur Google, puis revenez ici pour tourner notre roue de la chance et tenter de gagner une surprise !</p>
             <textarea id="review-text" readonly></textarea>
             <button id="copy-btn" class="button secondary">Copier le texte</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
         </div>
-        <div id="roulette-section" class="roulette-wrapper hidden">
-            <h3>Tentez votre chance !</h3>
-            <div class="roulette-container">
-                <div class="wheel-pointer"></div>
-                <div class="wheel-container" id="wheel-container">
-                    <div class="wheel-background" id="wheel-background"></div>
-                    <ul class="wheel-labels" id="wheel-labels"></ul>
-                </div>
-            </div>
-            <button id="spin-btn" class="button">Lancer la roue</button>
-            <div id="prize-result-container" class="hidden"></div>
-        </div>
+
         <footer>
             &copy; <span id="copyright-year"></span> KwnLnrd. Tous droits réservés.
         </footer>
     </div>
 
     <script>
-        // --- SCRIPT COMPLET AVEC LA NOUVELLE LOGIQUE DE ROULETTE ---
         const reviewForm = document.getElementById('review-form');
+        const generateBtn = document.getElementById('generate-btn');
+        const loaderContainer = document.getElementById('loader');
+        const loaderText = document.getElementById('loader-text');
         const resultArea = document.getElementById('result-area');
-        const googleBtn = document.getElementById('google-btn');
-        const rouletteSection = document.getElementById('roulette-section');
-        const wheelContainer = document.getElementById('wheel-container');
-        const wheelBackground = document.getElementById('wheel-background');
-        const wheelLabels = document.getElementById('wheel-labels');
-        const spinBtn = document.getElementById('spin-btn');
-        const prizeResultContainer = document.getElementById('prize-result-container');
-        const generateBtn=document.getElementById("generate-btn"),loaderContainer=document.getElementById("loader"),loaderText=document.getElementById("loader-text"),reviewText=document.getElementById("review-text"),copyBtn=document.getElementById("copy-btn"),eventRadios=document.querySelectorAll('input[name="event"]'),birthdayDetailsContainer=document.getElementById("birthday_details_container"),birthdayDetailsSelect=document.getElementById("birthday_details"),loadingMessages=["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];let messageInterval;const limitConfig={service_kewan:3,atmosphere:3,"dishes-section-limiter":6};
-        
-        reviewForm.addEventListener("change",e=>{if("checkbox"!==e.target.type)return;const t=e.target.closest("#dishes-section-limiter"),a=e.target.closest(".tag-section");let n,i;if(t?(n="dishes-section-limiter",i=limitConfig[n]):a){const e=a.querySelector(".tag-group")?.dataset.category;limitConfig[e]&&(n=e,i=limitConfig[n])}if(n&&i){const t=document.getElementById(n)||a;t.querySelectorAll('input[type="checkbox"]:checked').length>i&&(e.target.checked=!1,alert(`Vous ne pouvez sélectionner que ${i} options maximum dans cette catégorie.`))}});
-        eventRadios.forEach(e=>{e.addEventListener("change",e=>{e.target.id==="event_birthday"?birthdayDetailsContainer.classList.add("visible"):birthdayDetailsContainer.classList.remove("visible")})});
-        reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
-        copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
-        
-        const prizes = [
-            { id: 'champagne', text: 'UNE BOUTEILLE DE CHAMPAGNE', weight: 1 },
-            { id: 'perdu', text: 'Perdu', weight: 81 },
-            { id: 'cafe', text: 'UN CAFÉ OFFERT', weight: 4 },
-            { id: 'soft', text: 'UN SOFT OFFERT', weight: 4 },
-            { id: 'entree', text: 'UNE ENTRÉE OFFERTE', weight: 3 },
-            { id: 'dessert', text: 'UN DESSERT OFFERT', weight: 3 },
-            { id: 'cocktail', text: 'UN COCKTAIL OFFERT', weight: 2 },
-            { id: 'vin', text: 'UN VERRE DE VIN OFFERT', weight: 2 }
-        ];
+        const reviewText = document.getElementById('review-text');
+        const copyBtn = document.getElementById('copy-btn');
+        const eventRadios = document.querySelectorAll('input[name="event"]');
+        const birthdayDetailsContainer = document.getElementById('birthday_details_container');
+        const birthdayDetailsSelect = document.getElementById('birthday_details');
+        const loadingMessages = ["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];
+        let messageInterval;
 
-        const visualSegments = [
-            { id: 'champagne', text: 'CHAMPAGNE' }, { id: 'perdu', text: 'Perdu' },
-            { id: 'cocktail', text: 'Cocktail' }, { id: 'entree', text: 'Entrée' },
-            { id: 'vin', text: 'Verre de Vin' }, { id: 'perdu', text: 'Perdu' },
-            { id: 'dessert', text: 'Dessert' }, { id: 'soft', text: 'Soft' },
-            { id: 'cafe', text: 'Café' }, { id: 'perdu', text: 'Perdu' },
-            { id: 'cocktail', text: 'Cocktail' }, { id: 'entree', text: 'Entrée' },
-            { id: 'vin', text: 'Verre de Vin' }, { id: 'cafe', text: 'Café' },
-            { id: 'dessert', text: 'Dessert' }, { id: 'soft', text: 'Soft' }
-        ];
+        // MODIFICATION : Limite pour les plats augmentée à 6
+        const limitConfig = {
+            "service_kewan": 3,
+            "atmosphere": 3,
+            "dishes-section-limiter": 6 
+        };
 
-        function createWheel() {
-            wheelLabels.innerHTML = '';
-            let gradientParts = [];
-            const segmentAngle = 360 / visualSegments.length;
-
-            visualSegments.forEach((segment, index) => {
-                const angle = segmentAngle * index;
-                const nextAngle = segmentAngle * (index + 1);
-
-                const color = segment.id === 'champagne' ? 'var(--brand-color)' : (segment.id === 'perdu' ? '#BDBDBD' : (index % 2 === 0 ? '#FFFFFF' : '#F7F1E9'));
-                gradientParts.push(`${color} ${angle}deg, ${color} ${nextAngle}deg`);
-
-                const li = document.createElement('li');
-                li.className = 'label ' + segment.id;
-
-                const textSpan = document.createElement('span');
-                textSpan.className = 'label-text';
-                textSpan.textContent = segment.text;
-
-                const textAngle = angle + (segmentAngle / 2);
-                li.style.transform = `rotate(${textAngle}deg)`;
-                textSpan.style.transform = `translateX(60px) rotate(-90deg)`;
-                
-                li.appendChild(textSpan);
-                wheelLabels.appendChild(li);
-            });
-            
-            wheelBackground.style.backgroundImage = `conic-gradient(${gradientParts.join(', ')})`;
-        }
-
-        function getWeightedRandomPrize() {
-            const weightedList = [];
-            prizes.forEach(prize => { for (let i = 0; i < prize.weight; i++) { weightedList.push(prize); }});
-            return weightedList[Math.floor(Math.random() * weightedList.length)];
-        }
-
-        spinBtn.addEventListener('click', () => {
-            spinBtn.disabled = true;
-            prizeResultContainer.classList.add('hidden');
-            
-            const wonPrize = getWeightedRandomPrize();
-            
-            const possibleSegments = [];
-            visualSegments.forEach((seg, i) => { if (seg.id === wonPrize.id) possibleSegments.push(i); });
-            const targetSegmentIndex = possibleSegments.length > 0 ? possibleSegments[Math.floor(Math.random() * possibleSegments.length)] : 1;
-            
-            const segmentAngle = 360 / visualSegments.length;
-            const randomOffset = (segmentAngle * 0.6) + (Math.random() * (segmentAngle * 0.2) - (segmentAngle * 0.1));
-            const targetRotation = (targetSegmentIndex * segmentAngle) + randomOffset;
-            
-            const currentRotation = parseInt(wheelContainer.style.transform.replace(/[^0-9-]/g, '')) || 0;
-            const extraSpins = 6 * 360;
-            const finalAngle = extraSpins + targetRotation;
-
-            wheelContainer.style.transform = `rotate(${finalAngle}deg)`;
-
-            setTimeout(() => {
-                let resultHTML;
-                if (wonPrize.id === 'perdu') {
-                    resultHTML = `<div class="prize-result"><h3>Dommage...</h3><p>Ce n'est pas pour cette fois, mais merci beaucoup pour votre avis !</p></div>`;
-                } else {
-                    resultHTML = `<div class="prize-result"><h3>Félicitations !</h3><p>Vous avez gagné : <strong>${wonPrize.text}</strong></p><p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p></div>`;
+        reviewForm.addEventListener('change', (e) => {
+            if (e.target.type !== 'checkbox') return;
+            const limiterSection = e.target.closest('#dishes-section-limiter');
+            const simpleSection = e.target.closest('.tag-section');
+            let sectionId, limit;
+            if (limiterSection) {
+                sectionId = 'dishes-section-limiter';
+                limit = limitConfig[sectionId];
+            } else if (simpleSection) {
+                const category = simpleSection.querySelector('.tag-group')?.dataset.category;
+                if(limitConfig[category]) {
+                    sectionId = category;
+                    limit = limitConfig[category];
                 }
-                prizeResultContainer.innerHTML = resultHTML;
-                prizeResultContainer.classList.remove('hidden');
-                spinBtn.style.display = 'none';
-            }, 7200);
+            }
+            if (sectionId && limit) {
+                const container = document.getElementById(sectionId) || simpleSection;
+                const checkedInSection = container.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkedInSection.length > limit) {
+                    e.target.checked = false;
+                    // MODIFICATION : Message d'alerte mis à jour
+                    alert(`Vous ne pouvez sélectionner que ${limit} options maximum dans cette catégorie.`);
+                }
+            }
         });
 
-        googleBtn.addEventListener('click', () => {
-            resultArea.classList.add('hidden');
-            rouletteSection.classList.remove('hidden');
-            createWheel();
+        eventRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.id === 'event_birthday') {
+                    birthdayDetailsContainer.classList.add('visible');
+                } else {
+                    birthdayDetailsContainer.classList.remove('visible');
+                }
+            });
+        });
+
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const selectedTags = [];
+            const checkedInputs = document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+            if (checkedInputs.length === 0) {
+                alert('Veuillez sélectionner au moins une option pour décrire votre expérience.');
+                return;
+            }
+            checkedInputs.forEach(input => {
+                selectedTags.push({ category: input.closest('.tag-group').dataset.category, value: input.value });
+            });
+            if (document.getElementById('event_birthday').checked && birthdayDetailsSelect.value) {
+                selectedTags.push({ category: birthdayDetailsSelect.dataset.category, value: `pour l'anniversaire ${birthdayDetailsSelect.value}` });
+            }
+            reviewForm.classList.add('hidden');
+            loaderContainer.classList.remove('hidden');
+            let messageIndex = 0;
+            loaderText.textContent = loadingMessages[messageIndex];
+            messageInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                loaderText.textContent = loadingMessages[messageIndex];
+            }, 2500);
+            try {
+                const generatedReview = await realApiCall(selectedTags);
+                reviewText.value = generatedReview;
+                resultArea.classList.remove('hidden');
+            } catch (error) {
+                console.error('Erreur lors de la génération :', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                reviewForm.classList.remove('hidden');
+            } finally {
+                clearInterval(messageInterval);
+                loaderContainer.classList.add('hidden');
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(reviewText.value).then(() => {
+                copyBtn.textContent = 'Copié !';
+                setTimeout(() => { copyBtn.textContent = 'Copier le texte'; }, 2000);
+            });
         });
 
         async function realApiCall(tags) {
             const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
             const lang = 'fr';
-            const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lang: lang, tags: tags }), });
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lang: lang, tags: tags }),
+            });
             if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
             const data = await response.json();
             return data.review;
