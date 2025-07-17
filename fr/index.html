@@ -35,14 +35,43 @@
         footer{margin-top:30px;padding-top:20px;border-top:1px solid var(--border-color);font-size:.8rem;color:var(--text-secondary)}
         .dish-subcategory{font-weight:600;font-size:.95rem;color:var(--text-secondary);margin-top:20px;margin-bottom:12px;border-bottom:1px solid var(--border-color);padding-bottom:5px}
         .dish-subcategory:first-child{margin-top:0}
-
+        
         /* --- NOUVEAUX STYLES POUR LA ROULETTE --- */
-        .roulette-wrapper{padding:20px 0; text-align:center;}
-        .roulette-container{position:relative;width:280px;height:280px;margin:20px auto;border-radius:50%;border:5px solid var(--brand-color);box-shadow:0 0 20px rgba(0,0,0,0.2);}
-        .wheel{width:100%;height:100%;border-radius:50%;background-image:conic-gradient( from 0deg, #FDFBF5 0% 20%, #F7F1E9 20% 40%, #EAE0D5 40% 60%, var(--brand-color) 60% 80%, #2C2C2C 80% 100% );transition:transform 6s cubic-bezier(0.25, 1, 0.5, 1);}
-        .pointer{position:absolute;top:-25px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:25px solid transparent;border-right:25px solid transparent;border-bottom:40px solid var(--brand-color);}
-        .wheel-segment{position:absolute;width:50%;height:50%;left:50%;top:0;transform-origin:0 100%;display:flex;align-items:center;justify-content:center;color:var(--text-primary);font-weight:600;}
-        .wheel-segment span{display:block;transform:rotate(45deg);padding-right:40px;}
+        .roulette-wrapper{padding:10px 0; text-align:center;}
+        .roulette-container{position:relative;width:300px;height:300px;margin:20px auto;border-radius:50%;border:8px solid #EAE0D5;box-shadow:0 0 20px rgba(0,0,0,0.15);overflow:hidden;}
+        .pointer{position:absolute;top:50%;left:-20px;transform:translateY(-50%);width:0;height:0;border-top:20px solid transparent;border-bottom:20px solid transparent;border-right:30px solid var(--brand-color);z-index: 10;}
+        .wheel{width:100%;height:100%;border-radius:50%;position:relative;transition:transform 7s cubic-bezier(0.3, 1, 0.4, 1);transform:rotate(0deg);}
+        .wheel-segment{position:absolute;width:50%;height:50%;transform-origin:100% 100%;overflow:hidden;}
+        /* Positionne chaque segment de 22.5deg (360/16) */
+        .wheel-segment:nth-child(1){transform:rotate(0deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(2){transform:rotate(22.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(3){transform:rotate(45deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(4){transform:rotate(67.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(5){transform:rotate(90deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(6){transform:rotate(112.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(7){transform:rotate(135deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(8){transform:rotate(157.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(9){transform:rotate(180deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(10){transform:rotate(202.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(11){transform:rotate(225deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(12){transform:rotate(247.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(13){transform:rotate(270deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(14){transform:rotate(292.5deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(15){transform:rotate(315deg) skewY(-67.5deg);}
+        .wheel-segment:nth-child(16){transform:rotate(337.5deg) skewY(-67.5deg);}
+        
+        .segment-content{position:absolute;left:-100%;width:200%;height:200%;text-align:center;transform:skewY(67.5deg) rotate(11.25deg);padding-top:20px;color:var(--text-primary);font-weight:600;font-size:0.8rem;}
+        
+        /* Couleurs des segments en alternance */
+        .wheel-segment:nth-child(odd) { background-color: #F7F1E9; }
+        .wheel-segment:nth-child(even) { background-color: #FFFFFF; }
+        
+        /* Couleurs spéciales pour les prix */
+        .wheel-segment.perdu .segment-content { color: var(--text-secondary); }
+        .wheel-segment.perdu { background-color: #E0E0E0; }
+        .wheel-segment.gros-lot { background-color: var(--brand-color); }
+        .wheel-segment.gros-lot .segment-content { color: white; font-weight: bold; }
+        
         .prize-result{margin-top:20px;padding:15px;border-radius:10px;background-color:#F7F1E9;border:1px solid var(--border-color);animation:fadeIn 1s;}
         .prize-result h3{margin:0;font-family:var(--font-serif);color:var(--brand-color);}
         .prize-result p{margin:5px 0 0;font-size:1rem;color:var(--text-primary);}
@@ -70,15 +99,14 @@
 
         <div id="result-area" class="hidden">
             <p><strong>Merci ! Votre avis est prêt.</strong></p>
-            <p style="font-size: 0.9rem; margin-bottom: 20px;">Publiez-le sur Google, puis revenez sur cette page pour tourner notre roue de la chance et tenter de gagner une surprise !</p>
+            <p style="font-size: 0.9rem; margin-bottom: 20px;">Publiez-le sur Google, puis revenez ici pour tourner notre roue de la chance et tenter de gagner une surprise !</p>
             <textarea id="review-text" readonly></textarea>
             <button id="copy-btn" class="button secondary">Copier le texte</button>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIdvGkX5v5kcRQ1FTWUnyJxo" target="_blank" id="google-btn" class="button">Publier mon avis sur Google</a>
         </div>
 
         <div id="roulette-section" class="roulette-wrapper hidden">
-            <h3>Tournez la roue !</h3>
-            <p>Merci pour votre participation ! Tentez votre chance.</p>
+            <h3>Tentez votre chance !</h3>
             <div class="roulette-container">
                 <div class="pointer"></div>
                 <div class="wheel" id="wheel">
@@ -94,70 +122,122 @@
     </div>
 
     <script>
+        // --- SCRIPT COMPLET AVEC LA NOUVELLE LOGIQUE DE ROULETTE ---
+
         // --- SÉLECTION DES ÉLÉMENTS DU DOM ---
         const reviewForm = document.getElementById('review-form');
         const resultArea = document.getElementById('result-area');
         const googleBtn = document.getElementById('google-btn');
-        // NOUVEAU : Sélection des éléments de la roulette
         const rouletteSection = document.getElementById('roulette-section');
         const wheel = document.getElementById('wheel');
         const spinBtn = document.getElementById('spin-btn');
         const prizeResultContainer = document.getElementById('prize-result-container');
-        // (Le reste des sélections du DOM reste le même)
         const generateBtn=document.getElementById("generate-btn"),loaderContainer=document.getElementById("loader"),loaderText=document.getElementById("loader-text"),reviewText=document.getElementById("review-text"),copyBtn=document.getElementById("copy-btn"),eventRadios=document.querySelectorAll('input[name="event"]'),birthdayDetailsContainer=document.getElementById("birthday_details_container"),birthdayDetailsSelect=document.getElementById("birthday_details"),loadingMessages=["Contact de notre assistant créatif...","Analyse de votre soirée mémorable...","L'inspiration est en chemin...","Finalisation de la rédaction..."];let messageInterval;const limitConfig={service_kewan:3,atmosphere:3,"dishes-section-limiter":6};
         
-        // --- LOGIQUE EXISTANTE (LIMITES, MENU DÉROULANT, SUBMIT) ---
-        // (Tout le code de gestion des limites de sélection et du menu anniversaire reste ici, inchangé)
+        // --- GESTION DES LIMITES DE SÉLECTION (inchangée)---
         reviewForm.addEventListener("change",e=>{if("checkbox"!==e.target.type)return;const t=e.target.closest("#dishes-section-limiter"),a=e.target.closest(".tag-section");let n,i;if(t?(n="dishes-section-limiter",i=limitConfig[n]):a){const e=a.querySelector(".tag-group")?.dataset.category;limitConfig[e]&&(n=e,i=limitConfig[n])}if(n&&i){const t=document.getElementById(n)||a;t.querySelectorAll('input[type="checkbox"]:checked').length>i&&(e.target.checked=!1,alert(`Vous ne pouvez sélectionner que ${i} options maximum dans cette catégorie.`))}});
         eventRadios.forEach(e=>{e.addEventListener("change",e=>{e.target.id==="event_birthday"?birthdayDetailsContainer.classList.add("visible"):birthdayDetailsContainer.classList.remove("visible")})});
+        
+        // --- GESTION DE LA SOUMISSION DU FORMULAIRE (inchangée) ---
         reviewForm.addEventListener("submit",async e=>{e.preventDefault();const t=[];document.querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked').forEach(e=>{t.push({category:e.closest(".tag-group").dataset.category,value:e.value})});if(0===t.length)return void alert("Veuillez sélectionner au moins une option pour décrire votre expérience.");document.getElementById("event_birthday").checked&&birthdayDetailsSelect.value&&t.push({category:birthdayDetailsSelect.dataset.category,value:`pour l'anniversaire ${birthdayDetailsSelect.value}`});reviewForm.classList.add("hidden");loaderContainer.classList.remove("hidden");let a=0;loaderText.textContent=loadingMessages[a],messageInterval=setInterval(()=>{a=(a+1)%loadingMessages.length,loaderText.textContent=loadingMessages[a]},2500);try{const e=await realApiCall(t);reviewText.value=e,resultArea.classList.remove("hidden")}catch(e){console.error("Erreur lors de la génération :",e),alert("Une erreur est survenue. Veuillez réessayer."),reviewForm.classList.remove("hidden")}finally{clearInterval(messageInterval),loaderContainer.classList.add("hidden")}});
         copyBtn.addEventListener("click",()=>{navigator.clipboard.writeText(reviewText.value).then(()=>{copyBtn.textContent="Copié !",setTimeout(()=>{copyBtn.textContent="Copier le texte"},2e3)})});
-        
-        // --- NOUVELLE LOGIQUE POUR LA ROULETTE ---
-        googleBtn.addEventListener('click', () => {
-            // Quand l'utilisateur clique sur "Publier", on cache la zone de résultat et on montre la roulette.
-            resultArea.classList.add('hidden');
-            rouletteSection.classList.remove('hidden');
-        });
 
+        // --- NOUVELLE LOGIQUE POUR LA ROULETTE ---
+
+        // Configuration des prix (logique) et des segments (visuel)
         const prizes = [
-            { text: "UN SHOT OFFERT", color: "#FDFBF5" },
-            { text: "PERDU", color: "#F7F1E9" },
-            { text: "UN VERRE DE VIN", color: "#EAE0D5" },
-            { text: "UN DESSERT", color: "var(--brand-color)", textColor: "white" },
-            { text: "GROS LOT: CHAMPAGNE !", color: "#2C2C2C", textColor: "white" }
+            { id: 'champagne', text: 'UNE BOUTEILLE DE CHAMPAGNE', weight: 1 },
+            { id: 'perdu', text: 'PERDU', weight: 81 },
+            { id: 'cafe', text: 'UN CAFÉ OFFERT', weight: 4 },
+            { id: 'soft', text: 'UN SOFT OFFERT', weight: 4 },
+            { id: 'entree', text: 'UNE ENTRÉE OFFERTE', weight: 3 },
+            { id: 'dessert', text: 'UN DESSERT OFFERT', weight: 3 },
+            { id: 'cocktail', text: 'UN COCKTAIL OFFERT', weight: 2 },
+            { id: 'vin', text: 'UN VERRE DE VIN OFFERT', weight: 2 }
         ];
+
+        // 16 segments visuels, avec les paires en face (i et i+8)
+        const visualSegments = [
+            { id: 'gros-lot', text: 'CHAMPAGNE' }, // 0
+            { id: 'perdu', text: 'Perdu' },         // 1
+            { id: 'cocktail', text: 'Cocktail' },   // 2
+            { id: 'perdu', text: 'Perdu' },         // 3
+            { id: 'vin', text: 'Verre de Vin' },    // 4
+            { id: 'entree', text: 'Entrée' },       // 5
+            { id: 'dessert', text: 'Dessert' },     // 6
+            { id: 'perdu', text: 'Perdu' },         // 7
+            { id: 'cafe', text: 'Café' },           // 8 (en face de Champagne)
+            { id: 'soft', text: 'Soft' },           // 9 (en face de perdu)
+            { id: 'cocktail', text: 'Cocktail' },   // 10 (en face de cocktail)
+            { id: 'cafe', text: 'Café' },           // 11 (en face de perdu)
+            { id: 'vin', text: 'Verre de Vin' },    // 12 (en face de vin)
+            { id: 'entree', text: 'Entrée' },       // 13 (en face d'entrée')
+            { id: 'dessert', text: 'Dessert' },     // 14 (en face de dessert)
+            { id: 'soft', text: 'Soft' }            // 15 (en face de perdu)
+        ];
+
+        // Créer les segments de la roue dynamiquement
+        visualSegments.forEach((segment, index) => {
+            const segmentEl = document.createElement('div');
+            segmentEl.className = 'wheel-segment';
+            if (segment.id === 'gros-lot') segmentEl.classList.add('gros-lot');
+            if (segment.id === 'perdu') segmentEl.classList.add('perdu');
+            
+            const contentEl = document.createElement('div');
+            contentEl.className = 'segment-content';
+            contentEl.textContent = segment.text;
+            segmentEl.appendChild(contentEl);
+            wheel.appendChild(segmentEl);
+        });
         
-        // Note : La roue est visuellement divisée en 5, mais on peut ajuster les probabilités ici si besoin.
-        const prizeSegments = [0, 1, 2, 3, 1, 4, 1, 2, 0, 1]; // Répartition des prix pour le tirage au sort
+        // Tirage au sort pondéré
+        function getWeightedRandomPrize() {
+            const weightedList = [];
+            prizes.forEach(prize => {
+                for (let i = 0; i < prize.weight; i++) {
+                    weightedList.push(prize);
+                }
+            });
+            return weightedList[Math.floor(Math.random() * weightedList.length)];
+        }
 
         spinBtn.addEventListener('click', () => {
-            spinBtn.disabled = true; // Empêche de tourner à nouveau
+            spinBtn.disabled = true;
+            prizeResultContainer.classList.add('hidden'); // Cache le résultat précédent
             
-            const randomPrizeIndex = prizeSegments[Math.floor(Math.random() * prizeSegments.length)];
-            const selectedPrize = prizes[randomPrizeIndex];
-            const segmentAngle = 360 / prizeSegments.length;
-            const randomStopAngle = (prizeSegments.indexOf(randomPrizeIndex) * segmentAngle) + (segmentAngle / 2);
+            const wonPrize = getWeightedRandomPrize();
+            
+            // Trouve tous les segments visuels correspondant au prix gagné
+            const possibleSegments = visualSegments.map((seg, i) => seg.id.includes(wonPrize.id) ? i : -1).filter(i => i !== -1);
+            const targetSegmentIndex = possibleSegments[Math.floor(Math.random() * possibleSegments.length)];
+            
+            const segmentAngle = 360 / 16;
+            const randomOffset = (Math.random() * 0.8 + 0.1) * segmentAngle; // Pour atterrir au milieu du segment
+            const targetAngle = (targetSegmentIndex * segmentAngle) + randomOffset;
+            
+            const extraSpins = 6 * 360; // Pour une belle animation longue
+            const finalAngle = extraSpins + (360 - targetAngle); // On tourne dans le sens inverse du texte
 
-            // Ajoute des tours supplémentaires pour l'animation
-            const extraSpins = 5 * 360;
-            wheel.style.transform = `rotate(${extraSpins + randomStopAngle}deg)`;
+            wheel.style.transform = `rotate(${finalAngle}deg)`;
 
             setTimeout(() => {
                 prizeResultContainer.innerHTML = `
                     <div class="prize-result">
                         <h3>Félicitations !</h3>
-                        <p>Vous avez gagné : <strong>${selectedPrize.text}</strong></p>
+                        <p>${wonPrize.text}</p>
                         <p style="font-size:0.8rem; margin-top:10px;">Montrez cet écran à Kewan pour recevoir votre cadeau.</p>
                     </div>
                 `;
                 prizeResultContainer.classList.remove('hidden');
-                spinBtn.classList.add('hidden'); // Cache le bouton de la roue après avoir joué
-            }, 6200); // Doit correspondre à la durée de la transition CSS + un petit délai
+                spinBtn.style.display = 'none'; // Cache le bouton après le premier tour
+            }, 7200); // Doit être plus long que la durée de la transition CSS
         });
 
+        googleBtn.addEventListener('click', () => {
+            resultArea.classList.add('hidden');
+            rouletteSection.classList.remove('hidden');
+        });
 
-        // --- FONCTION D'APPEL À L'API BACKEND (inchangée) ---
         async function realApiCall(tags) {
             const apiUrl = 'https://siena-api.onrender.com/generate-review'; 
             const lang = 'fr';
@@ -171,7 +251,6 @@
             return data.review;
         }
 
-        // --- MISE À JOUR AUTOMATIQUE DE L'ANNÉE DU COPYRIGHT (inchangée) ---
         document.getElementById('copyright-year').textContent = new Date().getFullYear();
     </script>
 </body>
