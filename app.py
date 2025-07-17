@@ -116,12 +116,10 @@ def get_public_options():
         servers = Server.query.order_by(Server.name).all()
         flavors = FlavorOption.query.all()
         atmospheres = AtmosphereOption.query.order_by(AtmosphereOption.id).all()
-
         categorized_flavors = {}
         for f in flavors:
             if f.category not in categorized_flavors: categorized_flavors[f.category] = []
             categorized_flavors[f.category].append({"id": f.id, "text": f.text})
-
         return jsonify({
             "servers": [{"name": s.name} for s in servers],
             "flavors": categorized_flavors,
@@ -131,19 +129,64 @@ def get_public_options():
         print(f"Erreur de base de données sur la route publique : {e}")
         return jsonify({"error": "Le service est momentanément indisponible."}), 503
 
-
 # --- ROUTE DE GÉNÉRATION D'AVIS ---
 @app.route('/generate-review', methods=['POST'])
 def generate_review():
-    # ... (le code de cette fonction reste inchangé)
-    pass
+    try:
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    except Exception as e: return jsonify({"error": "Clé API OpenAI non valide."}), 500
+    data = request.get_json()
+    if not data: return jsonify({"error": "Données invalides."}), 400
+    lang = data.get('lang', 'fr')
+    selected_tags = data.get('tags', [])
+    prenom_serveur = "notre serveur(se)"
+    service_qualities = []
+    event = "une simple visite"
+    liked_dishes = []
+    atmosphere_notes = []
+    for tag in selected_tags:
+        category = tag.get('category')
+        value = tag.get('value')
+        if category == 'server_name': prenom_serveur = value
+        elif category == 'service_qualities': service_qualities.append(value)
+        elif category == 'reason_for_visit': event = value
+        elif category == 'birthday_details': event += f" ({value})"
+        elif category == 'liked_dishes': liked_dishes.append(value)
+        elif category == 'atmosphere': atmosphere_notes.append(value)
+    if prenom_serveur != "notre serveur(se)":
+        try:
+            new_review_record = GeneratedReview(server_name=prenom_serveur)
+            db.session.add(new_review_record)
+            db.session.commit()
+        except Exception as e: print(f"Erreur DB: {e}"); db.session.rollback()
+    prompt_details = "Points que le client a aimés : "
+    if service_qualities: prompt_details += f"- Le service de {prenom_serveur} était : {', '.join(service_qualities)}. "
+    if liked_dishes: prompt_details += f"- Plats préférés : {', '.join(liked_dishes)}. "
+    if atmosphere_notes: prompt_details += f"- Ambiance : {', '.join(atmosphere_notes)}. "
+    system_prompt = f"""
+    Tu es un client du restaurant italien chic Siena Paris, très satisfait, qui rédige un avis sur Google.
+    Rédige un avis court (2-4 phrases), chaleureux et authentique.
+    IMPORTANT : Tu dois impérativement répondre dans la langue suivante : {lang}.
+    Mentionne impérativement le super service de "{prenom_serveur}".
+    Intègre de manière fluide les points que le client a aimés.
+    Si une occasion spéciale est mentionnée, intègre-la naturellement dans l'avis.
+    Varie la formulation de chaque avis pour qu'il soit unique.
+    """
+    user_prompt = f"Contexte de la visite : {event}. Points appréciés : {prompt_details}"
+    try:
+        completion = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}], temperature=0.8, max_tokens=150)
+        return jsonify({"review": completion.choices[0].message.content})
+    except Exception as e: print(f"Erreur OpenAI: {e}"); return jsonify({"error": "Erreur lors de la génération de l'avis."}), 500
 
 # --- ROUTE DU TABLEAU DE BORD ---
 @app.route('/dashboard')
 @password_protected
 def dashboard():
-    # ... (le code de cette fonction reste inchangé)
-    pass
+    try:
+        server_counts = db.session.query(GeneratedReview.server_name, func.count(GeneratedReview.server_name).label('review_count')).group_by(GeneratedReview.server_name).order_by(func.count(GeneratedReview.server_name).desc()).all()
+        results = [{"server": name, "count": count} for name, count in server_counts]
+        return jsonify(results)
+    except Exception as e: return jsonify({"error": f"Erreur de récupération des données : {e}"}), 500
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
